@@ -10,27 +10,18 @@ from definitions import BATCH_SIZE, RUTA_DATOS
 
 transformaciones_train = transforms.Compose([
     transforms.Resize((224, 224)),
-    #transforms.RandomRotation(10),
-    #transforms.RandomHorizontalFlip(),
-    #transforms.RandomVerticalFlip(),
-    #transforms.GaussianBlur(kernel_size=(5, 9), sigma=(0.1, 5)), 
+    transforms.RandomRotation(10),
+    transforms.RandomHorizontalFlip(),
+    transforms.RandomVerticalFlip(),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.5], std=[0.5])  # Ajusta según tus necesidades
+    transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))  # Ajusta según tus necesidades
 ])
 
 transformaciones_val = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.5], std=[0.5])
+    transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)) 
 ])
-
-contrast_transform = transforms.Compose([
-    transforms.ToPILImage(),
-    transforms.ColorJitter(brightness=0.2, contrast=2),
-    transforms.ToTensor(),
-])
-
-
 
 dataset_train = datasets.ImageFolder(
     root=os.path.join(RUTA_DATOS, 'train'),
