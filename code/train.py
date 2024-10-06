@@ -20,14 +20,11 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, n
         training_loop = create_tqdm_bar(train_loader, desc=f'Training Epoch [{epoch + 1}/{num_epochs}]', mode='train')
         for train_iteration, batch in training_loop:
             inputs, labels = batch
-            mod_input = torch.stack([contrast_transform(x) for x in inputs])
-            
             inputs = inputs.to(device)
-            mod_input = mod_input.to(device)
             labels = labels.to(device)
 
             optimizer.zero_grad()
-            outputs = model(inputs, mod_input)
+            outputs = model(inputs)
 
             _, preds = torch.max(outputs, 1)
             loss = criterion(outputs, labels)

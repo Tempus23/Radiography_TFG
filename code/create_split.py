@@ -47,7 +47,7 @@ def dividir_dataset(ruta_dataset, ruta_destino, porcentaje_val=0.15, porcentaje_
 # Establecer la semilla para reproducibilidad
 random.seed(39)
 
-ruta_dataset = 'dataset/MedicalExpert-I'  # Dataset Experto 1
-ruta_destino = 'dataset/data'  # Reemplaza con la ruta donde quieres guardar el dataset dividido
+ruta_dataset = 'dataset/data'  # Dataset Experto 1
+ruta_destino = 'dataset/split_data'  # Reemplaza con la ruta donde quieres guardar el dataset dividido
 
 dividir_dataset(ruta_dataset, ruta_destino, porcentaje_val=0.15, porcentaje_test=0.15)
