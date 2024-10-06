@@ -1,44 +1,94 @@
 import torch
 import torch.nn as nn
-from torchvision import models
+import torchvision.models as models
 
-class RadiographyClassifier(nn.Module):
-    def __init__(self, num_classes):
-        super(RadiographyClassifier, self).__init__()
-        # Cargar el modelo preentrenado ResNet18
-        self.model = models.resnet18(pretrained=True)
-        # Congelar las capas preentrenadas¡
-        for param in self.model.parameters():
-            param.requires_grad = False
-        # Reemplazar la última capa totalmente conectada
-        num_ftrs = self.model.fc.in_features
-        self.model.fc = nn.Linear(num_ftrs, num_classes)
+# Definimos varios modelos para regresión basados en arquitecturas de redes neuronales convolucionales.
+
+class SimpleCNN(nn.Module):
+    def __init__(self):
+        super(SimpleCNN, self).__init__()
+        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
+        self.conv3 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+        self.fc1 = nn.Linear(64 * 32 * 32, 512)
+        self.fc2 = nn.Linear(512, 1)  # Salida de un solo valor para regresión
 
     def forward(self, x):
-        return self.model(x)
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = self.pool(torch.relu(self.conv2(x)))
+        x = self.pool(torch.relu(self.conv3(x)))
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
 
-# Modelo de clasificación de imagenes desde cero
-class RadiographyClassifierFromScratch(nn.Module):
-    def __init__(self, num_classes):
-        super(RadiographyClassifierFromScratch, self).__init__()
-        # Definir la arquitectura de la red
-        self.model = nn.Sequential(
-            #Capa de entrada imagen 224x224
-            nn.Conv2d(224, 8, kernel_size=224, padding=32),
-            nn.Conv2d(1, 32, kernel_size=3, padding=1),
+
+class ResNet18Regression(nn.Module):
+    def __init__(self, pretrained=True):
+        super(ResNet18Regression, self).__init__()
+        self.resnet18 = models.resnet18(pretrained=pretrained)
+        # Reemplazar la capa fully connected para regresión
+        self.resnet18.fc = nn.Linear(self.resnet18.fc.in_features, 1)
+
+    def forward(self, x):
+        x = self.resnet18(x)
+        return x
+
+
+class MobileNetV2Regression(nn.Module):
+    def __init__(self, pretrained=True):
+        super(MobileNetV2Regression, self).__init__()
+        self.mobilenet_v2 = models.mobilenet_v2(pretrained=pretrained)
+        # Reemplazar la capa fully connected para regresión
+        self.mobilenet_v2.classifier[1] = nn.Linear(self.mobilenet_v2.classifier[1].in_features, 1)
+
+    def forward(self, x):
+        x = self.mobilenet_v2(x)
+        return x
+
+
+class CustomCNN(nn.Module):
+    def __init__(self):
+        super(CustomCNN, self).__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=5, stride=1, padding=2),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.Conv2d(64, 128, kernel_size=5, stride=1, padding=2),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+        )
+        self.regressor = nn.Sequential(
+            nn.Linear(128 * 16 * 16, 1024),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.Flatten(),
-            nn.Linear(128*28*28, 512),
+            nn.Linear(1024, 256),
             nn.ReLU(),
-            nn.Linear(512, num_classes)
+            nn.Linear(256, 1),  # Salida de un solo valor para regresión
         )
 
     def forward(self, x):
-        return self.model(x)
+        x = self.features(x)
+        x = x.view(-1, 128 * 16 * 16)
+        x = self.regressor(x)
+        return x
+
+
+# Inicialización de los diferentes modelos
+def get_model(model_name="simple_cnn"):
+    if model_name == "simple_cnn":
+        return SimpleCNN()
+    elif model_name == "resnet18":
+        return ResNet18Regression(pretrained=True)
+    elif model_name == "mobilenet_v2":
+        return MobileNetV2Regression(pretrained=True)
+    elif model_name == "custom_cnn":
+        return CustomCNN()
+    else:
+        raise ValueError(f"Modelo {model_name} no está disponible. Por favor elige entre 'simple_cnn', 'resnet18', 'mobilenet_v2', 'custom_cnn'.")
+
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    model_name = "resnet18"  # Puedes cambiar a simple_cnn, mobilenet_v2, custom_cnn
+    model = get_model(model_name)
+    print(model)
