@@ -13,16 +13,6 @@ class Classification(pl.LightningModule):
         self.model = model
         self.loss = nn.CrossEntropyLoss()
 
-        metrics = tm.MetricCollection(
-            {
-                "top1": tm.Accuracy(task="multiclass", top_k=1, num_classes=n_classes),
-                "top3": tm.Accuracy(task="multiclass", top_k=3, num_classes=n_classes),
-                "avg-prec": tm.AveragePrecision(task="multiclass", num_classes=n_classes),
-            }
-        )
-        self.val_metrics = metrics.clone(prefix="val/")
-        self.test_metrics = metrics.clone(prefix="test/")
-
     def classify(self, x):
         logits = self.model(x)
         return nn.functional.softmax(logits, dim=-1)
@@ -53,6 +43,10 @@ class Classification(pl.LightningModule):
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.model.parameters())
+    def configure_scheduler(self, optimizer):
+        return torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, 
+                                                           factor=0.1, 
+                                                           patience=5)
 
 class Regression(pl.LightningModule):
     def __init__(self, model, device):

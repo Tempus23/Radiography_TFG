@@ -38,7 +38,7 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
             for iteration, batch in training_loop:
                 inputs, labels = batch
                 inputs = inputs.to(device)
-                labels = labels.to(device).float()
+                labels = labels.to(device)
 
                 optimizer.zero_grad()
                 with torch.set_grad_enabled(phase == 'train'):
