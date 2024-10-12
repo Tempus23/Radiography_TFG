@@ -7,17 +7,19 @@ from torch.utils.data import DataLoader
 
 from definitions import BATCH_SIZE, RUTA_DATOS
 
+RUTA_DATOS = DATA_PATH
+
 
 transformaciones_train = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))  
+    transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 ])
 
 transformaciones_val = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)) 
+    transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 ])
 
 dataset_train = datasets.ImageFolder(
@@ -40,20 +42,20 @@ loader_train = DataLoader(
     dataset_train,
     batch_size=BATCH_SIZE,
     shuffle=True,
-    num_workers=4 # Ajusta según tu sistema
+    num_workers=2 # Ajusta según tu sistema
 )
 
 loader_val = DataLoader(
     dataset_val,
     batch_size=BATCH_SIZE,
     shuffle=False,
-    num_workers=4
+    num_workers=2
 )
 
 loader_test = DataLoader(
     dataset_test,
     batch_size=BATCH_SIZE,
     shuffle=False,
-    num_workers=4
+    num_workers=2
 )
 

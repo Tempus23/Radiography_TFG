@@ -4,36 +4,6 @@ import torchvision.models as models
 
 # Definimos varios modelos para regresión basados en arquitecturas de redes neuronales convolucionales.
 
-class SimpleCNN(nn.Module):
-    def __init__(self):
-        super(SimpleCNN, self).__init__()
-        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
-        self.conv3 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1)
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
-        self.fc1 = nn.Linear(64 * 32 * 32, 512)
-        self.fc2 = nn.Linear(512, 1)  # Salida de un solo valor para regresión
-
-    def forward(self, x):
-        x = self.pool(torch.relu(self.conv1(x)))
-        x = self.pool(torch.relu(self.conv2(x)))
-        x = self.pool(torch.relu(self.conv3(x)))
-        x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
-        return x
-
-
-class ResNet18Regression(nn.Module):
-    def __init__(self, pretrained=True):
-        super(ResNet18Regression, self).__init__()
-        self.resnet18 = models.resnet18(pretrained=pretrained)
-        # Reemplazar la capa fully connected para regresión
-        self.resnet18.fc = nn.Linear(self.resnet18.fc.in_features, 1)
-
-    def forward(self, x):
-        x = self.resnet18(x)
-        return x
-
 
 class MobileNetV2Regression(nn.Module):
     def __init__(self, pretrained=True):
@@ -46,37 +16,109 @@ class MobileNetV2Regression(nn.Module):
         x = self.mobilenet_v2(x)
         return x
 
+class MobileNetV2Classification(nn.Module):
+    def __init__(self, num_classes=5, pretrained=True):
+        super(MobileNetV2Classification, self).__init__()
+        self.mobilenet_v2 = models.mobilenet_v2(pretrained=pretrained)
+        # Reemplazar la capa fully connected para clasificación
+        self.classes = num_classes
+        self.mobilenet_v2.classifier[1] = nn.Linear(self.mobilenet_v2.classifier[1].in_features, num_classes)
 
-class CustomCNN(nn.Module):
-    # ResNet 18 classification
-    def __init__(self, pretrained=True, classes = 5):
-        super(CustomCNN, self).__init__()
+    def forward(self, x):
+        x = self.mobilenet_v2(x)
+        return x
+
+#Modelo pequeño de clasificacion de 5 clases recibiendo imagen 224x224
+class ResNet18Classification(nn.Module):
+    def __init__(self, num_classes = 5, pretrained = True):
+        super(ResNet18Classification, self).__init__()
         self.resnet18 = models.resnet18(pretrained=pretrained)
-        
-        # Reemplazar la capa fully connected para clasificacion 5 clases
-        self.resnet18.fc = nn.Linear(self.resnet18.fc.in_features, classes)
+        # Reemplazar la capa fully connected para clasificación
+        self.classes = num_classes
+        self.resnet18.fc = nn.Linear(self.resnet18.fc.in_features, num_classes)
 
     def forward(self, x):
         x = self.resnet18(x)
         return x
 
+class ResNet18Regression(nn.Module):
+    def __init__(self,num_classes = 5, pretrained = True):
+        super(ResNet18Regression, self).__init__()
+        self.resnet18 = models.resnet18(pretrained=pretrained)
+        self.classes = num_classes
+        self.resnet18.fc = nn.Linear(self.resnet18.fc.in_features, 1)
 
-# Inicialización de los diferentes modelos
-def get_model(model_name="simple_cnn"):
-    if model_name == "simple_cnn":
-        return SimpleCNN()
-    elif model_name == "resnet18":
-        return ResNet18Regression(pretrained=True)
-    elif model_name == "mobilenet_v2":
-        return MobileNetV2Regression(pretrained=True)
-    elif model_name == "custom_cnn":
-        return CustomCNN()
-    else:
-        raise ValueError(f"Modelo {model_name} no está disponible. Por favor elige entre 'simple_cnn', 'resnet18', 'mobilenet_v2', 'custom_cnn'.")
+    def forward(self, x):
+        x = self.resnet18(x)
+        return x
 
+class ResNet50Classification(nn.Module):
+    def __init__(self, num_classes=5, pretrained=True):
+        super(ResNet50Classification, self).__init__()
+        self.classes = num_classes
+        self.resnet50 = models.resnet50(pretrained=pretrained)
+        # Reemplazar la capa fully connected para clasificación
+        self.resnet50.fc = nn.Linear(self.resnet50.fc.in_features, num_classes)
 
-# Ejemplo de uso
-if __name__ == "__main__":
-    model_name = "resnet18"  # Puedes cambiar a simple_cnn, mobilenet_v2, custom_cnn
-    model = get_model(model_name)
-    print(model)
+    def forward(self, x):
+        x = self.resnet50(x)
+        return x
+
+class ResNet50Regression(nn.Module):
+    def __init__(self,num_classes = 5, pretrained = True):
+
+        super(ResNet50Regression, self).__init__()
+        self.resnet50 = models.resnet50(pretrained=pretrained)
+        self.classes = num_classes
+        # Reemplazar la capa fully connected para regresión
+        self.resnet50.fc = nn.Linear(self.resnet50.fc.in_features, 1)
+
+    def forward(self, x):
+        x = self.resnet50(x)
+        return x
+
+class EfficientNetB0Classification(nn.Module):
+    def __init__(self, num_classes=5, pretrained=True):
+        super(EfficientNetB0Classification, self).__init__()
+        self.efficientnet_b0 = models.efficientnet_b0(pretrained=pretrained)
+        # Reemplazar la capa fully connected para clasificación
+        self.efficientnet_b0.classifier[1] = nn.Linear(self.efficientnet_b0.classifier[1].in_features, num_classes)
+
+    def forward(self, x):
+        x = self.efficientnet_b0(x)
+        return x
+
+# Not tested under this context
+class DenseNet121Classification(nn.Module):
+    def __init__(self, num_classes=5, pretrained=True):
+        super(DenseNet121Classification, self).__init__()
+        self.densenet121 = models.densenet121(pretrained=pretrained)
+        # Reemplazar la capa fully connected para clasificación
+        self.densenet121.classifier = nn.Linear(self.densenet121.classifier.in_features, num_classes)
+
+    def forward(self, x):
+        x = self.densenet121(x)
+        return x
+
+class VisionTransformerClassification(nn.Module):
+    def __init__(self, num_classes=5, pretrained=True):
+        super(VisionTransformerClassification, self).__init__()
+        self.vit = models.vit_b_16(pretrained=pretrained)
+        # Reemplazar la cabeza de clasificación
+        self.vit.heads.head = nn.Linear(self.vit.heads.head.in_features, num_classes)
+
+    def forward(self, x):
+        x = self.vit(x)
+        return x
+
+class SwinTransformerClassification(nn.Module):
+    def __init__(self, num_classes=5, pretrained=True):
+        super(SwinTransformerClassification, self).__init__()
+        self.swin_t = models.swin_t(pretrained=pretrained)
+        # Reemplazar la cabeza de clasificación
+        self.swin_t.head = nn.Linear(self.swin_t.head.in_features, num_classes)
+
+    def forward(self, x):
+        x = self.swin_t(x)
+        return x
+
