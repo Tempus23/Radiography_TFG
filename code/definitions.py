@@ -1,3 +1,3 @@
-BATCH_SIZE = 8
+BATCH_SIZE = 32
 
-RUTA_DATOS = '../dataset/split_data'
+RUTA_DATOS = '../dataset/split'
