@@ -7,9 +7,6 @@ from torch.utils.data import DataLoader
 
 from definitions import BATCH_SIZE, RUTA_DATOS
 
-RUTA_DATOS = DATA_PATH
-
-
 transformaciones_train = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),

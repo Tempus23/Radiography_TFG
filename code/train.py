@@ -1,5 +1,6 @@
 # Función para entrenar el modelo
 import wandb
+import torch
 
 def train_model(model, train_loader, val_loader, trainer, optimizer, device, num_epochs=25):
     """

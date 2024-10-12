@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torchmetrics as tm
 from torchmetrics.classification import MulticlassConfusionMatrix
+import matplotlib.pyplot as plt
 
 class Classification(pl.LightningModule):
     def __init__(self, model, device):
