@@ -122,3 +122,16 @@ class SwinTransformerClassification(nn.Module):
         x = self.swin_t(x)
         return x
 
+def getModels():
+    return {
+        "MobileNetV2Regression": MobileNetV2Regression,
+        "MobileNetV2Classification": MobileNetV2Classification,
+        "ResNet18Classification": ResNet18Classification,
+        "ResNet18Regression": ResNet18Regression,
+        "ResNet50Classification": ResNet50Classification,
+        "ResNet50Regression": ResNet50Regression,
+        "EfficientNetB0Classification": EfficientNetB0Classification,
+        "DenseNet121Classification": DenseNet121Classification,
+        "VisionTransformerClassification": VisionTransformerClassification,
+        "SwinTransformerClassification": SwinTransformerClassification
+    }
