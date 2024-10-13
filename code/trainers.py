@@ -45,14 +45,10 @@ class Classification(pl.LightningModule):
         return {"loss": loss, "accuracy": accuracy, "precision" : precision, "recall": recall, "f1_score" : f1_score}
 
 
-    def restart_epoch(self):
-        self.confusion_matrix.plot()
-        plt.show()
-        self.confusion_matrix.reset()
-        self.accuracy.reset()
-        self.recall.reset()
-        self.precision.reset()
-        self.f1_score.reset()
+    def restart_epoch(self, plot = False):
+        if plot:
+            self.confusion_matrix.plot()
+            plt.show()
         self.confusion_matrix.reset()
     def calculate_metrics_from_confusion_matrix(self):
       confusion_matrix = self.confusion_matrix.compute()
@@ -131,9 +127,10 @@ class Regression(pl.LightningModule):
         precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
 
         return {"loss": linear_loss, "accuracy": accuracy, "precision" : precision, "recall": recall, "f1_score" : f1_score}
-    def restart_epoch(self):
-        self.confusion_matrix.plot()
-        plt.show()
+    def restart_epoch(self, plot = False):
+        if plot:
+            self.confusion_matrix.plot()
+            plt.show()
         self.confusion_matrix.reset()
 
     def calculate_metrics_from_confusion_matrix(self):
