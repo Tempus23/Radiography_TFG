@@ -2,7 +2,7 @@
 import wandb
 import torch
 
-def train_model(model, train_loader, val_loader, trainer, optimizer, device, num_epochs=25):
+def train_model(model, train_loader, val_loader, trainer, optimizer, device, num_epochs=25, classification=True):
     """
     Train the given model
     """
@@ -39,7 +39,10 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
                 # Iterar sobre los batches
                 inputs, labels = batch
                 inputs = inputs.to(device)
-                labels = labels.to(device).float()
+                if classification:
+                    labels = labels.to(device)
+                else:
+                    labels = labels.to(device).float()
 
                 optimizer.zero_grad()
 
