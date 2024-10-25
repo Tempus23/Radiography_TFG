@@ -2,3 +2,4 @@
 /code/__pycache__/*
 /code/__pycache__
 /code/wandb
+/code/train/notebook.ipynb

@@ -67,7 +67,10 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
                                 "val_f1_score": f1_score_value, "epoch": epoch})
 
             # Calcular métricas promedio por época
-            trainer.restart_epoch()
+            if phase == 'val':
+                trainer.restart_epoch(plot = True)
+            else:
+                trainer.restart_epoch(plot = False)
 
             # Ajustar el scheduler después de la fase de validación
             print(f" Epoch: {epoch}, Phase: {phase},  Loss: {avg_loss:.2f}, Accuracy: {accuracy_value:.2f}, Recall: {recall_value:.2f}, Precision: {precision_value:.2f}, F1 Score: {f1_score_value:.2f}")

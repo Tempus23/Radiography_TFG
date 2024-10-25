@@ -5,6 +5,68 @@ import torchmetrics as tm
 from torchmetrics.classification import MulticlassConfusionMatrix
 import matplotlib.pyplot as plt
 
+
+class BinaryClassification(pl.LightningModule):
+    def __init__(self, model, device):
+        super().__init__()
+        self.save_hyperparameters(ignore=("model",))
+
+        self.model = model
+
+        self.loss_fn = nn.BCEWithLogitsLoss()
+
+        self.confusion_matrix = MulticlassConfusionMatrix(num_classes=self.model.classes).to(device)
+
+        self.confusion_matrix = tm.ConfusionMatrix(num_classes=model.classes, task="binary").to(device)
+
+    def forward(self, x):
+        return self.model(x)
+
+    def training_step(self, x, y):
+        y_hat = self.model(x)
+        loss = self.loss_fn(y_hat, y)
+        # Obtener la clase predicha
+        y_pred = torch.round(torch.sigmoid(y_hat))
+        # Calcular métricas
+        loss.backward()
+        self.confusion_matrix.update(y_pred, y)
+
+        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+
+        return {"loss": loss, "accuracy": accuracy, "recall": recall, "precision": precision, "f1_score": f1_score}
+
+    def validation_step(self, x, y):
+        y_hat = self.model(x)
+        loss = self.loss_fn(y_hat, y)
+        # Obtener la clase predicha
+        y_pred = torch.round(torch.sigmoid(y_hat))
+        # Calcular métricas
+        self.confusion_matrix.update(y_pred, y)
+
+        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+
+        return {"loss": loss, "accuracy": accuracy, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+
+    def restart_epoch(self, plot = False):
+        if plot:
+            self.confusion_matrix.plot()
+            plt.show()
+        self.confusion_matrix.reset()
+
+    def calculate_metrics_from_confusion_matrix(self):
+      confusion_matrix = self.confusion_matrix.compute()
+      # Verdaderos positivos por clase (diagonal de la matriz)
+      true_positives = torch.diag(confusion_matrix)
+
+      # Predicciones totales por clase (sumar columnas)
+      predicted_positives = confusion_matrix.sum(dim=0)
+
+      # Ejemplos reales por clase (sumar filas)
+      actual_positives = confusion_matrix.sum(dim=1)
+
+      # Calcular Precision, Recall, F1 por clase
+      precision = (true_positives / (predicted_positives + 1e-8)).mean()  # Añadir pequeña constante para evitar divis
+
 class Classification(pl.LightningModule):
     def __init__(self, model, device):
         super().__init__()
