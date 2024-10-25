@@ -47,7 +47,7 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
 
                 # Extraer valores escalares
                 loss_value = loss.item()
-                accuracy_value = res['accuracy'].item()
+                ACC_value = res['ACC'].item()
                 recall_value = res['recall'].item()
                 precision_value = res['precision'].item()
                 f1_score_value = res['f1_score'].item()
@@ -58,11 +58,11 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
 
     
                 if phase == 'train':
-                    wandb.log({"train_loss": avg_loss, "train_acc": accuracy_value,
+                    wandb.log({"train_loss": avg_loss, "train_acc": ACC_value,
                                 "train_recall": recall_value, "train_precision": precision_value,
                                 "train_f1_score": f1_score_value, "epoch": epoch, "progress" : iteration / len(loader)})
                 else:
-                    wandb.log({"val_loss": avg_loss, "val_acc": accuracy_value,
+                    wandb.log({"val_loss": avg_loss, "val_acc": ACC_value,
                                 "val_recall": recall_value, "val_precision": precision_value,
                                 "val_f1_score": f1_score_value, "epoch": epoch})
 
@@ -73,7 +73,7 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
                 trainer.restart_epoch(plot = False)
 
             # Ajustar el scheduler después de la fase de validación
-            print(f" Epoch: {epoch}, Phase: {phase},  Loss: {avg_loss:.2f}, Accuracy: {accuracy_value:.2f}, Recall: {recall_value:.2f}, Precision: {precision_value:.2f}, F1 Score: {f1_score_value:.2f}")
+            print(f" Epoch: {epoch}, Phase: {phase},  Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, Recall: {recall_value:.2f}, Precision: {precision_value:.2f}, F1 Score: {f1_score_value:.2f}")
             if phase == 'val':
                
                 scheduler.step(avg_loss)
@@ -102,12 +102,12 @@ def test_model(model, test_loader, trainer, device, classification=True):
             epoch_loss += loss.item()
 
     avg_loss = epoch_loss / len(test_loader)
-    precision_value, recall_value, f1_score_value, accuracy_value = trainer.calculate_metrics_from_confusion_matrix()
+    precision_value, recall_value, f1_score_value, ACC_value = trainer.calculate_metrics_from_confusion_matrix()
 
-    wandb.log({"test_loss": avg_loss, "test_acc": accuracy_value.item(),
+    wandb.log({"test_loss": avg_loss, "test_acc": ACC_value.item(),
                 "test_recall": recall_value.item(), "test_precision": precision_value.item(),
                 "test_f1_score": f1_score_value.item()})
     
-    print(f"Test model {model.__class__.__name__} - Loss: {avg_loss:.2f}, Accuracy: {accuracy_value.item():.2f}, Recall: {recall_value.item():.2f}, Precision: {precision_value.item():.2f}, F1 Score: {f1_score_value.item():.2f}")
+    print(f"Test model {model.__class__.__name__} - Loss: {avg_loss:.2f}, ACC: {ACC_value.item():.2f}, Recall: {recall_value.item():.2f}, Precision: {precision_value.item():.2f}, F1 Score: {f1_score_value.item():.2f}")
 
     trainer.restart_epoch(plot = True)

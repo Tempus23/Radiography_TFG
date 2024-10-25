@@ -31,9 +31,9 @@ class BinaryClassification(pl.LightningModule):
         loss.backward()
         self.confusion_matrix.update(y_pred, y)
 
-        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "accuracy": accuracy, "recall": recall, "precision": precision, "f1_score": f1_score}
+        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score}
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
@@ -43,9 +43,9 @@ class BinaryClassification(pl.LightningModule):
         # Calcular métricas
         self.confusion_matrix.update(y_pred, y)
 
-        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "accuracy": accuracy, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
 
     def restart_epoch(self, plot = False):
         if plot:
@@ -90,9 +90,9 @@ class Classification(pl.LightningModule):
         loss.backward()
         self.confusion_matrix.update(y_pred, y)
 
-        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "accuracy": accuracy, "recall": recall, "precision": precision, "f1_score": f1_score}
+        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score}
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
@@ -102,9 +102,9 @@ class Classification(pl.LightningModule):
         # Calcular métricas
         self.confusion_matrix.update(y_pred, y)
 
-        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "accuracy": accuracy, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
 
 
     def restart_epoch(self, plot = False):
@@ -128,10 +128,10 @@ class Classification(pl.LightningModule):
       recall = (true_positives / (actual_positives + 1e-8)).mean()
       f1 = 2 * (precision * recall) / (precision + recall + 1e-8)
 
-      # Calcular Accuracy
-      accuracy = true_positives.sum() / confusion_matrix.sum()
+      # Calcular ACC
+      ACC = true_positives.sum() / confusion_matrix.sum()
       # Retornar las métricas
-      return precision, recall, f1, accuracy
+      return precision, recall, f1, ACC
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.model.parameters(),
@@ -171,9 +171,9 @@ class Regression(pl.LightningModule):
         # Calcular el número de aciertos
         self.confusion_matrix.update(y_pred.squeeze(), y)
 
-        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": linear_loss, "accuracy": accuracy, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": linear_loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
@@ -186,9 +186,9 @@ class Regression(pl.LightningModule):
         y_pred = self.prediction(y_hat)
         self.confusion_matrix.update(y_pred.squeeze(), y)
 
-        precision, recall, f1_score, accuracy = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": linear_loss, "accuracy": accuracy, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": linear_loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
     def restart_epoch(self, plot = False):
         if plot:
             self.confusion_matrix.plot()
@@ -211,10 +211,10 @@ class Regression(pl.LightningModule):
       recall = (true_positives / (actual_positives + 1e-8)).mean()
       f1 = 2 * (precision * recall) / (precision + recall + 1e-8)
 
-      # Calcular Accuracy
-      accuracy = true_positives.sum() / confusion_matrix.sum()
+      # Calcular ACC
+      ACC = true_positives.sum() / confusion_matrix.sum()
       # Retornar las métricas
-      return precision, recall, f1, accuracy
+      return precision, recall, f1, ACC
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.model.parameters(),
