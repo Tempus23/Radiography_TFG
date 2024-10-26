@@ -190,9 +190,9 @@ class Regression(pl.LightningModule):
 
     def training_step(self, x, y):
         y_hat = self.model(x)
-        loss = self.loss(y_hat.squeeze(), y)
+        loss = self.loss(y_hat, y)
         loss.backward()
-        linear_loss = self.linearLoss(y_hat.squeeze(), y)
+        linear_loss = self.linearLoss(y_hat, y)
 
         y_pred = self.prediction(y_hat)
         # Calcular el número de aciertos
@@ -205,7 +205,7 @@ class Regression(pl.LightningModule):
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
-        loss = self.loss(y_hat.squeeze(), y)
+        loss = self.loss(y_hat, y)
         linear_loss = self.linearLoss(y_hat, y)
         #Redondear y_hat para obtener la clase predicha
          # Calcular el número de aciertos
