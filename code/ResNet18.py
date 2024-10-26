@@ -65,6 +65,10 @@ class ResNet(nn.Module):
             # together.
             layers = [2, 2, 2, 2]
             self.expansion = 1
+        else:
+            # Por configurar
+            layers = [2, 2, 2, 2]
+            self.expansion = 1
         
         self.in_channels = 64
         self.classes = num_classes

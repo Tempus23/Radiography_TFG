@@ -170,15 +170,15 @@ class Classification(pl.LightningModule):
         return optimizer, scheduler
 
 class Regression(pl.LightningModule):
-    def __init__(self, model, device):
+    def __init__(self, model, device, num_classes):
         super().__init__()
         self.save_hyperparameters(ignore=("model",))
 
         self.model = model
         self.loss = nn.MSELoss()
         self.linearLoss = nn.L1Loss()
-        self.confusion_matrix = MulticlassConfusionMatrix(num_classes=self.model.classes).to(device)
-        self.auc_metric = tm.AUROC(num_classes=self.model.classes, task="multiclass").to(device)
+        self.confusion_matrix = MulticlassConfusionMatrix(num_classes=num_classes).to(device)
+        self.auc_metric = tm.AUROC(task="binary").to(device)  # Definir métrica AUROC para clasificación binaria
 
     def forward(self, x):
         return self.model(x)
@@ -196,7 +196,8 @@ class Regression(pl.LightningModule):
 
         y_pred = self.prediction(y_hat)
         # Calcular el número de aciertos
-        self.confusion_matrix.update(y_pred.squeeze(), y)
+        self.confusion_matrix.update(y_pred, y)
+        self.auc_metric.update(y_hat, y.int())
 
         precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
@@ -205,13 +206,12 @@ class Regression(pl.LightningModule):
     def validation_step(self, x, y):
         y_hat = self.model(x)
         loss = self.loss(y_hat.squeeze(), y)
-        linear_loss = self.linearLoss(y_hat.squeeze(), y)
+        linear_loss = self.linearLoss(y_hat, y)
         #Redondear y_hat para obtener la clase predicha
-        y_hat_rounded = self.prediction(y_hat)
-
          # Calcular el número de aciertos
         y_pred = self.prediction(y_hat)
-        self.confusion_matrix.update(y_pred.squeeze(), y)
+        self.confusion_matrix.update(y_pred, y)
+        self.auc_metric.update(y_hat, y.int())
 
         precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
