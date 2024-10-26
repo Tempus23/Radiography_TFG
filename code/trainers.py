@@ -15,8 +15,6 @@ class BinaryClassification(pl.LightningModule):
 
         self.loss_fn = nn.BCEWithLogitsLoss()
 
-        self.confusion_matrix = MulticlassConfusionMatrix(num_classes=self.model.classes).to(device)
-
         self.confusion_matrix = tm.ConfusionMatrix(num_classes=model.classes, task="binary").to(device)
 
     def forward(self, x):
@@ -24,28 +22,28 @@ class BinaryClassification(pl.LightningModule):
 
     def training_step(self, x, y):
         y_hat = self.model(x)
-        loss = self.loss_fn(y_hat, y)
+        loss = self.loss_fn(y_hat, y.float())
         # Obtener la clase predicha
-        y_pred = torch.round(torch.sigmoid(y_hat))
+        y_pred = torch.sigmoid(y_hat) >= 0.5
         # Calcular métricas
         loss.backward()
-        self.confusion_matrix.update(y_pred, y)
+        self.confusion_matrix.update(y_pred.int(), y.int())
 
-        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC, auc = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score}
+        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": auc}
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
         loss = self.loss_fn(y_hat, y)
         # Obtener la clase predicha
-        y_pred = torch.round(torch.sigmoid(y_hat))
+        y_pred = torch.sigmoid(y_hat) >= 0.5
         # Calcular métricas
-        self.confusion_matrix.update(y_pred, y)
+        self.confusion_matrix.update(y_pred.int(), y.int())
 
-        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC, auc = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": auc}
 
     def restart_epoch(self, plot = False):
         if plot:
@@ -54,18 +52,39 @@ class BinaryClassification(pl.LightningModule):
         self.confusion_matrix.reset()
 
     def calculate_metrics_from_confusion_matrix(self):
-      confusion_matrix = self.confusion_matrix.compute()
-      # Verdaderos positivos por clase (diagonal de la matriz)
-      true_positives = torch.diag(confusion_matrix)
+        confusion_matrix = self.confusion_matrix.compute()
+        # Verdaderos positivos por clase (diagonal de la matriz)
+        true_positives = torch.diag(confusion_matrix)
 
-      # Predicciones totales por clase (sumar columnas)
-      predicted_positives = confusion_matrix.sum(dim=0)
+        # Predicciones totales por clase (sumar columnas)
+        predicted_positives = confusion_matrix.sum(dim=0)
 
-      # Ejemplos reales por clase (sumar filas)
-      actual_positives = confusion_matrix.sum(dim=1)
+        # Ejemplos reales por clase (sumar filas)
+        actual_positives = confusion_matrix.sum(dim=1)
 
-      # Calcular Precision, Recall, F1 por clase
-      precision = (true_positives / (predicted_positives + 1e-8)).mean()  # Añadir pequeña constante para evitar divis
+         # Calcular Precision, Recall, F1 por clase
+        precision = (true_positives / (predicted_positives + 1e-8)).mean()  # Añadir pequeña constante para evitar división por 0
+        recall = (true_positives / (actual_positives + 1e-8)).mean()
+        f1 = 2 * (precision * recall) / (precision + recall + 1e-8)
+
+        # Calcular ACC
+        ACC = true_positives.sum() / confusion_matrix.sum()
+
+        # Calcular AUC usando una métrica predefinida de torchmetrics (si la hemos configurado anteriormente)
+        #auc_metric = tm.AUROC(num_classes=self.model.classes, task = "binary")  # Ajusta num_classes según el contexto de tu problema
+        #auc = auc_metric.compute()
+        # Retornar las métricas
+        return precision, recall, f1, ACC, 0.1
+    
+    def configure_optimizers(self):
+        return torch.optim.Adam(self.model.parameters(),
+                                lr=0.001,
+                                betas=(0.9, 0.999))
+
+    def configure_scheduler(self, optimizer):
+        return torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
+                                                          factor=0.1,
+                                                          patience=5)
 
 class Classification(pl.LightningModule):
     def __init__(self, model, device):

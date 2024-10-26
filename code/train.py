@@ -47,24 +47,27 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
 
                 # Extraer valores escalares
                 loss_value = loss.item()
-                ACC_value = res['ACC'].item()
+                ACC_value = res['ACC']
                 recall_value = res['recall'].item()
                 precision_value = res['precision'].item()
                 f1_score_value = res['f1_score'].item()
+                AUC_value = res['AUC']
 
                 # Calcular promedios
                 epoch_loss += loss_value
                 avg_loss = epoch_loss / (iteration + 1)
 
-    
                 if phase == 'train':
+                    print(f" Epoch: {epoch}, Phase: {phase}, Iteration: {iteration}, Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, Recall: {recall_value:.2f}, Precision: {precision_value:.2f}, F1 Score: {f1_score_value:.2f}, AUC: {AUC_value:.2f}")
                     wandb.log({"train_loss": avg_loss, "train_acc": ACC_value,
                                 "train_recall": recall_value, "train_precision": precision_value,
-                                "train_f1_score": f1_score_value, "epoch": epoch, "progress" : iteration / len(loader)})
+                                "train_f1_score": f1_score_value, "epoch": epoch, "progress" : iteration / len(loader), "AUC" : AUC_value})
                 else:
                     wandb.log({"val_loss": avg_loss, "val_acc": ACC_value,
                                 "val_recall": recall_value, "val_precision": precision_value,
-                                "val_f1_score": f1_score_value, "epoch": epoch})
+                                "val_f1_score": f1_score_value, "epoch": epoch,  "AUC" : AUC_value})
+               
+                    
 
             # Calcular métricas promedio por época
             if phase == 'val':
