@@ -55,6 +55,7 @@ class BinaryClassification(pl.LightningModule):
             self.confusion_matrix.plot()
             plt.show()
         self.confusion_matrix.reset()
+        self.auc_metric.reset()
 
     def calculate_metrics_from_confusion_matrix(self):
         confusion_matrix = self.confusion_matrix.compute()
@@ -134,6 +135,7 @@ class Classification(pl.LightningModule):
             self.confusion_matrix.plot()
             plt.show()
         self.confusion_matrix.reset()
+        self.auc_metric.reset()
     def calculate_metrics_from_confusion_matrix(self):
       confusion_matrix = self.confusion_matrix.compute()
       # Verdaderos positivos por clase (diagonal de la matriz)
@@ -219,6 +221,7 @@ class Regression(pl.LightningModule):
             self.confusion_matrix.plot()
             plt.show()
         self.confusion_matrix.reset()
+        self.auc_metric.reset()
 
     def calculate_metrics_from_confusion_matrix(self):
       confusion_matrix = self.confusion_matrix.compute()
