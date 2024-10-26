@@ -16,6 +16,7 @@ class BinaryClassification(pl.LightningModule):
         self.loss_fn = nn.BCEWithLogitsLoss()
 
         self.confusion_matrix = tm.ConfusionMatrix(num_classes=model.classes, task="binary").to(device)
+        self.auc_metric = tm.AUROC(task="binary").to(device)  # Definir métrica AUROC para clasificación binaria
 
     def forward(self, x):
         return self.model(x)
@@ -28,6 +29,8 @@ class BinaryClassification(pl.LightningModule):
         # Calcular métricas
         loss.backward()
         self.confusion_matrix.update(y_pred.int(), y.int())
+        self.auc_metric.update(torch.sigmoid(y_hat), y.int())
+
 
         precision, recall, f1_score, ACC, auc = self.calculate_metrics_from_confusion_matrix()
 
@@ -35,11 +38,13 @@ class BinaryClassification(pl.LightningModule):
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
-        loss = self.loss_fn(y_hat, y)
+        loss = self.loss_fn(y_hat, y.float())
         # Obtener la clase predicha
         y_pred = torch.sigmoid(y_hat) >= 0.5
         # Calcular métricas
         self.confusion_matrix.update(y_pred.int(), y.int())
+        self.auc_metric.update(torch.sigmoid(y_hat), y.int())
+
 
         precision, recall, f1_score, ACC, auc = self.calculate_metrics_from_confusion_matrix()
 
@@ -70,11 +75,9 @@ class BinaryClassification(pl.LightningModule):
         # Calcular ACC
         ACC = true_positives.sum() / confusion_matrix.sum()
 
-        # Calcular AUC usando una métrica predefinida de torchmetrics (si la hemos configurado anteriormente)
-        #auc_metric = tm.AUROC(num_classes=self.model.classes, task = "binary")  # Ajusta num_classes según el contexto de tu problema
-        #auc = auc_metric.compute()
-        # Retornar las métricas
-        return precision, recall, f1, ACC, 0.1
+        # Calcular el AUC
+        AUC = self.auc_metric.compute()
+        return precision, recall, f1, ACC, AUC
     
     def configure_optimizers(self):
         return torch.optim.Adam(self.model.parameters(),
