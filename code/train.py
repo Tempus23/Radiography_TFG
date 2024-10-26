@@ -69,15 +69,12 @@ def train_model(model, train_loader, val_loader, trainer, optimizer, device, num
                     
 
             # Calcular métricas promedio por época
-            if phase == 'val':
-                trainer.restart_epoch(plot = True)
-            else:
-                trainer.restart_epoch(plot = False)
+            trainer.restart_epoch(plot = False)
 
             # Ajustar el scheduler después de la fase de validación
-            print(f" Epoch: {epoch}, Phase: {phase}, Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, AUC: {AUC_value:.2f}")
+            print(f" Epoch: {epoch}, Phase: {phase}, Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, AUC: {AUC_value:.2f}", end = "")
             if phase == 'val':
-               
+                print()
                 scheduler.step(avg_loss)
 
 def test_model(model, test_loader, trainer, device, classification=True):
