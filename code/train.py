@@ -2,12 +2,12 @@
 import wandb
 import torch
 
-def train_model(model, train_loader, val_loader, trainer, device, num_epochs=25, classification=True):
+def train_model(model, train_loader, val_loader, trainer, device, num_epochs=25, classification=True, learning_rate=0.001, betas=(0.9, 0.999), factor=0.1, patience=5):
     """
     Train the given model
     """
     model.to(device)
-    optimizer, scheduler = trainer.configure_optimizers()
+    optimizer, scheduler = trainer.configure_optimizers(learning_rate=learning_rate, betas=betas, factor=factor, patience=patience)
 
     for epoch in range(num_epochs):
 
@@ -71,7 +71,7 @@ def train_model(model, train_loader, val_loader, trainer, device, num_epochs=25,
             trainer.restart_epoch(plot = False)
 
             # Ajustar el scheduler después de la fase de validación
-            print(f" Epoch: {epoch}, Phase: {phase}, Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, AUC: {AUC_value:.2f}", end = "")
+            print(f" Epoch: {epoch}, Phase: {phase}, Loss: {avg_loss:.4f}, ACC: {ACC_value:.4f}, AUC: {AUC_value:.4f}", end = "")
             if phase == 'val':
                 print()
                 scheduler.step(avg_loss)

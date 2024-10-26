@@ -79,13 +79,13 @@ class BinaryClassification(pl.LightningModule):
         AUC = self.auc_metric.compute()
         return precision, recall, f1, ACC, AUC
     
-    def configure_optimizers(self):
+    def configure_optimizers(self, learning_rate=0.001, betas=(0.9, 0.999), factor=0.1, patience=5):
         optimizer = torch.optim.Adam(self.model.parameters(),
-                                     lr=0.001,
-                                     betas=(0.9, 0.999))
+                                     lr=learning_rate,
+                                     betas=betas)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
-                                                               factor=0.1,
-                                                               patience=5)
+                                                               factor=factor,
+                                                               patience=patience)
         return optimizer, scheduler
 
 class Classification(pl.LightningModule):
@@ -98,6 +98,7 @@ class Classification(pl.LightningModule):
         self.loss_fn = nn.CrossEntropyLoss()
 
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=self.model.classes).to(device)
+        self.auc_metric = tm.AUROC(num_classes=self.model.classes, task="multiclass").to(device)  # Definir métrica AUROC para clasificación multiclase
 
     def forward(self, x):
         return self.model(x)
@@ -111,9 +112,9 @@ class Classification(pl.LightningModule):
         loss.backward()
         self.confusion_matrix.update(y_pred, y)
 
-        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score}
+        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC}
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
@@ -123,9 +124,9 @@ class Classification(pl.LightningModule):
         # Calcular métricas
         self.confusion_matrix.update(y_pred, y)
 
-        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC}
 
 
     def restart_epoch(self, plot = False):
@@ -151,18 +152,20 @@ class Classification(pl.LightningModule):
 
       # Calcular ACC
       ACC = true_positives.sum() / confusion_matrix.sum()
+
+      # Calcular el AUC
+      AUC = self.auc_metric.compute()
       # Retornar las métricas
-      return precision, recall, f1, ACC
+      return precision, recall, f1, ACC, AUC
 
-    def configure_optimizers(self):
-        return torch.optim.Adam(self.model.parameters(),
-                                lr=0.001,
-                                betas=(0.9, 0.999))
-
-    def configure_scheduler(self, optimizer):
-        return torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
-                                                          factor=0.1,
-                                                          patience=5)
+    def configure_optimizers(self, learning_rate=0.001, betas=(0.9, 0.999), factor=0.1, patience=5):
+        optimizer = torch.optim.Adam(self.model.parameters(),
+                                     lr=learning_rate,
+                                     betas=betas)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
+                                                               factor=factor,
+                                                               patience=patience)
+        return optimizer, scheduler
 
 class Regression(pl.LightningModule):
     def __init__(self, model, device):
@@ -173,6 +176,7 @@ class Regression(pl.LightningModule):
         self.loss = nn.MSELoss()
         self.linearLoss = nn.L1Loss()
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=self.model.classes).to(device)
+        self.auc_metric = tm.AUROC(num_classes=self.model.classes, task="multiclass").to(device)
 
     def forward(self, x):
         return self.model(x)
@@ -192,9 +196,9 @@ class Regression(pl.LightningModule):
         # Calcular el número de aciertos
         self.confusion_matrix.update(y_pred.squeeze(), y)
 
-        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": linear_loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": linear_loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC}
 
     def validation_step(self, x, y):
         y_hat = self.model(x)
@@ -207,9 +211,9 @@ class Regression(pl.LightningModule):
         y_pred = self.prediction(y_hat)
         self.confusion_matrix.update(y_pred.squeeze(), y)
 
-        precision, recall, f1_score, ACC = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": linear_loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score}
+        return {"loss": linear_loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC}
     def restart_epoch(self, plot = False):
         if plot:
             self.confusion_matrix.plot()
@@ -234,17 +238,19 @@ class Regression(pl.LightningModule):
 
       # Calcular ACC
       ACC = true_positives.sum() / confusion_matrix.sum()
+
+      # Calcular el AUC
+      AUC = self.auc_metric.compute()
       # Retornar las métricas
-      return precision, recall, f1, ACC
+      return precision, recall, f1, ACC, AUC
 
-    def configure_optimizers(self):
-        return torch.optim.Adam(self.model.parameters(),
-                                lr=0.001,
-                                betas=(0.9, 0.999))
-
-    def configure_scheduler(self, optimizer):
-        return torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
-                                                           factor=0.1,
-                                                           patience=5)
+    def configure_optimizers(self, learning_rate=0.001, betas=(0.9, 0.999), factor=0.1, patience=5):
+        optimizer = torch.optim.Adam(self.model.parameters(),
+                                     lr=learning_rate,
+                                     betas=betas)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
+                                                               factor=factor,
+                                                               patience=patience)
+        return optimizer, scheduler
 
 
