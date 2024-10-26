@@ -2,13 +2,12 @@
 import wandb
 import torch
 
-def train_model(model, train_loader, val_loader, trainer, optimizer, device, num_epochs=25, classification=True):
+def train_model(model, train_loader, val_loader, trainer, device, num_epochs=25, classification=True):
     """
     Train the given model
     """
     model.to(device)
-    optimizer = trainer.configure_optimizers()
-    scheduler = trainer.configure_scheduler(optimizer)
+    optimizer, scheduler = trainer.configure_optimizers()
 
     for epoch in range(num_epochs):
 

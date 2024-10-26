@@ -80,14 +80,13 @@ class BinaryClassification(pl.LightningModule):
         return precision, recall, f1, ACC, AUC
     
     def configure_optimizers(self):
-        return torch.optim.Adam(self.model.parameters(),
-                                lr=0.001,
-                                betas=(0.9, 0.999))
-
-    def configure_scheduler(self, optimizer):
-        return torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
-                                                          factor=0.1,
-                                                          patience=5)
+        optimizer = torch.optim.Adam(self.model.parameters(),
+                                     lr=0.001,
+                                     betas=(0.9, 0.999))
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
+                                                               factor=0.1,
+                                                               patience=5)
+        return optimizer, scheduler
 
 class Classification(pl.LightningModule):
     def __init__(self, model, device):
