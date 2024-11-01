@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 
 
 class BinaryClassification(pl.LightningModule):
+    #############################################
+    # Clase para entrenar un modelo de clasificación binaria
+    # Salida de 1dim con valores [0,1]
+    #############################################
     def __init__(self, model, device):
         super().__init__()
         self.save_hyperparameters(ignore=("model",))
@@ -105,31 +109,39 @@ class Classification(pl.LightningModule):
         return self.model(x)
 
     def training_step(self, x, y):
+        y = y.squeeze()
         y_hat = self.model(x)
-        loss = self.loss_fn(y_hat, y)
+        y_oh = self.transform_classes(y)
+        loss = self.loss_fn(y_hat, y_oh)
         # Obtener la clase predicha
         y_pred = torch.argmax(y_hat, dim=1)
         # Calcular métricas
         loss.backward()
         self.confusion_matrix.update(y_pred, y)
+        self.auc_metric.update(y_hat, y)
 
         precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
         return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC}
 
     def validation_step(self, x, y):
+        y = y.squeeze()
         y_hat = self.model(x)
-        loss = self.loss_fn(y_hat, y)
+        y_oh = self.transform_classes(y)
+        loss = self.loss_fn(y_hat, y_oh)
         # Obtener la clase predicha
         y_pred = torch.argmax(y_hat, dim=1)
         # Calcular métricas
         self.confusion_matrix.update(y_pred, y)
+        self.auc_metric.update(y_hat, y)
 
         precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
 
         return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC}
 
-
+    def transform_classes(self, y):
+        # Convertir las clases a un formato de one-hot encoding
+        return torch.nn.functional.one_hot(y.to(torch.int64), num_classes=self.model.classes).to(float).squeeze()
     def restart_epoch(self, plot = False):
         if plot:
             self.confusion_matrix.plot()
@@ -170,6 +182,10 @@ class Classification(pl.LightningModule):
         return optimizer, scheduler
 
 class Regression(pl.LightningModule):
+    #############################################
+    # Clase para entrenar un modelo de regresion ordinal
+    # Salida de 1dim con valores [0 - num_classes] con orden
+    #############################################
     def __init__(self, model, device, num_classes):
         super().__init__()
         self.save_hyperparameters(ignore=("model",))
