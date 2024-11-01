@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 
 
 class BinaryClassification(pl.LightningModule):
-    #############################################
-    # Clase para entrenar un modelo de clasificación binaria
-    # Salida de 1dim con valores [0,1]
-    #############################################
+    """
+    Trainer para entrenar un modelo de clasificación binaria
+    y de dimension 1 con valores [0, 1]
+    """
     def __init__(self, model, device):
         super().__init__()
         self.save_hyperparameters(ignore=("model",))
@@ -94,6 +94,10 @@ class BinaryClassification(pl.LightningModule):
         return optimizer, scheduler
 
 class Classification(pl.LightningModule):
+    """
+    Trainer para entrenar un modelo de clasificación multiclase
+    y de dimension 1 con valores [0, num_classes]
+    """
     def __init__(self, model, device):
         super().__init__()
         self.save_hyperparameters(ignore=("model",))
@@ -182,6 +186,10 @@ class Classification(pl.LightningModule):
         return optimizer, scheduler
 
 class Regression(pl.LightningModule):
+    """
+    Trainer para entrenar un modelo de regresion ordinal
+    y de 1dim con valores [0 - num_classes] con orden
+    """
     #############################################
     # Clase para entrenar un modelo de regresion ordinal
     # Salida de 1dim con valores [0 - num_classes] con orden
