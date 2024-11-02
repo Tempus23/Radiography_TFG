@@ -85,7 +85,7 @@ def test_model(model, test_loader, trainer, device, classification=True):
 
     epoch_loss = 0.0
     avg_loss = 0.0
-
+    trainer.restart_epoch(plot = False)
     for batch in test_loader:
         inputs, labels = batch
         inputs = inputs.to(device)

@@ -6,7 +6,7 @@ class ResNet18(nn.Module):
         
         self.dropout_percentage = 0.5
         self.relu = nn.ReLU()
-        
+        self.classes = n_classes
         # BLOCK-1 (starting block) input=(224x224) output=(56x56)
         self.conv1 = nn.Conv2d(in_channels=in_channels, out_channels=64, kernel_size=(7,7), stride=(2,2), padding=(3,3))
         self.batchnorm1 = nn.BatchNorm2d(64)
