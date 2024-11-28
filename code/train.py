@@ -63,14 +63,14 @@ def train_model(model, train_loader, val_loader, trainer, device, num_epochs=25,
                                     "train_recall": recall_value, "train_precision": precision_value,
                                     "train_f1_score": f1_score_value, "epoch": epoch, "progress" : iteration / len(loader), "train_AUC" : AUC_value})
 
-            if phase == 'train':
-                    wandb.log({"train_loss": avg_loss, "train_acc": ACC_value,
-                                "train_recall": recall_value, "train_precision": precision_value,
-                                "train_f1_score": f1_score_value, "epoch": epoch, "progress" : iteration / len(loader), "train_AUC" : AUC_value})
-            else:
-                wandb.log({"val_loss": avg_loss, "val_acc": ACC_value,
-                            "val_recall": recall_value, "val_precision": precision_value,
-                            "val_f1_score": f1_score_value, "epoch": epoch,  "val_AUC" : AUC_value})
+                if phase == 'train':
+                        wandb.log({"train_loss": avg_loss, "train_acc": ACC_value,
+                                    "train_recall": recall_value, "train_precision": precision_value,
+                                    "train_f1_score": f1_score_value, "epoch": epoch, "progress" : iteration / len(loader), "train_AUC" : AUC_value})
+                else:
+                    wandb.log({"val_loss": avg_loss, "val_acc": ACC_value,
+                                "val_recall": recall_value, "val_precision": precision_value,
+                                "val_f1_score": f1_score_value, "epoch": epoch,  "val_AUC" : AUC_value})
                
                     
 
