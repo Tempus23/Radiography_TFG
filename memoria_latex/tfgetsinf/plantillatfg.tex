@@ -1,0 +1,154 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       CARGA DE LA CLASE DE DOCUMENTO                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,spanish,listoffigures,listoftables]{tfgetsinf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          CODIFICACIÓN DEL FICHERO                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[utf8]{inputenc} 
+\usepackage{babel}
+\usepackage{hyperref}
+\usepackage{biblatex}
+
+\addbibresource{bibliografia.bib}  % Enlazar el archivo .bib
+\hypersetup{ colorlinks=true, linkcolor=black, urlcolor=cyan }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             OTROS PAQUETES                                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% (Aquí puedes añadir los paquetes que necesites)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         DATOS DEL TRABAJO                                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Uso de IA en la detección de Artrosis para rodillas}
+\author{Hernández Martínez, Carlos}
+\tutor{Juan Ciscar, Alfonso}
+\curs{2024-2025}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%            PALABRAS CLAVE Y RESÚMENES (en tres idiomas)                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\keywords{Palabras clave en catalán} % catalán
+         {Palabras clave en español} % español
+         {Keywords in English}       % inglés
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             RESÚMENES                                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+Aquí citamos a Einstein \cite{einstein1905} y a Knuth \cite{knuth1986}.
+\end{abstract}
+
+\begin{abstract}[spanish]
+(Resumen en castellano)
+\end{abstract}
+
+\begin{abstract}[english]
+(Resumen en inglés)
+\end{abstract}
+
+\mainmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              CAPÍTULO 1                                     %
+%                                    INTRO                                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Introducción}  % ~5 páginas
+
+\section{Motivación}     % 1.1
+% Explica aquí la motivación de tu trabajo
+
+\section{Objetivos}      % 1.2
+% Presenta aquí los 3 objetivos principales
+% p.e. Objetivo 1, Objetivo 2, Objetivo 3
+
+\section{Estructura del documento}  % 1.3
+% Describe la organización de los capítulos y secciones
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              CAPÍTULO 2                                     %
+%                                PRELIMINARES                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Preliminares}  % ~15 páginas
+
+\section{Aprendizaje automático}     % 2.1
+% Explicación general del machine learning
+
+\section{Redes neuronales}           % 2.2
+% Descripción breve de redes neuronales
+
+\section{ML aplicado a CV y tareas biomédicas (MedMNIST)} % 2.3
+% FIXME: Detalla aquí cómo se aplica ML en Computer Vision 
+% y en particular a tareas médicas con la herramienta MedMNIST
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              CAPÍTULO 3                                     %
+%                      PRIMERA CONTRIBUCIÓN (OBJETIVO 1)                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Capítulo 1 de contribución}  % ~15 páginas
+% Expón aquí tu primer objetivo y resultados derivados
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              CAPÍTULO 4                                     %
+%                     SEGUNDA CONTRIBUCIÓN (OBJETIVO 2)                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Capítulo 2 de contribución}   % ~15 páginas
+% Expón aquí tu segundo objetivo y resultados derivados
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              CAPÍTULO 5                                     %
+%                     TERCERA CONTRIBUCIÓN (OBJETIVO 3)                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Capítulo 3 de contribución}   % ~15 páginas
+% Expón aquí tu tercer objetivo y resultados derivados
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              CAPÍTULO 6                                     %
+%                                CONCLUSIONES                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Conclusiones}  % ~5 páginas
+
+\section{Resumen del trabajo realizado} % 6.1
+% Repasa y sintetiza las secciones principales
+
+\section{Objetivos alcanzados}         % 6.2
+% Verifica si se cumplieron los objetivos planteados
+
+\section{Trabajo futuro}               % 6.3
+% Explica las posibles extensiones o mejoras
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              BIBLIOGRAFÍA                                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\printbibliography 
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           APÉNDICES (OPCIONALES)                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\APPENDIX
+
+\chapter{Configuración del sistema}
+% ...
+
+\chapter{Otro apéndice}
+% ...
+
+\end{document}

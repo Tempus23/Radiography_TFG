@@ -1,0 +1,30 @@
+\babel@toc {spanish}{}\relax 
+\babel@toc {catalan}{}\relax 
+\babel@toc {spanish}{}\relax 
+\babel@toc {spanish}{}\relax 
+\babel@toc {spanish}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\'{I}ndice general}{\es@scroman {v}}{section*.1}%
+\contentsline {chapter}{\'{I}ndice de figuras}{\es@scroman {vii}}{section*.2}%
+\contentsline {chapter}{\'Indice de tablas}{\es@scroman {vii}}{section*.3}%
+\noindent \hrulefill \par 
+\contentsline {chapter}{\numberline {1}Introducción}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motivación}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Objetivos}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Estructura del documento}{1}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Preliminares}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Aprendizaje automático}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Redes neuronales}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}ML aplicado a CV y tareas biomédicas (MedMNIST)}{3}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Capítulo 1 de contribución}{5}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Capítulo 2 de contribución}{7}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Capítulo 3 de contribución}{9}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Conclusiones}{11}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Resumen del trabajo realizado}{11}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Objetivos alcanzados}{11}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Trabajo futuro}{11}{section.6.3}%
+\noindent \hrulefill \par 
+\appendicesname \par 
+\contentsline {chapter}{\numberline {A}Configuración del sistema}{15}{appendix.Alph1}%
+\contentsline {chapter}{\numberline {B}Otro apéndice}{17}{appendix.Alph2}%
