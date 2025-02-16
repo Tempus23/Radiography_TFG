@@ -7,7 +7,7 @@ from PIL import Image
 from src.config import *  # Asegúrate de que MENDELEY_OAI_224_SPLIT_PATH está bien definido
 
 class OriginalOAIDataset(Dataset):
-    def __init__(self, mode='train', transform=None, local = False, path = MENDELEY_OAI_224_SPLIT_PATH):
+    def __init__(self, mode='train', batch_size=32, transform=None, local = False, path = MENDELEY_OAI_224_SPLIT_PATH):
         """
         Args:
             mode (str): 'train', 'val' o 'test'.
@@ -21,7 +21,7 @@ class OriginalOAIDataset(Dataset):
         self.data_path = os.path.join(path, mode)
         self.classes = sorted(os.listdir(self.data_path))  # Lista de clases
         self.data = []
-        
+        self.batch_size = batch_size
         # Cargar imágenes con sus etiquetas
         
 
@@ -47,7 +47,6 @@ class OriginalOAIDataset(Dataset):
         
         return image, label
     
-    def get_dataloader(self, batch_size=32, shuffle=True):
-        
-        return DataLoader(self, batch_size=batch_size, shuffle=shuffle)
+    def get_dataloader(self, shuffle=True):       
+        return DataLoader(self, batch_size=self.batch_size, shuffle=shuffle)
 

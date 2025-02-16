@@ -115,6 +115,49 @@ En este contexto, el presente trabajo busca contribuir al avance del uso de inte
 
 Replicar el trabajo de \cite{10863523} utilizando este datset \cite{chen2018knee}
 
+El primer objetivo de este trabajo es replicar el estudio realizado en \cite{10863523} utilizando el conjunto de datos proporcionado en \cite{chen2018knee}. Para ello, se emplea el modelo **EfficientNetB5** preentrenado, con modificaciones en la capa de clasificación para adaptarlo al problema específico. La nueva estructura de la capa de clasificación es la siguiente:
+
+\begin{verbatim}
+self.efficientnet.classifier = nn.Sequential(
+    nn.Linear(in_features, 256),
+    nn.ReLU(),
+    nn.Linear(256, 256),
+    nn.ReLU(),
+    nn.Linear(256, num_classes),
+    nn.Softmax(dim=1)
+)
+\end{verbatim}
+
+Para el entrenamiento del modelo, se emplea la función de pérdida **CrossEntropy**, complementada con regularización **L1** y **L2** con un coeficiente de penalización de 0.001. Además, se utilizan los siguientes hiperparámetros:
+
+\begin{itemize}
+    \item \textbf{Paciencia} (*patience*): 5
+    \item \textbf{Factor de reducción del *learning rate*} (*factor*): 0.1
+    \item \textbf{Tasa de aprendizaje inicial} (*lr*): 0.001
+    \item \textbf{Betas}: (0.9, 0.999)
+\end{itemize}
+
+El proceso de optimización se lleva a cabo con el optimizador **Adam**, mientras que el ajuste dinámico de la tasa de aprendizaje se realiza mediante **ReduceLROnPlateau**:
+
+\begin{verbatim}
+optimizer = torch.optim.Adam(self.model.parameters(),
+                             lr=self.learning_rate,
+                             betas=self.betas)
+
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
+                                                       factor=self.factor,
+                                                       patience=self.patience)
+\end{verbatim}
+
+Este diseño garantiza un entrenamiento eficiente y adaptado al conjunto de datos empleado, permitiendo evaluar la reproducibilidad de los resultados obtenidos en el estudio original.
+
+Este diseño garantiza un entrenamiento eficiente y adaptado al conjunto de datos empleado, permitiendo evaluar la reproducibilidad de los resultados obtenidos en el estudio original.
+
+
+
+Primero repetir el experimento sin hacer data augmentation,
+
+para el modelo 
 \chapter{Capítulo 2 de contribución}   % ~15 páginas
 % Expón aquí tu segundo objetivo y resultados derivados
 

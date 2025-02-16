@@ -11,13 +11,20 @@ class Classification(pl.LightningModule):
     Trainer para entrenar un modelo de clasificación multiclase
     y de dimension 1 con valores [0, num_classes]
     """
-    def __init__(self, model, device):
+    def __init__(self, model, device, L1=0.001, L2=0.001, lr=0.001, patience=5, factor=0.1, betas=(0.9, 0.999)):
         super().__init__()
         self.save_hyperparameters(ignore=("model",))
 
         self.model = model
 
         self.loss_fn = nn.CrossEntropyLoss()
+        self.L1 = L1
+        self.L2 = L2
+        self.learning_rate = lr
+        self.patience = patience
+        self.factor = factor
+        self.betas = betas
+
 
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=5).to(device)
         self.auc_metric = tm.AUROC(num_classes=5, task="multiclass").to(device)  # Definir métrica AUROC para clasificación multiclase
@@ -30,6 +37,19 @@ class Classification(pl.LightningModule):
         y_hat = self.model(x)
         y_oh = self.transform_classes(y)
         loss = self.loss_fn(y_hat, y_oh)
+        
+        # Regularización L1
+        L1_reg = torch.tensor(0., requires_grad=True)
+        for param in self.model.parameters():
+            L1_reg = L1_reg + torch.sum(torch.abs(param))
+        
+        # Regularización L2
+        L2_reg = torch.tensor(0., requires_grad=True)
+        for param in self.model.parameters():
+            L2_reg = L2_reg + torch.sum(param ** 2)
+        
+        # Añadir regularización a la pérdida
+        loss = loss + self.L1 * L1_reg + self.L2 * L2_reg
         # Obtener la clase predicha
         y_pred = torch.argmax(y_hat, dim=1)
         # Calcular métricas
@@ -89,11 +109,11 @@ class Classification(pl.LightningModule):
       # Retornar las métricas
       return precision, recall, f1, ACC, AUC
 
-    def configure_optimizers(self, learning_rate=0.001, betas=(0.9, 0.999), factor=0.1, patience=5):
+    def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.model.parameters(),
-                                     lr=learning_rate,
-                                     betas=betas)
+                                     lr=self.learning_rate,
+                                     betas=self.betas)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
-                                                               factor=factor,
-                                                               patience=patience)
+                                                               factor=self.factor,
+                                                               patience=self.patience)
         return optimizer, scheduler

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  16 FEB 2025 13:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  16 FEB 2025 19:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -901,11 +901,22 @@ Cap\'{\i }tulo 2.
 
 ]
 Cap\'{\i }tulo 3.
-[5] [6
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 120.
+(C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+Overfull \hbox (14.56158pt too wide) in paragraph at lines 150--150
+[]                                                       \T1/cmtt/m/n/10.95 patience=self.patience)[] 
+ []
 
-]
+[5]
+LaTeX Info: Redefining \. on input line 161.
+LaTeX Info: Redefining \% on input line 161.
+ [6]
 Cap\'{\i }tulo 4.
-[7] [8
+[7
+
+] [8
 
 ]
 Cap\'{\i }tulo 5.
@@ -916,11 +927,7 @@ Cap\'{\i }tulo 6.
 [11] [12
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 149.
- (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
-File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-)
-Overfull \hbox (1.28647pt too wide) in paragraph at lines 150--150
+Overfull \hbox (1.28647pt too wide) in paragraph at lines 193--193
 \T1/ppl/m/n/10.95 Deep Lear-ning: Diag-nos-tic Per-for-man-ce with Ex-ter-nal Da-ta-set and Com-pa-ri-son with
  []
 
@@ -962,17 +969,17 @@ Package logreq Info: Writing requests to 'memoria_tfg.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23043 strings out of 474486
- 403810 string characters out of 5743755
- 1935542 words of memory out of 5000000
- 44975 multiletter control sequences out of 15000+600000
+ 23048 strings out of 474486
+ 403933 string characters out of 5743755
+ 1936542 words of memory out of 5000000
+ 44980 multiletter control sequences out of 15000+600000
  595950 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,12n,93p,1729b,3998s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1728.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2488.pk><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on memoria_tfg.pdf (25 pages, 214433 bytes).
+Output written on memoria_tfg.pdf (25 pages, 224492 bytes).
 PDF statistics:
- 434 PDF objects out of 1000 (max. 8388607)
+ 458 PDF objects out of 1000 (max. 8388607)
  52 named destinations out of 1000 (max. 500000)
  176 words of extra memory for PDF output out of 10000 (max. 10000000)
 
