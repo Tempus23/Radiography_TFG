@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  16 FEB 2025 19:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  16 FEB 2025 19:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -754,17 +754,17 @@ LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 4
  (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
-<logo-upv.pdf, id=83, 331.2375pt x 105.39375pt>
+<logo-upv.pdf, id=99, 331.2375pt x 105.39375pt>
 File: logo-upv.pdf Graphic file (type pdf)
 <use logo-upv.pdf>
 Package pdftex.def Info: logo-upv.pdf  used on input line 42.
 (pdftex.def)             Requested size: 178.85042pt x 56.9055pt.
-<logo-etsinf.pdf, id=84, 311.1625pt x 120.45pt>
+<logo-etsinf.pdf, id=100, 311.1625pt x 120.45pt>
 File: logo-etsinf.pdf Graphic file (type pdf)
 <use logo-etsinf.pdf>
 Package pdftex.def Info: logo-etsinf.pdf  used on input line 42.
 (pdftex.def)             Requested size: 147.00606pt x 56.9055pt.
-<baseportada.png, id=85, 1027.84pt x 578.16pt>
+<baseportada.png, id=101, 1027.84pt x 578.16pt>
 File: baseportada.png Graphic file (type png)
 <use baseportada.png>
 Package pdftex.def Info: baseportada.png  used on input line 42.
@@ -897,51 +897,57 @@ LaTeX Info: Redefining \% on input line 97.
 Cap\'{\i }tulo 2.
 [3
 
-] [4
+]
+LaTeX Info: Redefining \. on input line 134.
+LaTeX Info: Redefining \% on input line 134.
+ [4]
+LaTeX Info: Redefining \. on input line 157.
+LaTeX Info: Redefining \% on input line 157.
+ [5] [6
 
 ]
 Cap\'{\i }tulo 3.
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 120.
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 163.
 (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-Overfull \hbox (14.56158pt too wide) in paragraph at lines 150--150
+Overfull \hbox (14.56158pt too wide) in paragraph at lines 193--193
 []                                                       \T1/cmtt/m/n/10.95 patience=self.patience)[] 
  []
 
-[5]
-LaTeX Info: Redefining \. on input line 161.
-LaTeX Info: Redefining \% on input line 161.
- [6]
+[7]
+LaTeX Info: Redefining \. on input line 204.
+LaTeX Info: Redefining \% on input line 204.
+ [8]
 Cap\'{\i }tulo 4.
-[7
+[9
 
-] [8
+] [10
 
 ]
 Cap\'{\i }tulo 5.
-[9] [10
-
-]
-Cap\'{\i }tulo 6.
 [11] [12
 
 ]
-Overfull \hbox (1.28647pt too wide) in paragraph at lines 193--193
-\T1/ppl/m/n/10.95 Deep Lear-ning: Diag-nos-tic Per-for-man-ce with Ex-ter-nal Da-ta-set and Com-pa-ri-son with
- []
-
+Cap\'{\i }tulo 6.
 [13] [14
 
 ]
-Ap\'{e}ndice A.
-[15
+Overfull \hbox (1.28647pt too wide) in paragraph at lines 236--236
+\T1/ppl/m/n/10.95 Deep Lear-ning: Diag-nos-tic Per-for-man-ce with Ex-ter-nal Da-ta-set and Com-pa-ri-son with
+ []
 
-] [16
+[15] [16
+
+]
+Ap\'{e}ndice A.
+[17
+
+] [18
 
 ]
 Ap\'{e}ndice B.
-[17] (memoria_tfg.aux
+[19] (memoria_tfg.aux
 LaTeX Info: Redefining \sptext on input line 11.
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
@@ -963,23 +969,23 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `memoria_tfg.out' has not changed.
-(rerunfilecheck)             Checksum: DACBA9FC5DE1CD421723F12F5D243552;3083.
+(rerunfilecheck)             Checksum: F353F0FB1E2331C208FC38D2B9E3EBF6;4228.
 Package logreq Info: Writing requests to 'memoria_tfg.run.xml'.
 \openout1 = `memoria_tfg.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23048 strings out of 474486
- 403933 string characters out of 5743755
+ 23061 strings out of 474486
+ 404136 string characters out of 5743755
  1936542 words of memory out of 5000000
- 44980 multiletter control sequences out of 15000+600000
+ 44987 multiletter control sequences out of 15000+600000
  595950 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,12n,93p,1729b,3998s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1728.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2488.pk><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on memoria_tfg.pdf (25 pages, 224492 bytes).
+Output written on memoria_tfg.pdf (27 pages, 237618 bytes).
 PDF statistics:
- 458 PDF objects out of 1000 (max. 8388607)
- 52 named destinations out of 1000 (max. 500000)
- 176 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 493 PDF objects out of 1000 (max. 8388607)
+ 58 named destinations out of 1000 (max. 500000)
+ 208 words of extra memory for PDF output out of 10000 (max. 10000000)
 

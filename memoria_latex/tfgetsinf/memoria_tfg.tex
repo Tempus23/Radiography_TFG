@@ -96,8 +96,51 @@ En este contexto, el presente trabajo busca contribuir al avance del uso de inte
 
 \chapter{Preliminares}  % ~15 páginas
 
-\section{Aprendizaje automático}     % 2.1
-% Explicación general del machine learning
+\section{Aprendizaje automático}
+
+El aprendizaje automático (\textit{Machine Learning, ML}) es una rama de la inteligencia artificial que ha transformado múltiples disciplinas al permitir que los sistemas aprendan y mejoren su desempeño en tareas específicas a partir de la experiencia, sin necesidad de ser programados explícitamente para cada situación. Este enfoque se basa en la construcción de modelos matemáticos capaces de identificar patrones y relaciones en grandes volúmenes de datos, lo que resulta esencial para aplicaciones tan diversas como la visión por computadora, el procesamiento del lenguaje natural, la bioinformática y, en particular, el diagnóstico médico.
+
+En el contexto del análisis de imágenes médicas, el aprendizaje automático permite automatizar procesos de detección, clasificación y segmentación de patologías, facilitando diagnósticos más rápidos y precisos. Por ejemplo, modelos basados en redes neuronales profundas han alcanzado desempeños comparables a los de expertos humanos en la identificación de anomalías en radiografías, resonancias magnéticas y tomografías computarizadas.
+
+\subsection{Categorías de Aprendizaje Automático}
+
+El aprendizaje automático se clasifica en tres paradigmas fundamentales:
+
+\begin{itemize} \item \textbf{Aprendizaje supervisado}: Se apoya en conjuntos de datos etiquetados, donde cada entrada cuenta con una salida o etiqueta conocida. Durante el entrenamiento, el modelo aprende a mapear las entradas a las salidas correctas, facilitando la predicción de etiquetas en datos nuevos. Entre los algoritmos más comunes en este paradigma se encuentran la regresión lineal, las máquinas de soporte vectorial (\textit{Support Vector Machines, SVM}) y las redes neuronales profundas.
+
+java
+Copy
+\item \textbf{Aprendizaje no supervisado}: Aquí, los datos carecen de etiquetas y el objetivo es descubrir patrones o estructuras subyacentes. Técnicas como el clustering (agrupamiento), la reducción de dimensionalidad mediante análisis de componentes principales (PCA) y los modelos generativos permiten identificar relaciones ocultas en los datos y organizar la información de forma significativa.
+
+\item \textbf{Aprendizaje por refuerzo}: En este enfoque, un agente interactúa con un entorno y aprende a tomar decisiones mediante un sistema de prueba y error, optimizando sus acciones en función de una función de recompensa. Este paradigma es especialmente útil en problemas de toma de decisiones secuenciales y en la optimización de estrategias en entornos dinámicos.
+\end{itemize}
+
+\subsection{Procesamiento de Datos en Aprendizaje Automático}
+
+El rendimiento y la capacidad de generalización de los modelos dependen en gran medida de la calidad de los datos de entrada. Por ello, el procesamiento de datos es una etapa crítica que involucra varias fases:
+
+\begin{itemize} \item \textbf{Preprocesamiento}: Incluye la limpieza, normalización y transformación de los datos para eliminar ruidos, gestionar valores faltantes y unificar las escalas de las variables. En el ámbito de imágenes médicas, esta fase puede implicar la corrección de artefactos, la estandarización de intensidades y la segmentación preliminar de regiones de interés. \item \textbf{División del conjunto de datos}: Se segmenta la información en subconjuntos de entrenamiento, validación y prueba. Esta división es crucial para ajustar los hiperparámetros del modelo, prevenir el sobreajuste y evaluar de manera objetiva el desempeño final. \item \textbf{Extracción y selección de características}: En ciertos casos, se realiza una selección o generación de características relevantes que potencien la capacidad del modelo para identificar patrones significativos, lo cual es particularmente importante en dominios con alta dimensionalidad o datos complejos. \end{itemize}
+
+\subsection{Métricas de Evaluación}
+
+Para medir la efectividad de un modelo de aprendizaje automático, se emplean diversas métricas que varían según el tipo de problema:
+
+\begin{itemize} \item \textbf{Para clasificación}: Se utilizan métricas como la precisión (\textit{accuracy}), la precisión (precision), el recall (sensibilidad) y el F1-score, especialmente en contextos con clases desbalanceadas. La curva ROC y el área bajo la curva (AUC-ROC) son también indicadores fundamentales para evaluar la capacidad del modelo de distinguir entre clases. \item \textbf{Para regresión}: Se valora el desempeño mediante el error cuadrático medio (MSE) y el error absoluto medio (MAE), que cuantifican la diferencia entre las predicciones del modelo y los valores reales. \end{itemize}
+
+\subsection{Aplicaciones del Aprendizaje Automático en Imágenes Médicas}
+
+La aplicación del aprendizaje automático en el análisis de imágenes médicas ha abierto nuevas fronteras en el diagnóstico y seguimiento de diversas patologías. Algunas de las aplicaciones más destacadas incluyen:
+
+\begin{itemize} \item \textbf{Detección de enfermedades}: Mediante modelos supervisados, se pueden identificar anomalías en radiografías, resonancias magnéticas y tomografías computarizadas, facilitando diagnósticos tempranos y precisos. \item \textbf{Segmentación de tejidos y órganos}: Algoritmos basados en redes neuronales permiten delimitar estructuras anatómicas y patologías en imágenes médicas, lo que es fundamental para planificar tratamientos y cirugías. \item \textbf{Clasificación de tumores}: Los modelos de aprendizaje profundo pueden diferenciar entre tumores benignos y malignos, aportando una segunda opinión automatizada que complementa la evaluación clínica. \end{itemize}
+
+En este trabajo se explora la aplicación del aprendizaje profundo para la detección de artritis en imágenes de rodillas. La integración de técnicas avanzadas de ML en el análisis de imágenes médicas no solo mejora la precisión diagnóstica, sino que también reduce la variabilidad interobservador, ofreciendo un soporte robusto y automatizado que puede transformar el proceso de diagnóstico en el ámbito clínico. Con el continuo avance en el procesamiento de datos y el desarrollo de modelos más sofisticados, se espera que el aprendizaje automático siga abriendo nuevas posibilidades para la personalización y optimización del tratamiento médico.
+
+
+
+
+
+
+
 
 \section{Redes neuronales}           % 2.2
 % Descripción breve de redes neuronales
