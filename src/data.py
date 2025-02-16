@@ -1,45 +1,53 @@
+import torch
+from torch.utils.data import DataLoader, Dataset
+from torchvision import transforms, datasets
 import os
-from tabulate import tabulate
+from PIL import Image
 
-def explorar_split_data(path):
-    imagenes = {}
-    for subset in ["train", "val", "test"]:
-        subset_path = os.path.join(path, subset)
-        if os.path.exists(subset_path):
-            imagenes[subset] = []  # Inicializamos la lista para cada subset
-            for root, dirs, files in os.walk(subset_path):
-                # Omitimos el directorio raíz
-                if root == subset_path:
-                    continue
-                imagenes[subset].append(len(files))
-    print_split_table(imagenes)
-    return imagenes
+from src.config import *  # Asegúrate de que MENDELEY_OAI_224_SPLIT_PATH está bien definido
 
-def explorar_data(path):
-    imagenes = []
-    for root, dirs, files in os.walk(path):
-        # Omitimos el directorio raíz
-        if root == path:
-            continue
-        imagenes.append(len(files))
-    print_table(imagenes)
-    return imagenes
+class OriginalOAIDataset(Dataset):
+    def __init__(self, mode='train', transform=None, local = False, path = MENDELEY_OAI_224_SPLIT_PATH):
+        """
+        Args:
+            mode (str): 'train', 'val' o 'test'.
+            transform: Transformaciones de torchvision a aplicar a las imágenes.
+        """
+        assert mode in ['train', 'val', 'test'], "Mode must be 'train', 'val', or 'test'"
+        
+        if local:
+            print("LOCAL MODE ENABLED")
+        self.transform = transform
+        self.data_path = os.path.join(path, mode)
+        self.classes = sorted(os.listdir(self.data_path))  # Lista de clases
+        self.data = []
+        
+        # Cargar imágenes con sus etiquetas
+        
 
-def print_table(data):
-    tabla = []
+        for label, class_name in enumerate(self.classes):
+            class_path = os.path.join(self.data_path, class_name)
+            i = 0
+            for img_name in os.listdir(class_path):
+                if local and i >= 100:
+                    break
+                img_path = os.path.join(class_path, img_name)
+                self.data.append((img_path, label))
+                i += 1
+        
+    def __len__(self):
+        return len(self.data)
+    
+    def __getitem__(self, idx):
+        img_path, label = self.data[idx]
+        image = Image.open(img_path).convert('RGB')
 
-    for i in range(len(data)):
-        fila = [f"{i}", data[i]]
-        tabla.append(fila)
+        if self.transform:
+            image = self.transform(image)
+        
+        return image, label
+    
+    def get_dataloader(self, batch_size=32, shuffle=True):
+        
+        return DataLoader(self, batch_size=batch_size, shuffle=shuffle)
 
-    print(tabulate(tabla, headers=["Clase", "Cantidad"], tablefmt="fancy_grid"))
-
-def print_split_table(data):
-    num_clases = len(data['train'])
-    tabla = []
-
-    for i in ["train", "val", "test"]:
-        fila = [f"{i}", data[i][0], data[i][1], data[i][2], data[i][3], data[i][4]]
-        tabla.append(fila)
-
-    print(tabulate(tabla, headers=["Clase", "0", "1", "2", "3", "4"], tablefmt="fancy_grid"))

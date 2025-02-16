@@ -19,14 +19,14 @@ class Classification(pl.LightningModule):
 
         self.loss_fn = nn.CrossEntropyLoss()
 
-        self.confusion_matrix = MulticlassConfusionMatrix(num_classes=self.model.classes).to(device)
-        self.auc_metric = tm.AUROC(num_classes=self.model.classes, task="multiclass").to(device)  # Definir métrica AUROC para clasificación multiclase
+        self.confusion_matrix = MulticlassConfusionMatrix(num_classes=5).to(device)
+        self.auc_metric = tm.AUROC(num_classes=5, task="multiclass").to(device)  # Definir métrica AUROC para clasificación multiclase
 
     def forward(self, x):
         return self.model(x)
 
     def training_step(self, x, y):
-        y = y.squeeze()
+        y = y
         y_hat = self.model(x)
         y_oh = self.transform_classes(y)
         loss = self.loss_fn(y_hat, y_oh)
@@ -42,7 +42,7 @@ class Classification(pl.LightningModule):
         return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC}
 
     def validation_step(self, x, y):
-        y = y.squeeze()
+        y = y
         y_hat = self.model(x)
         y_oh = self.transform_classes(y)
         loss = self.loss_fn(y_hat, y_oh)
@@ -58,7 +58,7 @@ class Classification(pl.LightningModule):
 
     def transform_classes(self, y):
         # Convertir las clases a un formato de one-hot encoding
-        return torch.nn.functional.one_hot(y.to(torch.int64), num_classes=self.model.classes).to(float).squeeze()
+        return torch.nn.functional.one_hot(y.to(torch.int64), num_classes=5).to(float).squeeze()
     def restart_epoch(self, plot = False):
         if plot:
             self.confusion_matrix.plot()

@@ -3,7 +3,8 @@
 /code/*/__pycache__
 /code/wandb
 /memorias_checkpoint/zip/*
-
+/src/__pycache__/*
+/src/models/__pycache__/*
 # Trainers not used
 /code/trainers/not_used.py
 /_previous/*
