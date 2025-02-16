@@ -13,7 +13,8 @@
 \usepackage{hyperref}
 \usepackage{biblatex}
 
-\addbibresource{bibliografia.bib}  % Enlazar el archivo .bib
+\addbibresource{bib.bib}  % Enlazar el archivo .bib
+\addglobalbib{bib.bib}
 \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=cyan }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,7 +46,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-Aquí citamos a Einstein \cite{einstein1905} y a Knuth \cite{knuth1986}.
+Aquí citamos a un datajkjkset \cite{gornale2020digital}.
+Citación paper IEE \cite{10863523}, Dataset \cite{chen2018knee}
+aqui citamos un paper \cite{VAATTOVAARA2025100580}
 \end{abstract}
 
 \begin{abstract}[spanish]
@@ -66,7 +69,18 @@ Aquí citamos a Einstein \cite{einstein1905} y a Knuth \cite{knuth1986}.
 \chapter{Introducción}  % ~5 páginas
 
 \section{Motivación}     % 1.1
-% Explica aquí la motivación de tu trabajo
+La artritis es una de las enfermedades musculoesqueléticas más prevalentes a nivel mundial y una de las principales causas de discapacidad en adultos mayores. Su diagnóstico y seguimiento se basa tradicionalmente en la evaluación clínica y en la interpretación de imágenes médicas, como radiografías, resonancias magnéticas y tomografías computarizadas. Sin embargo, este proceso suele depender en gran medida de la experiencia del profesional médico, lo que puede generar variabilidad en los diagnósticos y retrasos en la detección temprana de la enfermedad.
+
+En los últimos años, los avances en inteligencia artificial, y en particular en el aprendizaje profundo, han demostrado un gran potencial para mejorar la precisión y la eficiencia en el análisis de imágenes médicas. Las redes neuronales convolucionales (CNN) han sido ampliamente utilizadas en el campo de la visión por computadora para tareas como la detección de patologías en radiografías, la segmentación de tejidos en resonancias magnéticas y la clasificación de niveles de severidad en enfermedades degenerativas.
+
+Este Trabajo de Fin de Grado (TFG) se motiva por la necesidad de desarrollar métodos automáticos y robustos para el análisis de la artritis mediante el uso de técnicas de aprendizaje profundo. En particular, se busca explorar el uso de redes neuronales para la clasificación de imágenes médicas, utilizando bases de datos estandarizadas como \textit{Mendeley dataset} \cite{chen2018knee}. La aplicación de estos modelos podría no solo optimizar el proceso de diagnóstico, sino también contribuir al desarrollo de herramientas de soporte a la decisión clínica, facilitando una intervención más temprana y personalizada para los pacientes.
+
+La relevancia de este estudio radica en su potencial impacto en la práctica clínica. Un sistema basado en inteligencia artificial podría reducir la carga de trabajo de los especialistas, mejorar la objetividad del diagnóstico y ofrecer segundas opiniones automáticas que complementen la evaluación médica tradicional. Además, el desarrollo de estas tecnologías en el ámbito de la artritis podría sentar un precedente para su aplicación en otras enfermedades musculoesqueléticas, ampliando el alcance del aprendizaje profundo en el campo de la salud.
+
+Además, se plantea la posibilidad de realizar \textit{transfer learning} utilizando modelos preentrenados en artritis humana para aplicarlos en el diagnóstico de artritis en gatos. Esta adaptación podría beneficiar la práctica veterinaria, proporcionando herramientas automatizadas para la evaluación de la enfermedad en animales y mejorando la precisión en su diagnóstico.
+
+En este contexto, el presente trabajo busca contribuir al avance del uso de inteligencia artificial en la detección y análisis de la artritis, evaluando diferentes enfoques de redes neuronales y analizando su rendimiento en la clasificación de imágenes médicas. La motivación principal es demostrar la viabilidad y efectividad de estos modelos en un problema biomédico concreto, promoviendo la integración de tecnologías emergentes en el ámbito de la salud.
+
 
 \section{Objetivos}      % 1.2
 % Presenta aquí los 3 objetivos principales
@@ -98,12 +112,8 @@ Aquí citamos a Einstein \cite{einstein1905} y a Knuth \cite{knuth1986}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Capítulo 1 de contribución}  % ~15 páginas
-% Expón aquí tu primer objetivo y resultados derivados
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              CAPÍTULO 4                                     %
-%                     SEGUNDA CONTRIBUCIÓN (OBJETIVO 2)                       %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Replicar el trabajo de \cite{10863523} utilizando este datset \cite{chen2018knee}
 
 \chapter{Capítulo 2 de contribución}   % ~15 páginas
 % Expón aquí tu segundo objetivo y resultados derivados

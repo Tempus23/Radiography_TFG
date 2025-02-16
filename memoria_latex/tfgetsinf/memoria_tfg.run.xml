@@ -44,10 +44,10 @@
   <internal package="biblatex" priority="9" active="0">
     <generic>latex</generic>
     <provides type="dynamic">
-      <file>plantillatfg.bcf</file>
+      <file>memoria_tfg.bcf</file>
     </provides>
     <requires type="dynamic">
-      <file>plantillatfg.bbl</file>
+      <file>memoria_tfg.bbl</file>
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
@@ -66,22 +66,22 @@
     <generic>biber</generic>
     <cmdline>
       <binary>biber</binary>
-      <infile>plantillatfg</infile>
+      <infile>memoria_tfg</infile>
     </cmdline>
     <input>
-      <file>plantillatfg.bcf</file>
+      <file>memoria_tfg.bcf</file>
     </input>
     <output>
-      <file>plantillatfg.bbl</file>
+      <file>memoria_tfg.bbl</file>
     </output>
     <provides type="dynamic">
-      <file>plantillatfg.bbl</file>
+      <file>memoria_tfg.bbl</file>
     </provides>
     <requires type="dynamic">
-      <file>plantillatfg.bcf</file>
+      <file>memoria_tfg.bcf</file>
     </requires>
     <requires type="editable">
-      <file>bibliografia.bib</file>
+      <file>bib.bib</file>
     </requires>
   </external>
 </requests>

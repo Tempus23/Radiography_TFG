@@ -7,3 +7,6 @@
 # Trainers not used
 /code/trainers/not_used.py
 /_previous/*
+
+# Datasets
+/dataset/*

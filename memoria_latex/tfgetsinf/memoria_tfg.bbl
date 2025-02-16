@@ -1,0 +1,189 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{chen2018knee}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=4941f3171f602792a3e39bd56edf24cf}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Pingjun},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Mendeley Data}%
+      }
+      \strng{namehash}{4941f3171f602792a3e39bd56edf24cf}
+      \strng{fullhash}{4941f3171f602792a3e39bd56edf24cf}
+      \strng{bibnamehash}{4941f3171f602792a3e39bd56edf24cf}
+      \strng{authorbibnamehash}{4941f3171f602792a3e39bd56edf24cf}
+      \strng{authornamehash}{4941f3171f602792a3e39bd56edf24cf}
+      \strng{authorfullhash}{4941f3171f602792a3e39bd56edf24cf}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Knee Osteoarthritis Severity Grading Dataset}
+      \field{version}{V1}
+      \field{year}{2018}
+      \verb{doi}
+      \verb 10.17632/56rmx5bjcr.1
+      \endverb
+    \endentry
+    \entry{gornale2020digital}{dataset}{}
+      \name{author}{2}{}{%
+        {{hash=6e3adfc3bbebfbd68446de78ac12b316}{%
+           family={Gornale},
+           familyi={G\bibinitperiod},
+           given={Shivanand},
+           giveni={S\bibinitperiod}}}%
+        {{hash=7c25b5f67bf36a1d39533f892ed947d0}{%
+           family={Patravali},
+           familyi={P\bibinitperiod},
+           given={Pooja},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Mendeley Data}%
+      }
+      \strng{namehash}{8e90275717ad7c4842e6d48efa5f66e3}
+      \strng{fullhash}{8e90275717ad7c4842e6d48efa5f66e3}
+      \strng{bibnamehash}{8e90275717ad7c4842e6d48efa5f66e3}
+      \strng{authorbibnamehash}{8e90275717ad7c4842e6d48efa5f66e3}
+      \strng{authornamehash}{8e90275717ad7c4842e6d48efa5f66e3}
+      \strng{authorfullhash}{8e90275717ad7c4842e6d48efa5f66e3}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{Digital Knee X-ray Images}}
+      \field{version}{V1}
+      \field{year}{2020}
+      \verb{doi}
+      \verb 10.17632/t9ndx37v5h.1
+      \endverb
+    \endentry
+    \entry{10863523}{dataset}{}
+      \name{author}{3}{}{%
+        {{hash=474387726fa34fc26b614898c43debae}{%
+           family={Singh},
+           familyi={S\bibinitperiod},
+           given={Shubham\bibnamedelima Kumar},
+           giveni={S\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=d4a3b2716bcac6f4350b1b54ce9c7729}{%
+           family={Chouhan},
+           familyi={C\bibinitperiod},
+           given={Kuldeep},
+           giveni={K\bibinitperiod}}}%
+        {{hash=acb949b2e05627728ee40d93ef282b1d}{%
+           family={Agrawal},
+           familyi={A\bibinitperiod},
+           given={Arun\bibnamedelima Prakash},
+           giveni={A\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{3e3be9ee99bcde06ff529635edfd3958}
+      \strng{fullhash}{3e3be9ee99bcde06ff529635edfd3958}
+      \strng{bibnamehash}{3e3be9ee99bcde06ff529635edfd3958}
+      \strng{authorbibnamehash}{3e3be9ee99bcde06ff529635edfd3958}
+      \strng{authornamehash}{3e3be9ee99bcde06ff529635edfd3958}
+      \strng{authorfullhash}{3e3be9ee99bcde06ff529635edfd3958}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2024 27th International Symposium on Wireless Personal Multimedia Communications (WPMC)}
+      \field{title}{Osteoarthritis Prediction in Knee Joint Using Deep Learning Techniques}
+      \field{year}{2024}
+      \field{pages}{1\bibrangedash 5}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/WPMC63271.2024.10863523
+      \endverb
+      \keyw{Deep learning;Wireless communication;Training;Accuracy;Transfer learning;Osteoarthritis;Joints;Diagnostic radiography;X-ray imaging;Stress;Deep Learning;EfficientNetB5;Kellgren Lawrence System;Osteoarthritis;Transfer Learning}
+    \endentry
+    \entry{VAATTOVAARA2025100580}{article}{}
+      \name{author}{7}{}{%
+        {{hash=04125b52406559b965fa7ff82d2d9fe3}{%
+           family={Vaattovaara},
+           familyi={V\bibinitperiod},
+           given={Elias},
+           giveni={E\bibinitperiod}}}%
+        {{hash=1591ec104129dd98dc4f1d1f7944547d}{%
+           family={Panfilov},
+           familyi={P\bibinitperiod},
+           given={Egor},
+           giveni={E\bibinitperiod}}}%
+        {{hash=23aab78f51deea46ba74880d5f4218a8}{%
+           family={Tiulpin},
+           familyi={T\bibinitperiod},
+           given={Aleksei},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a0890e27d4b559a22702532b322101c0}{%
+           family={Niinimäki},
+           familyi={N\bibinitperiod},
+           given={Tuukka},
+           giveni={T\bibinitperiod}}}%
+        {{hash=f7f36d1e2c957460e43b8f1f0235eca0}{%
+           family={Niinimäki},
+           familyi={N\bibinitperiod},
+           given={Jaakko},
+           giveni={J\bibinitperiod}}}%
+        {{hash=7b4743acc75f3f1a7c91d47fb4519c45}{%
+           family={Saarakkala},
+           familyi={S\bibinitperiod},
+           given={Simo},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e46e4e20f737ab51f85e1573d55b9f40}{%
+           family={Nevalainen},
+           familyi={N\bibinitperiod},
+           given={Mika\bibnamedelima T.},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \strng{namehash}{c0302eceb5e6b463210547f4e6f31973}
+      \strng{fullhash}{2d6dd9081c325b1e6f8bcdbf18cdd5bd}
+      \strng{bibnamehash}{c0302eceb5e6b463210547f4e6f31973}
+      \strng{authorbibnamehash}{c0302eceb5e6b463210547f4e6f31973}
+      \strng{authornamehash}{c0302eceb5e6b463210547f4e6f31973}
+      \strng{authorfullhash}{2d6dd9081c325b1e6f8bcdbf18cdd5bd}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Objective: To evaluate the performance of a deep learning (DL) model in an external dataset to assess radiographic knee osteoarthritis using Kellgren-Lawrence (KL) grades against versatile human readers. Materials and Methods: Two-hundred-eight knee anteroposterior conventional radiographs (CRs) were included in this retrospective study. Four readers (three radiologists, one orthopedic surgeon) assessed the KL grades and a consensus grade was derived as the mean of these. The DL model was trained using all the CRs from the Multicenter Osteoarthritis Study (MOST) and validated on the Osteoarthritis Initiative (OAI) dataset, then tested on our external dataset. Agreement between graders was assessed using Cohen's quadratic kappa ($\kappa$) with 95\% confidence intervals. Diagnostic performance was measured using confusion matrices and ROC analyses. Results: The multiclass (KL grades 0-4) diagnostic performance of the DL model was multifaceted: sensitivities ranged from 0.372 to 1.000, specificities from 0.691 to 0.974, PPVs from 0.227 to 0.879, NPVs from 0.622 to 1.000, and AUCs from 0.786 to 0.983. The overall balanced accuracy was 0.693, AUC 0.886, and kappa 0.820. With dichotomous KL grading (i.e., KL0-1 vs. KL2-4), the balanced accuracy was 0.902 and AUC 0.967. Substantial agreement was found between each reader and the DL model. Conclusion: In an external dataset, our DL model can grade knee osteoarthritis with diagnostic accuracy comparable to that of highly experienced human readers.}
+      \field{issn}{2665-9131}
+      \field{journaltitle}{Osteoarthritis and Cartilage Open}
+      \field{title}{Kellgren-Lawrence Grading of Knee Osteoarthritis using Deep Learning: Diagnostic Performance with External Dataset and Comparison with Four Readers}
+      \field{year}{2025}
+      \field{pages}{100580}
+      \range{pages}{1}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.ocarto.2025.100580
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S2665913125000160
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S2665913125000160
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

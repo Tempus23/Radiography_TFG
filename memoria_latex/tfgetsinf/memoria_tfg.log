@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  14 FEB 2025 09:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  16 FEB 2025 13:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/34658/OneDrive/Escritorio/Ing informática/TFG/Radiography_TFG/memoria_latex/tfgetsinf/plantillatfg.tex"
-(c:/Users/34658/OneDrive/Escritorio/Ing informática/TFG/Radiography_TFG/memoria_latex/tfgetsinf/plantillatfg.tex
+**"c:/Users/34658/OneDrive/Escritorio/Ing informática/TFG/Radiography_TFG/memoria_latex/tfgetsinf/memoria_tfg.tex"
+(c:/Users/34658/OneDrive/Escritorio/Ing informática/TFG/Radiography_TFG/memoria_latex/tfgetsinf/memoria_tfg.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
 (tfgetsinf.cls
@@ -622,7 +622,7 @@ Package: xparse 2023-10-10 L3 Experimental document command parser
 )
 Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
 ))
-Package hyperref Info: Option `colorlinks' set `true' on input line 17.
+Package hyperref Info: Option `colorlinks' set `true' on input line 18.
 
 
 Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
@@ -630,45 +630,45 @@ Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
 
 \@quotelevel=\count427
 \@quotereset=\count428
-LaTeX Font Info:    Trying to load font information for T1+ppl on input line 41.
+LaTeX Font Info:    Trying to load font information for T1+ppl on input line 42.
 (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1ppl.fd
 File: t1ppl.fd 2001/06/04 font definitions for T1/ppl.
-) (plantillatfg.aux
+) (memoria_tfg.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
-LaTeX Info: Redefining \. on input line 18.
-LaTeX Info: Redefining \% on input line 18.
-LaTeX Info: Redefining \. on input line 19.
-LaTeX Info: Redefining \% on input line 19.
-LaTeX Info: Redefining \. on input line 20.
-LaTeX Info: Redefining \% on input line 20.
 LaTeX Info: Redefining \. on input line 22.
 LaTeX Info: Redefining \% on input line 22.
+LaTeX Info: Redefining \. on input line 23.
+LaTeX Info: Redefining \% on input line 23.
+LaTeX Info: Redefining \. on input line 24.
+LaTeX Info: Redefining \% on input line 24.
+LaTeX Info: Redefining \. on input line 26.
+LaTeX Info: Redefining \% on input line 26.
 )
-\openout1 = `plantillatfg.aux'.
+\openout1 = `memoria_tfg.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Info: Redefining \. on input line 41.
-LaTeX Info: Redefining \% on input line 41.
-LaTeX Info: Redefining \l on input line 41.
-LaTeX Info: Redefining \L on input line 41.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Info: Redefining \. on input line 42.
+LaTeX Info: Redefining \% on input line 42.
+LaTeX Info: Redefining \l on input line 42.
+LaTeX Info: Redefining \L on input line 42.
 \big@size=\dimen178
 
 *geometry* driver: auto-detecting
@@ -729,45 +729,45 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count435
-Package hyperref Info: Link coloring ON on input line 41.
- (plantillatfg.out) (plantillatfg.out)
+Package hyperref Info: Link coloring ON on input line 42.
+ (memoria_tfg.out) (memoria_tfg.out)
 \@outlinefile=\write4
-\openout4 = `plantillatfg.out'.
+\openout4 = `memoria_tfg.out'.
 
-LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 41.
+LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 42.
  (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
-LaTeX Font Info:    Trying to load font information for OML+zplm on input line 41.
+LaTeX Font Info:    Trying to load font information for OML+zplm on input line 42.
  (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 41.
+LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 42.
  (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 41.
+LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 42.
  (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 41.
+LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 42.
  (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
 <logo-upv.pdf, id=83, 331.2375pt x 105.39375pt>
 File: logo-upv.pdf Graphic file (type pdf)
 <use logo-upv.pdf>
-Package pdftex.def Info: logo-upv.pdf  used on input line 41.
+Package pdftex.def Info: logo-upv.pdf  used on input line 42.
 (pdftex.def)             Requested size: 178.85042pt x 56.9055pt.
 <logo-etsinf.pdf, id=84, 311.1625pt x 120.45pt>
 File: logo-etsinf.pdf Graphic file (type pdf)
 <use logo-etsinf.pdf>
-Package pdftex.def Info: logo-etsinf.pdf  used on input line 41.
+Package pdftex.def Info: logo-etsinf.pdf  used on input line 42.
 (pdftex.def)             Requested size: 147.00606pt x 56.9055pt.
 <baseportada.png, id=85, 1027.84pt x 578.16pt>
 File: baseportada.png Graphic file (type png)
 <use baseportada.png>
-Package pdftex.def Info: baseportada.png  used on input line 41.
+Package pdftex.def Info: baseportada.png  used on input line 42.
 (pdftex.def)             Requested size: 597.51208pt x 366.75699pt.
  [1
 
@@ -794,32 +794,32 @@ File: english.lbx 2023/03/05 v3.19 biblatex localization (PK/MW)
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
-\openout3 = `plantillatfg.bcf'.
+\openout3 = `memoria_tfg.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'plantillatfg.bbl' found.
- (plantillatfg.bbl)
-Package biblatex Info: Reference section=0 on input line 41.
-Package biblatex Info: Reference segment=0 on input line 41.
-LaTeX Font Info:    Trying to load font information for T1+cmss on input line 48.
+Package biblatex Info: ... file 'memoria_tfg.bbl' found.
+ (memoria_tfg.bbl)
+Package biblatex Info: Reference section=0 on input line 42.
+Package biblatex Info: Reference segment=0 on input line 42.
+LaTeX Font Info:    Trying to load font information for T1+cmss on input line 49.
  (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmss.fd
 File: t1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-LaTeX Info: Redefining \sptext on input line 49.
-LaTeX Info: Redefining \. on input line 49.
-LaTeX Info: Redefining \% on input line 49.
-LaTeX Info: Redefining \sptext on input line 51.
-LaTeX Info: Redefining \. on input line 51.
-LaTeX Info: Redefining \% on input line 51.
-LaTeX Info: Redefining \sptext on input line 53.
-LaTeX Info: Redefining \. on input line 53.
-LaTeX Info: Redefining \% on input line 53.
-LaTeX Info: Redefining \sptext on input line 57.
-LaTeX Info: Redefining \. on input line 57.
-LaTeX Info: Redefining \% on input line 57.
+LaTeX Info: Redefining \sptext on input line 52.
+LaTeX Info: Redefining \. on input line 52.
+LaTeX Info: Redefining \% on input line 52.
+LaTeX Info: Redefining \sptext on input line 54.
+LaTeX Info: Redefining \. on input line 54.
+LaTeX Info: Redefining \% on input line 54.
+LaTeX Info: Redefining \sptext on input line 56.
+LaTeX Info: Redefining \. on input line 56.
+LaTeX Info: Redefining \% on input line 56.
+LaTeX Info: Redefining \sptext on input line 60.
+LaTeX Info: Redefining \. on input line 60.
+LaTeX Info: Redefining \% on input line 60.
  [3] [4
 
-] (plantillatfg.toc
+] (memoria_tfg.toc
 LaTeX Info: Redefining \sptext on input line 1.
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
@@ -837,11 +837,11 @@ LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 )
 \tf@toc=\write5
-\openout5 = `plantillatfg.toc'.
+\openout5 = `memoria_tfg.toc'.
 
  [5] [6
 
-] (plantillatfg.lof
+] (memoria_tfg.lof
 LaTeX Info: Redefining \sptext on input line 1.
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
@@ -859,9 +859,9 @@ LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 )
 \tf@lof=\write6
-\openout6 = `plantillatfg.lof'.
+\openout6 = `memoria_tfg.lof'.
 
- (plantillatfg.lot
+ (memoria_tfg.lot
 LaTeX Info: Redefining \sptext on input line 1.
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
@@ -879,19 +879,25 @@ LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 )
 \tf@lot=\write7
-\openout7 = `plantillatfg.lot'.
+\openout7 = `memoria_tfg.lot'.
 
  [7] [8
 
 ]
 Cap\'{\i }tulo 1.
-[1
 
-] [2
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [1
 
 ]
+LaTeX Info: Redefining \. on input line 97.
+LaTeX Info: Redefining \% on input line 97.
+ [2]
 Cap\'{\i }tulo 2.
-[3] [4
+[3
+
+] [4
 
 ]
 Cap\'{\i }tulo 3.
@@ -909,7 +915,16 @@ Cap\'{\i }tulo 5.
 Cap\'{\i }tulo 6.
 [11] [12
 
-] [13] [14
+]
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 149.
+ (C:\Users\34658\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+Overfull \hbox (1.28647pt too wide) in paragraph at lines 150--150
+\T1/ppl/m/n/10.95 Deep Lear-ning: Diag-nos-tic Per-for-man-ce with Ex-ter-nal Da-ta-set and Com-pa-ri-son with
+ []
+
+[13] [14
 
 ]
 Ap\'{e}ndice A.
@@ -919,45 +934,45 @@ Ap\'{e}ndice A.
 
 ]
 Ap\'{e}ndice B.
-[17] (plantillatfg.aux
+[17] (memoria_tfg.aux
 LaTeX Info: Redefining \sptext on input line 11.
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
-LaTeX Info: Redefining \sptext on input line 18.
-LaTeX Info: Redefining \. on input line 18.
-LaTeX Info: Redefining \% on input line 18.
-LaTeX Info: Redefining \sptext on input line 19.
-LaTeX Info: Redefining \. on input line 19.
-LaTeX Info: Redefining \% on input line 19.
-LaTeX Info: Redefining \sptext on input line 20.
-LaTeX Info: Redefining \. on input line 20.
-LaTeX Info: Redefining \% on input line 20.
 LaTeX Info: Redefining \sptext on input line 22.
 LaTeX Info: Redefining \. on input line 22.
 LaTeX Info: Redefining \% on input line 22.
+LaTeX Info: Redefining \sptext on input line 23.
+LaTeX Info: Redefining \. on input line 23.
+LaTeX Info: Redefining \% on input line 23.
+LaTeX Info: Redefining \sptext on input line 24.
+LaTeX Info: Redefining \. on input line 24.
+LaTeX Info: Redefining \% on input line 24.
+LaTeX Info: Redefining \sptext on input line 26.
+LaTeX Info: Redefining \. on input line 26.
+LaTeX Info: Redefining \% on input line 26.
 )
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
-Package rerunfilecheck Info: File `plantillatfg.out' has not changed.
+Package rerunfilecheck Info: File `memoria_tfg.out' has not changed.
 (rerunfilecheck)             Checksum: DACBA9FC5DE1CD421723F12F5D243552;3083.
-Package logreq Info: Writing requests to 'plantillatfg.run.xml'.
-\openout1 = `plantillatfg.run.xml'.
+Package logreq Info: Writing requests to 'memoria_tfg.run.xml'.
+\openout1 = `memoria_tfg.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 22989 strings out of 474486
- 402040 string characters out of 5743755
- 1934542 words of memory out of 5000000
- 44927 multiletter control sequences out of 15000+600000
- 595636 words of font info for 98 fonts, out of 8000000 for 9000
+ 23043 strings out of 474486
+ 403810 string characters out of 5743755
+ 1935542 words of memory out of 5000000
+ 44975 multiletter control sequences out of 15000+600000
+ 595950 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,93p,783b,3998s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1728.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2488.pk><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on plantillatfg.pdf (25 pages, 186430 bytes).
+ 90i,12n,93p,1729b,3998s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1728.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2488.pk><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on memoria_tfg.pdf (25 pages, 214433 bytes).
 PDF statistics:
- 363 PDF objects out of 1000 (max. 8388607)
- 50 named destinations out of 1000 (max. 500000)
+ 434 PDF objects out of 1000 (max. 8388607)
+ 52 named destinations out of 1000 (max. 500000)
  176 words of extra memory for PDF output out of 10000 (max. 10000000)
 
