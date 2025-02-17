@@ -86,3 +86,46 @@ def train(model, train_loader, val_loader, trainer, epochs, device):
                             "val_AUC": res['AUC'],
                             "epoch": epoch})
         scheduler.step(res['loss'].item())
+        trainer.restore_epoch(plot=False)
+    
+    test_model(model, val_loader, trainer, device)
+
+def test_model(model, test_loader, trainer, device):
+    """
+    Test the given model
+    """
+    model.eval()
+    model.to(device)
+
+    epoch_loss = 0.0
+    avg_loss = 0.0
+    trainer.restart_epoch(plot = False)
+    for batch in test_loader:
+        inputs, labels = batch
+        inputs = inputs.to(device)
+        
+        labels = labels.to(device)
+
+        with torch.no_grad():
+            res = trainer.validation_step(inputs, labels)
+            # Extraer valores escalares
+            loss = res['loss']
+            
+        loss_value = loss.item()
+        # Calcular promedios
+        epoch_loss += loss_value
+
+    ACC_value = res['ACC']
+    recall_value = res['recall'].item()
+    precision_value = res['precision'].item()
+    f1_score_value = res['f1_score'].item()
+    AUC_value = res['AUC']
+    avg_loss = epoch_loss / len(test_loader)
+
+    wandb.log({"test_loss": avg_loss, "test_acc": ACC_value.item(),
+                "test_recall": recall_value, "test_precision": precision_value,
+                "test_f1_score": f1_score_value, "test_AUC" : AUC_value})
+    
+    print(f"Test model {model.__class__.__name__} - Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, AUC: {AUC_value:.2f}")
+
+    trainer.restart_epoch(plot = True)
