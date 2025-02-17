@@ -29,7 +29,7 @@ class OriginalOAIDataset(Dataset):
             class_path = os.path.join(self.data_path, class_name)
             i = 0
             for img_name in os.listdir(class_path):
-                if local and i >= 100:
+                if local and i >= 10:
                     break
                 img_path = os.path.join(class_path, img_name)
                 self.data.append((img_path, label))

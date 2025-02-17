@@ -197,11 +197,13 @@ scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
 
 Este diseño garantiza un entrenamiento eficiente y adaptado al conjunto de datos empleado, permitiendo evaluar la reproducibilidad de los resultados obtenidos en el estudio original.
 
-Este diseño garantiza un entrenamiento eficiente y adaptado al conjunto de datos empleado, permitiendo evaluar la reproducibilidad de los resultados obtenidos en el estudio original.
 
 
 
 Primero repetir el experimento sin hacer data augmentation,
+
+El dataset \cite{chen2018knee} ha sido modificado para simular las condiciones del paper, reduciendo el numero de ejemplos a 1000 en las clases 0, 1 y 2 de forma aleatoria y haciendo data augmentation en las clases 3 y 4 hasta alcanzar 1000 ejemplos
+
 
 para el modelo 
 \chapter{Capítulo 2 de contribución}   % ~15 páginas

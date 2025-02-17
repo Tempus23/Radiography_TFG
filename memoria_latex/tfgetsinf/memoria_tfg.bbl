@@ -19,7 +19,7 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
-    \entry{chen2018knee}{misc}{}
+    \entry{chen2018knee}{dataset}{}
       \name{author}{1}{}{%
         {{hash=4941f3171f602792a3e39bd56edf24cf}{%
            family={Chen},
@@ -154,7 +154,7 @@
       \endverb
       \keyw{Accuracy;Reviews;Transfer learning;Manuals;Arthritis;Osteoarthritis;Joints;Arthritis;Osteoarthritis (OA);Knee Osteoarthritis (KOA);Machine Learning;Deep Learning}
     \endentry
-    \entry{10863523}{dataset}{}
+    \entry{10863523}{inproceedings}{}
       \name{author}{3}{}{%
         {{hash=474387726fa34fc26b614898c43debae}{%
            family={Singh},

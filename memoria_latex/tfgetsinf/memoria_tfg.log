@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  16 FEB 2025 21:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.14)  17 FEB 2025 19:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -916,8 +916,8 @@ Overfull \hbox (14.56158pt too wide) in paragraph at lines 196--196
  []
 
 [7]
-LaTeX Info: Redefining \. on input line 207.
-LaTeX Info: Redefining \% on input line 207.
+LaTeX Info: Redefining \. on input line 209.
+LaTeX Info: Redefining \% on input line 209.
  [8]
 Cap\'{\i }tulo 4.
 [9
@@ -933,7 +933,7 @@ Cap\'{\i }tulo 6.
 [13] [14
 
 ]
-Overfull \hbox (1.28647pt too wide) in paragraph at lines 239--239
+Overfull \hbox (1.28647pt too wide) in paragraph at lines 241--241
 \T1/ppl/m/n/10.95 Deep Lear-ning: Diag-nos-tic Per-for-man-ce with Ex-ter-nal Da-ta-set and Com-pa-ri-son with
  []
 
@@ -968,31 +968,24 @@ LaTeX Info: Redefining \% on input line 30.
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `memoria_tfg.out' has not changed.
 (rerunfilecheck)             Checksum: F353F0FB1E2331C208FC38D2B9E3EBF6;4228.
-
-Package biblatex Warning: Please rerun LaTeX.
-
 Package logreq Info: Writing requests to 'memoria_tfg.run.xml'.
 \openout1 = `memoria_tfg.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23072 strings out of 474486
- 404969 string characters out of 5743755
+ 23071 strings out of 474486
+ 404954 string characters out of 5743755
  1936542 words of memory out of 5000000
- 44996 multiletter control sequences out of 15000+600000
+ 44995 multiletter control sequences out of 15000+600000
  595950 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,12n,93p,1729b,3998s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1728.pk> <C:\Users\34658\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2488.pk><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb><C:/Users/34658/AppData/Local/Programs/MiKTeX/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on memoria_tfg.pdf (27 pages, 243114 bytes).
+Output written on memoria_tfg.pdf (27 pages, 243046 bytes).
 PDF statistics:
- 503 PDF objects out of 1000 (max. 8388607)
+ 502 PDF objects out of 1000 (max. 8388607)
  60 named destinations out of 1000 (max. 500000)
  208 words of extra memory for PDF output out of 10000 (max. 10000000)
 
