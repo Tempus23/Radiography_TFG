@@ -1,0 +1,14 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[1] Config.pm:310> INFO - Logfile is 'memoria_tfg.blg'
+[239] biber-MSWIN64:340> INFO - === 
+[299] Biber.pm:419> INFO - Reading 'memoria_tfg.bcf'
+[516] Biber.pm:979> INFO - Found 6 citekeys in bib section 0
+[549] Biber.pm:4419> INFO - Processing section 0
+[578] Biber.pm:4610> INFO - Looking for bibtex file 'bib.bib' for section 0
+[678] bibtex.pm:1713> INFO - LaTeX decoding ...
+[741] bibtex.pm:1519> INFO - Found BibTeX data source 'bib.bib'
+[844] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[845] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[845] Biber.pm:4239> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'es-ES'
+[874] bbl.pm:660> INFO - Writing 'memoria_tfg.bbl' with encoding 'UTF-8'
+[884] bbl.pm:763> INFO - Output to memoria_tfg.bbl

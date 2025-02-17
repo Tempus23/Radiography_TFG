@@ -47,6 +47,39 @@
       \verb 10.17632/56rmx5bjcr.1
       \endverb
     \endentry
+    \entry{efficientnet_paper}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=54ab609005c16b63a6758abfc65be1ea}{%
+           family={Dipto},
+           familyi={D\bibinitperiod},
+           given={Sajid\bibnamedelima Fardin},
+           giveni={S\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=b034eca15b1cfe55c4d8521c4a19edc9}{%
+           family={Goni},
+           familyi={G\bibinitperiod},
+           given={Md.\bibnamedelimi Omaer\bibnamedelima Faruq},
+           giveni={M\bibinitperiod\bibinitdelim O\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \strng{namehash}{a1887594c1ba4c67c946c235f97528fa}
+      \strng{fullhash}{a1887594c1ba4c67c946c235f97528fa}
+      \strng{bibnamehash}{a1887594c1ba4c67c946c235f97528fa}
+      \strng{authorbibnamehash}{a1887594c1ba4c67c946c235f97528fa}
+      \strng{authornamehash}{a1887594c1ba4c67c946c235f97528fa}
+      \strng{authorfullhash}{a1887594c1ba4c67c946c235f97528fa}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2024 IEEE International Conference on Power, Electrical, Electronics and Industrial Applications (PEEIACON)}
+      \field{title}{Classification of X-Ray Images for the Automated Severity Grading of Knee Osteoarthritis by Ensemble Learning Through EfficientNet Architectures with Grad-CAM Visualization}
+      \field{year}{2024}
+      \field{pages}{108\bibrangedash 113}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/PEEIACON63629.2024.10800349
+      \endverb
+      \keyw{Radiography;Deep learning;Visualization;Accuracy;Predictive models;Feature extraction;Reliability;Ensemble learning;Osteoarthritis;X-ray imaging;Knee Osteoarthritis (KOA);Deep Learning;Osteoarthritis Initiative Dataset;Kellgren-Lawrence Grading;EfficientNet;Grad-CAM}
+    \endentry
     \entry{gornale2020digital}{dataset}{}
       \name{author}{2}{}{%
         {{hash=6e3adfc3bbebfbd68446de78ac12b316}{%
@@ -79,6 +112,47 @@
       \verb{doi}
       \verb 10.17632/t9ndx37v5h.1
       \endverb
+    \endentry
+    \entry{comprehensive_review}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=456a418aea7ae0c912ac5bbd1258f60a}{%
+           family={Sharma},
+           familyi={S\bibinitperiod},
+           given={Neha},
+           giveni={N\bibinitperiod}}}%
+        {{hash=ef8cd0a6f58ad420df96dbbc162ac493}{%
+           family={Sapra},
+           familyi={S\bibinitperiod},
+           given={Riya},
+           giveni={R\bibinitperiod}}}%
+        {{hash=56fe0e58ed8d5db2cf994245878b1fb7}{%
+           family={Sarita},
+           familyi={S\bibinitperiod}}}%
+        {{hash=7ad3a0a29a11165dc0ba0647c5c998d1}{%
+           family={Dhaliwal},
+           familyi={D\bibinitperiod},
+           given={Parneeta},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{a14a420d75b1eeb898f268bb3991a2d8}
+      \strng{fullhash}{3cf37f9960223d66d3e7828ea59244ef}
+      \strng{bibnamehash}{a14a420d75b1eeb898f268bb3991a2d8}
+      \strng{authorbibnamehash}{a14a420d75b1eeb898f268bb3991a2d8}
+      \strng{authornamehash}{a14a420d75b1eeb898f268bb3991a2d8}
+      \strng{authorfullhash}{3cf37f9960223d66d3e7828ea59244ef}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2024 International Conference on Intelligent Systems for Cybersecurity (ISCS)}
+      \field{title}{A Comprehensive Review on Knee Osteoarthritis Detection using Medical Imaging and Machine Learning}
+      \field{year}{2024}
+      \field{pages}{1\bibrangedash 6}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/ISCS61804.2024.10581051
+      \endverb
+      \keyw{Accuracy;Reviews;Transfer learning;Manuals;Arthritis;Osteoarthritis;Joints;Arthritis;Osteoarthritis (OA);Knee Osteoarthritis (KOA);Machine Learning;Deep Learning}
     \endentry
     \entry{10863523}{dataset}{}
       \name{author}{3}{}{%
