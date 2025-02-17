@@ -67,7 +67,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device):
                         "train_f1_score": res['f1_score'].item(),
                         "train_AUC": res['AUC'],
                         "epoch": epoch})
-        trainer.restore_epoch(plot=False)
+        trainer.restart_epoch(plot=False)
         # use validation data
         model.eval()
         val_loop = create_tqdm_bar(val_loader, desc=f'Validation Epoch [{epoch + 1}/{epochs}]', mode='val')
@@ -86,7 +86,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device):
                     "val_AUC": res['AUC'],
                     "epoch": epoch})
         scheduler.step(res['loss'].item())
-        trainer.restore_epoch(plot=False)
+        trainer.restart_epoch(plot=False)
     
     test_model(model, val_loader, trainer, device)
 
