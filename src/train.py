@@ -5,35 +5,33 @@ from wandb import wandb
 def create_tqdm_bar(iterable, desc, mode):
     return tqdm(enumerate(iterable),total=len(iterable), ncols=150, desc=desc)
 
-def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', name="Test"):
-    if wandb.run is not None:
-        wandb.finish()
-    wandb.init(
-        project="oai-knee-cartilage-segmentation",
-        name=name,
-        # track hyperparameters and run metadata
-        config={
-            "model": model.name,
-            "Batch_size": train_dataset.batch_size,
-            "learning_rate": trainer.learning_rate,
-            "L1": trainer.L1,
-            "L2": trainer.L2,
-            "patience": trainer.patience,
-            "factor": trainer.factor,
-            "betas": trainer.betas,
-            "epochs": epochs,
-        }
-    )
+def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', name="Test", wdb=True, project="oai-knee-cartilage-segmentation"):
+    if wdb:
+        if wandb.run is not None:
+            wandb.finish()
+        wandb.init(
+            project=project,
+            name=name,
+            # track hyperparameters and run metadata
+            config={
+                "model": model.name,
+                "Batch_size": train_dataset.batch_size,
+                "learning_rate": trainer.learning_rate,
+                "L1": trainer.L1,
+                "L2": trainer.L2,
+                "patience": trainer.patience,
+                "factor": trainer.factor,
+                "betas": trainer.betas,
+                "epochs": epochs,
+            }
+        )
     train_loader = train_dataset.get_dataloader(shuffle=True)
     val_loader = val_dataset.get_dataloader(shuffle=True)
     model.to(device)
-    train(model, train_loader, val_loader, trainer, epochs, device)
+    train(model, train_loader, val_loader, trainer, epochs, device, wdb)
     
 
-
-
-
-def train(model, train_loader, val_loader, trainer, epochs, device):
+def train(model, train_loader, val_loader, trainer, epochs, device, wdb):
     """
     train the given model
     """
@@ -59,8 +57,11 @@ def train(model, train_loader, val_loader, trainer, epochs, device):
             training_loss.append(res['loss'].item())
             training_loss_num += res['loss'].item()
             # Update the progress bar.
-            training_loop.set_postfix(curr_train_loss = "{:.8f}".format(training_loss_num / (train_iteration + 1)))
-            wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
+            training_loop.set_postfix(curr_train_loss="{:.8f}".format(training_loss_num / (train_iteration + 1)),
+                                      acc=res['ACC'],
+                                      AUC=res['AUC'])
+            if wdb:
+                wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
                         "train_acc": res['ACC'],
                         "train_recall": res['recall'].item(),
                         "train_precision": res['precision'].item(),
@@ -77,8 +78,12 @@ def train(model, train_loader, val_loader, trainer, epochs, device):
                 res = trainer.validation_step(batch[0], batch[1])  
                 validation_loss.append(res['loss'].item())
                 validation_loss_num += res['loss'].item()
-                val_loop.set_postfix(val_loss = "{:.8f}".format(validation_loss_num / (val_iteration + 1)))
-        wandb.log({"val_loss": validation_loss_num / (train_iteration + 1),
+                val_loop.set_postfix(val_loss = "{:.8f}".format(validation_loss_num / (val_iteration + 1)),
+                                      acc=res['ACC'],
+                                      AUC=res['AUC'])
+                                      
+        if wdb:
+            wandb.log({"val_loss": validation_loss_num / (train_iteration + 1),
                     "val_acc": res['ACC'],
                     "val_recall": res['recall'].item(),
                     "val_precision": res['precision'].item(),
@@ -88,9 +93,9 @@ def train(model, train_loader, val_loader, trainer, epochs, device):
         scheduler.step(res['loss'].item())
         trainer.restart_epoch(plot=False)
     
-    test_model(model, val_loader, trainer, device)
+    test_model(model, val_loader, trainer, device, wdb)
 
-def test_model(model, test_loader, trainer, device):
+def test_model(model, test_loader, trainer, device, wdb=False):
     """
     Test the given model
     """
@@ -121,8 +126,8 @@ def test_model(model, test_loader, trainer, device):
     f1_score_value = res['f1_score'].item()
     AUC_value = res['AUC']
     avg_loss = epoch_loss / len(test_loader)
-
-    wandb.log({"test_loss": avg_loss, "test_acc": ACC_value.item(),
+    if wdb:
+        wandb.log({"test_loss": avg_loss, "test_acc": ACC_value.item(),
                 "test_recall": recall_value, "test_precision": precision_value,
                 "test_f1_score": f1_score_value, "test_AUC" : AUC_value})
     
