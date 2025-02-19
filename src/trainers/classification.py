@@ -4,6 +4,8 @@ import torch.nn as nn
 import torchmetrics as tm
 from torchmetrics.classification import MulticlassConfusionMatrix
 import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
 
 class Classification(pl.LightningModule):
@@ -25,7 +27,7 @@ class Classification(pl.LightningModule):
         self.factor = factor
         self.betas = betas
 
-
+        self.num_classes = 5
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=5).to(device)
         self.auc_metric = tm.AUROC(num_classes=5, task="multiclass").to(device)  # Definir métrica AUROC para clasificación multiclase
 
@@ -117,3 +119,32 @@ class Classification(pl.LightningModule):
                                                                factor=self.factor,
                                                                patience=self.patience)
         return optimizer, scheduler
+
+    def plot(self, epoch = 0):
+        # Computa la matriz de confusión y las métricas por clase
+        cm = self.confusion_matrix.compute().cpu().numpy()
+        support = cm.sum(axis=1)
+        precision_per_class = np.diag(cm) / (cm.sum(axis=0) + 1e-8)
+        recall_per_class = np.diag(cm) / (cm.sum(axis=1) + 1e-8)
+        f1_per_class = 2 * (precision_per_class * recall_per_class) / (precision_per_class + recall_per_class + 1e-8)
+        accuracy = np.diag(cm).sum() / cm.sum()
+
+        # Crea dos subplots: uno para la matriz de confusión y otro para la tabla de métricas
+        fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+
+        # Subplot 1: Matriz de confusión con heatmap
+        sns.heatmap(cm, annot=True, fmt="d", ax=axs[0], cmap="Blues")
+        axs[0].set_title("Matriz de Confusión epoch " + str(epoch))
+        axs[0].set_xlabel("Predicción")
+        axs[0].set_ylabel("Real")
+
+        # Subplot 2: Tabla de métricas por clase
+        table_data = []
+        for i in range(self.num_classes):
+            table_data.append([f"Clase {i}", f"{precision_per_class[i]:.2f}", 
+                               f"{recall_per_class[i]:.2f}", f"{f1_per_class[i]:.2f}",int(support[i])])
+        axs[1].axis('tight')
+        axs[1].axis('off')
+        table = axs[1].table(cellText=table_data, colLabels=["Clase", "Precision", "Recall", "F1", "Support"],
+                             cellLoc="center", loc="center")
+        axs[1].set_title(f"Metrics por clase\nAccuracy General: {accuracy:.2f}", pad=20)

@@ -59,8 +59,7 @@ class Regression(pl.LightningModule):
         return {"loss": linear_loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC}
     def restart_epoch(self, plot = False):
         if plot:
-            self.confusion_matrix.plot()
-            plt.show()
+            self.plot()
         self.confusion_matrix.reset()
         self.auc_metric.reset()
 
@@ -96,4 +95,7 @@ class Regression(pl.LightningModule):
                                                                factor=factor,
                                                                patience=patience)
         return optimizer, scheduler
-
+    
+    def plot(self):
+        self.confusion_matrix.plot()
+        plt.show()
