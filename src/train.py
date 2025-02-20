@@ -84,7 +84,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, plot = 
                                       AUC=res['AUC'].item())
                                       
         if wdb:
-            wandb.log({"val_loss": validation_loss_num / (train_iteration + 1),
+            wandb.log({"val_loss": validation_loss_num / (val_iteration + 1),
                     "val_acc": res['ACC'],
                     "val_recall": res['recall'].item(),
                     "val_precision": res['precision'].item(),
