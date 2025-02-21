@@ -6,10 +6,13 @@ from torchvision import models
 from torchvision.models import EfficientNet_B5_Weights
 
 class EfficientNetB5Custom(nn.Module):
-    def __init__(self, num_classes=5):
+    def __init__(self, num_classes=5, pretrained = True):
         super(EfficientNetB5Custom, self).__init__()
         # Cargar el modelo EfficientNetB5 preentrenado
-        self.efficientnet = models.efficientnet_b5(weights=EfficientNet_B5_Weights.DEFAULT)
+        if pretrained:
+            self.efficientnet = models.efficientnet_b5(weights=EfficientNet_B5_Weights.DEFAULT)
+        else:
+            self.efficientnet = models.efficientnet_b5(weights=None)
         self.name = "EfficientNetB5Custom"
         # Reemplazar la capa final del clasificador
         in_features = self.efficientnet.classifier[1].in_features

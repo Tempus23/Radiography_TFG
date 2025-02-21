@@ -59,13 +59,16 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, plot = 
             # Update the progress bar.
             training_loop.set_postfix(curr_train_loss="{:.8f}".format(training_loss_num / (train_iteration + 1)),
                                       acc=res['ACC'].item(),
-                                      AUC=res['AUC'].item())
+                                      AUC=res['AUC'].item(),
+                                      sensivity=res['recall'].item(),
+                                      specificity=res['specificity'].item())
             if wdb:
                 
                 wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
                         "train_acc": res['ACC'],
                         "train_recall": res['recall'].item(),
                         "train_precision": res['precision'].item(),
+                        "train_specifity": res['specificity'].item(),
                         "train_f1_score": res['f1_score'].item(),
                         "train_AUC": res['AUC'],
                         "epoch": epoch})
@@ -81,13 +84,15 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, plot = 
                 validation_loss_num += res['loss'].item()
                 val_loop.set_postfix(val_loss = "{:.8f}".format(validation_loss_num / (val_iteration + 1)),
                                       acc=res['ACC'].item(),
-                                      AUC=res['AUC'].item())
+                                      AUC=res['AUC'].item(),
+                                      specificity=res['specificity'].item())
                                       
         if wdb:
             wandb.log({"val_loss": validation_loss_num / (val_iteration + 1),
                     "val_acc": res['ACC'],
                     "val_recall": res['recall'].item(),
                     "val_precision": res['precision'].item(),
+                    "val_specificity": res['specificity'].item(),
                     "val_f1_score": res['f1_score'].item(),
                     "val_AUC": res['AUC'],
                     "epoch": epoch})
@@ -134,6 +139,6 @@ def test_model(model, test_loader, trainer, device, wdb=False):
                 "test_recall": recall_value, "test_precision": precision_value,
                 "test_f1_score": f1_score_value, "test_AUC" : AUC_value})
     
-    print(f"Test model {model.__class__.__name__} - Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, AUC: {AUC_value:.2f}")
+    print(f"Test model {model.__class__.__name__} - Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, AUC: {AUC_value:.2f}, Sensivility: {recall_value:.2f}, Specificity: {precision_value:.2f}")
 
     trainer.restart_epoch(plot = True)

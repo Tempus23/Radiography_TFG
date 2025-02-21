@@ -59,9 +59,9 @@ class Classification(pl.LightningModule):
         self.confusion_matrix.update(y_pred, y)
         self.auc_metric.update(y_hat, y)
 
-        precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
+        precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC}
+        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
 
     def validation_step(self, x, y):
         y = y
@@ -74,42 +74,58 @@ class Classification(pl.LightningModule):
         self.confusion_matrix.update(y_pred, y)
         self.auc_metric.update(y_hat, y)
 
-        precision, recall, f1_score, ACC, AUC = self.calculate_metrics_from_confusion_matrix()
-
-        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC}
+        precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
+        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC, "specificity": specificity}
 
     def transform_classes(self, y):
         # Convertir las clases a un formato de one-hot encoding
         return torch.nn.functional.one_hot(y.to(torch.int64), num_classes=5).to(float).squeeze()
     def restart_epoch(self, plot = False):
         if plot:
-            self.confusion_matrix.plot()
-            plt.show()
+            self.plot()
         self.confusion_matrix.reset()
         self.auc_metric.reset()
     def calculate_metrics_from_confusion_matrix(self):
-      confusion_matrix = self.confusion_matrix.compute()
-      # Verdaderos positivos por clase (diagonal de la matriz)
-      true_positives = torch.diag(confusion_matrix)
+        # Obtener la matriz de confusión (suponiendo que es un tensor de torch)
+        cm = self.confusion_matrix.compute()
+        total_samples = cm.sum()
+        
+        # Verdaderos positivos por clase (diagonal de la matriz)
+        true_positives = torch.diag(cm)
+        
+        # Predicciones totales por clase (sumar columnas)
+        predicted_positives = cm.sum(dim=0)
+        
+        # Ejemplos reales por clase (sumar filas)
+        actual_positives = cm.sum(dim=1)
+        
+        # Calcular falsos positivos y falsos negativos por clase
+        false_positives = predicted_positives - true_positives
+        false_negatives = actual_positives - true_positives
+        
+        # Calcular verdaderos negativos por clase
+        true_negatives = total_samples - (actual_positives + predicted_positives - true_positives)
+        
+        # Calcular métricas por clase con robustez para evitar división por cero
+        precision_per_class = true_positives / (predicted_positives + 1e-8)
+        recall_per_class = true_positives / (actual_positives + 1e-8)
+        specificity_per_class = true_negatives / (true_negatives + false_positives + 1e-8)
+        f1_per_class = 2 * (precision_per_class * recall_per_class) / (precision_per_class + recall_per_class + 1e-8)
+        
+        # Promediar las métricas por clase
+        precision = precision_per_class.mean()
+        recall = recall_per_class.mean()
+        specificity = specificity_per_class.mean()
+        f1 = f1_per_class.mean()
+        
+        # Calcular Accuracy (exactitud)
+        ACC = true_positives.sum() / total_samples
+        
+        # Calcular el AUC (suponiendo que self.auc_metric ya está correctamente definido)
+        AUC = self.auc_metric.compute()
+        
+        return precision, recall, f1, ACC, AUC, specificity
 
-      # Predicciones totales por clase (sumar columnas)
-      predicted_positives = confusion_matrix.sum(dim=0)
-
-      # Ejemplos reales por clase (sumar filas)
-      actual_positives = confusion_matrix.sum(dim=1)
-
-      # Calcular Precision, Recall, F1 por clase
-      precision = (true_positives / (predicted_positives + 1e-8)).mean()  # Añadir pequeña constante para evitar división por 0
-      recall = (true_positives / (actual_positives + 1e-8)).mean()
-      f1 = 2 * (precision * recall) / (precision + recall + 1e-8)
-
-      # Calcular ACC
-      ACC = true_positives.sum() / confusion_matrix.sum()
-
-      # Calcular el AUC
-      AUC = self.auc_metric.compute()
-      # Retornar las métricas
-      return precision, recall, f1, ACC, AUC
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.model.parameters(),
@@ -120,13 +136,20 @@ class Classification(pl.LightningModule):
                                                                patience=self.patience)
         return optimizer, scheduler
 
-    def plot(self, epoch = 0):
+    def plot(self, epoch=0):
         # Computa la matriz de confusión y las métricas por clase
         cm = self.confusion_matrix.compute().cpu().numpy()
         support = cm.sum(axis=1)
         precision_per_class = np.diag(cm) / (cm.sum(axis=0) + 1e-8)
         recall_per_class = np.diag(cm) / (cm.sum(axis=1) + 1e-8)
         f1_per_class = 2 * (precision_per_class * recall_per_class) / (precision_per_class + recall_per_class + 1e-8)
+        
+        # Cálculo de especificidad por clase
+        FP = cm.sum(axis=0) - np.diag(cm)
+        FN = cm.sum(axis=1) - np.diag(cm)
+        TN = cm.sum() - (FP + FN + np.diag(cm))
+        specificity_per_class = TN / (TN + FP + 1e-8)
+        
         accuracy = np.diag(cm).sum() / cm.sum()
 
         # Crea dos subplots: uno para la matriz de confusión y otro para la tabla de métricas
@@ -141,10 +164,15 @@ class Classification(pl.LightningModule):
         # Subplot 2: Tabla de métricas por clase
         table_data = []
         for i in range(self.num_classes):
-            table_data.append([f"Clase {i}", f"{precision_per_class[i]:.2f}", 
-                               f"{recall_per_class[i]:.2f}", f"{f1_per_class[i]:.2f}",int(support[i])])
+            table_data.append([f"Clase {i}",
+                            f"{precision_per_class[i]:.2f}",
+                            f"{recall_per_class[i]:.2f}",
+                            f"{f1_per_class[i]:.2f}",
+                            f"{specificity_per_class[i]:.2f}",
+                            int(support[i])])
         axs[1].axis('tight')
         axs[1].axis('off')
-        table = axs[1].table(cellText=table_data, colLabels=["Clase", "Precision", "Recall", "F1", "Support"],
-                             cellLoc="center", loc="center")
+        table = axs[1].table(cellText=table_data,
+                            colLabels=["Clase", "Precision", "Sensivity/Recall", "F1", "Specificity", "Support"],
+                            cellLoc="center", loc="center")
         axs[1].set_title(f"Metrics por clase\nAccuracy General: {accuracy:.2f}", pad=20)
