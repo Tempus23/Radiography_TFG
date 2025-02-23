@@ -51,6 +51,7 @@ class Classification(pl.LightningModule):
             L2_reg = L2_reg + torch.sum(param ** 2)
         
         # Añadir regularización a la pérdida
+        real_loss = loss
         loss = loss + self.L1 * L1_reg + self.L2 * L2_reg
         # Obtener la clase predicha
         y_pred = torch.argmax(y_hat, dim=1)
@@ -61,7 +62,7 @@ class Classification(pl.LightningModule):
 
         precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
 
-        return {"loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
+        return {"loss": real_loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
 
     def validation_step(self, x, y):
         y = y

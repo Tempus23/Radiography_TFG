@@ -1,6 +1,4 @@
-from torch import nn, Tensor
-import torch
-from typing import Optional
+from torch import nn
 from torchvision import models
 from torchvision.models import *
 
