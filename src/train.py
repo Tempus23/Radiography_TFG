@@ -3,7 +3,7 @@ from tqdm import tqdm
 from wandb import wandb
 
 def create_tqdm_bar(iterable, desc, mode):
-    return tqdm(enumerate(iterable),total=len(iterable), ncols=150, desc=desc)
+    return tqdm(enumerate(iterable),total=len(iterable), ncols=200, desc=desc)
 
 def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', save_model = False, name="Test", wdb=True, project="oai-knee-cartilage-segmentation"):
     if wdb:
@@ -60,8 +60,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
             training_loss_num += res['loss'].item()
             complete_loss_num += res['real_loss'].item()
             # Update the progress bar.
-            training_loop.set_postfix(train_loss="{:.8f}".format(training_loss_num / (train_iteration + 1)),
-                                      complete_loss="{:.8f}".format(complete_loss_num / (train_iteration + 1)),
+            training_loop.set_postfix(train_loss="{:.4f}".format(training_loss_num / (train_iteration + 1)),
+                                      complete_loss="{:.4f}".format(complete_loss_num / (train_iteration + 1)),
                                       acc=res['ACC'].item(),
                                       AUC=res['AUC'].item(),
                                       sensivity=res['recall'].item(),

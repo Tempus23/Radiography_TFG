@@ -13,5 +13,8 @@
 # Datasets
 /dataset/*
 
+# Models
+/models/*
+
 # Wandb
 /wandb/*
