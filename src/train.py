@@ -5,7 +5,7 @@ from wandb import wandb
 def create_tqdm_bar(iterable, desc, mode):
     return tqdm(enumerate(iterable),total=len(iterable), ncols=150, desc=desc)
 
-def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', name="Test", wdb=True, project="oai-knee-cartilage-segmentation", plot = 0):
+def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', save_model = False, name="Test", wdb=True, project="oai-knee-cartilage-segmentation"):
     if wdb:
         if wandb.run is not None:
             wandb.finish()
@@ -28,15 +28,16 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
     train_loader = train_dataset.get_dataloader(shuffle=True)
     val_loader = val_dataset.get_dataloader(shuffle=True)
     model.to(device)
-    train(model, train_loader, val_loader, trainer, epochs, device, wdb, plot = plot)
+    train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_model = save_model)
     
 
-def train(model, train_loader, val_loader, trainer, epochs, device, wdb, plot = 0):
+def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_model = False):
     """
     train the given model
     """
     optimizer, scheduler = trainer.configure_optimizers()
-    
+    best_model = None
+    best_loss = float('inf')
     for epoch in range(epochs):        
         training_loss = []
         validation_loss = []
@@ -96,9 +97,12 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, plot = 
                     "val_f1_score": res['f1_score'].item(),
                     "val_AUC": res['AUC'],
                     "epoch": epoch})
+        if validation_loss_num < best_loss:
+            best_loss = validation_loss_num
+            best_model = model
+            if save_model:
+                torch.save(model.state_dict(), f"best_model_{model.__class__.__name__}_epoch_{epoch}.pt")
         scheduler.step(res['loss'].item())
-        if plot > 0 and epoch % plot == 0:
-            trainer.plot(epoch=epoch)
         trainer.restart_epoch(plot=False)
     
     test_model(model, val_loader, trainer, device, wdb)
