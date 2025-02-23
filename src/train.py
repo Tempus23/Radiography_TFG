@@ -43,6 +43,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
         validation_loss = []
 
         training_loss_num = 0
+        complete_loss_num = 0
         validation_loss_num = 0
 
         # use training data
@@ -57,8 +58,10 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
 
             training_loss.append(res['loss'].item())
             training_loss_num += res['loss'].item()
+            complete_loss_num += res['real_loss'].item()
             # Update the progress bar.
-            training_loop.set_postfix(curr_train_loss="{:.8f}".format(training_loss_num / (train_iteration + 1)),
+            training_loop.set_postfix(train_loss="{:.8f}".format(training_loss_num / (train_iteration + 1)),
+                                      complete_loss="{:.8f}".format(complete_loss_num / (train_iteration + 1)),
                                       acc=res['ACC'].item(),
                                       AUC=res['AUC'].item(),
                                       sensivity=res['recall'].item(),
