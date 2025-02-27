@@ -66,6 +66,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
                                       AUC=res['AUC'].item(),
                                       sensivity=res['recall'].item(),
                                       specificity=res['specificity'].item())
+            # Borrar
             if wdb:
                 
                 wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
@@ -75,7 +76,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
                         "train_specifity": res['specificity'].item(),
                         "train_f1_score": res['f1_score'].item(),
                         "train_AUC": res['AUC'],
-                        "epoch": epoch})
+                        "epoch": epoch,
+                        "learning_rate": optimizer.param_groups[0]['lr']})
         trainer.restart_epoch(plot=False)
         # use validation data
         model.eval()
@@ -99,7 +101,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
                     "val_specificity": res['specificity'].item(),
                     "val_f1_score": res['f1_score'].item(),
                     "val_AUC": res['AUC'],
-                    "epoch": epoch})
+                    "epoch": epoch,
+                    "learning_rate": optimizer.param_groups[0]['lr']})
         if validation_loss_num < best_loss:
             best_loss = validation_loss_num
             best_model = model
