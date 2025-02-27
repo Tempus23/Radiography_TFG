@@ -25,5 +25,9 @@
 /memoria_latex/tfgetsinf/*.lof
 /memoria_latex/tfgetsinf/*.log
 /memoria_latex/tfgetsinf/*.lot
-/memoria_latex/tfgetsinf/*.pdf
+/memoria_latex/tfgetsinf/memoria_tfg*.pdf
 /memoria_latex/tfgetsinf/*.toc
+/memoria_latex/tfgetsinf/*.out
+/memoria_latex/tfgetsinf/*.xml
+/memoria_latex/tfgetsinf/*.blg
+/memoria_latex/tfgetsinf/*.gz
