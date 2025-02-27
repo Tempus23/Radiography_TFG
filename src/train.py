@@ -15,7 +15,7 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
             # track hyperparameters and run metadata
             config={
                 "model": model.name,
-                "Batch_size": train_dataset.batch_size,
+                "Batch_size": trainer.batch_size,
                 "learning_rate": trainer.learning_rate,
                 "L1": trainer.L1,
                 "L2": trainer.L2,
