@@ -134,7 +134,6 @@ class OriginalOAIDataset(Dataset):
                 img_path = os.path.join(class_path, img_name)
                 self.data.append((img_path, label))
                 i += 1
-        
     def __len__(self):
         return len(self.data)
     

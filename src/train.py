@@ -5,7 +5,7 @@ from wandb import wandb
 def create_tqdm_bar(iterable, desc, mode):
     return tqdm(enumerate(iterable),total=len(iterable), ncols=200, desc=desc)
 
-def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', save_model = False, name="Test", wdb=True, project="oai-knee-cartilage-segmentation"):
+def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', save_model = "", name="Test", wdb=True, project="oai-knee-cartilage-segmentation"):
     if wdb:
         if wandb.run is not None:
             wandb.finish()
@@ -31,7 +31,7 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
     train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_model = save_model)
     
 
-def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_model = False):
+def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_model = ""):
     """
     train the given model
     """
@@ -103,8 +103,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
         if validation_loss_num < best_loss:
             best_loss = validation_loss_num
             best_model = model
-            if save_model:
-                torch.save(model.state_dict(), f"best_model_{model.__class__.__name__}_epoch_{epoch}.pt")
+            if save_model != "":
+                torch.save(model.state_dict(), f"best_model_{model.__class__.__name__}_{save_model}_epoch_{epoch}.pt")
         scheduler.step(res['loss'].item())
         trainer.restart_epoch(plot=False)
     
