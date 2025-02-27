@@ -19,15 +19,15 @@
 /wandb/*
 
 # LaTex
-/memoria_latex/tfgetsinf/*.aux
-/memoria_latex/tfgetsinf/*.bbl
-/memoria_latex/tfgetsinf/*.bcf
-/memoria_latex/tfgetsinf/*.lof
-/memoria_latex/tfgetsinf/*.log
-/memoria_latex/tfgetsinf/*.lot
-/memoria_latex/tfgetsinf/memoria_tfg*.pdf
-/memoria_latex/tfgetsinf/*.toc
-/memoria_latex/tfgetsinf/*.out
-/memoria_latex/tfgetsinf/*.xml
-/memoria_latex/tfgetsinf/*.blg
-/memoria_latex/tfgetsinf/*.gz
+/documentos/memoria_latex/*.aux
+/documentos/memoria_latex/*.bbl
+/documentos/memoria_latex/*.bcf
+/documentos/memoria_latex/*.lof
+/documentos/memoria_latex/*.log
+/documentos/memoria_latex/*.lot
+/documentos/memoria_latex/memoria_tfg*.pdf
+/documentos/memoria_latex/*.toc
+/documentos/memoria_latex/*.out
+/documentos/memoria_latex/*.xml
+/documentos/memoria_latex/*.blg
+/documentos/memoria_latex/*.gz
