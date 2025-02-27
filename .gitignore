@@ -19,6 +19,7 @@
 /wandb/*
 
 # LaTex
+/memoria_latex/tfgetsinf/*
 /memoria_latex/tfgetsinf/*.aux
 /memoria_latex/tfgetsinf/*.bbl
 /memoria_latex/tfgetsinf/*.bcf
