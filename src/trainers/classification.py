@@ -303,9 +303,13 @@ class ClassificationAdamax(pl.LightningModule):
                                         lr=self.learning_rate,
                                         betas=self.betas)
         
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
-                                                               factor=self.factor,
-                                                               patience=self.patience)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+                                                                optimizer=optimizer,
+                                                                factor=self.factor,
+                                                                patience=self.patience,
+                                                                verbose=True,
+                                                                min_lr=1e-6
+                                                               )
         return optimizer, scheduler
 
     def plot(self, epoch=0):
