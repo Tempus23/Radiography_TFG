@@ -5,8 +5,10 @@ import matplotlib.pyplot as plt
 
 def explorar_split_data(path):
     imagenes = {}
-    for subset in ["train", "val", "test"]:
+    for subset in ["train", "val", "test", "auto_test"]:
         subset_path = os.path.join(path, subset)
+        if not os.path.exists(subset_path):
+            continue
         if os.path.exists(subset_path):
             imagenes[subset] = []  # Inicializamos la lista para cada subset
             for root, dirs, files in os.walk(subset_path):
