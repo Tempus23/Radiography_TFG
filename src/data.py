@@ -106,6 +106,98 @@ def dataset_augmentation(ORIGINAL_PATH, NEW_PATH, max_images=3000):
                 cv2.imwrite(new_img_path, img)
             print(f"Se han copiado {len(os.listdir(CLASS_PATH))} imágenes de la clase {class_name} en el conjunto {mode}\n-----------------------------------\n")
 
+
+class HistogramEqualization:
+    """Aplica ecualización de histograma para ajuste de contraste"""
+    def __call__(self, img):
+        # Convertir PIL Image a numpy array
+        img_np = np.array(img)
+        
+        # Aplicar ecualización de histograma por canal
+        if len(img_np.shape) == 3:  # Imagen RGB
+            img_eq = np.zeros_like(img_np)
+            for i in range(3):
+                img_eq[:,:,i] = cv2.equalizeHist(img_np[:,:,i])
+        else:  # Imagen en escala de grises
+            img_eq = cv2.equalizeHist(img_np)
+            
+        # Convertir de nuevo a PIL Image
+        return Image.fromarray(img_eq)
+
+class BilateralFilter:
+    """Aplica filtrado bilateral para suavizado preservando bordes"""
+    def __init__(self, d=9, sigma_color=75, sigma_space=75):
+        self.d = d  # Diámetro de cada vecindario de píxeles
+        self.sigma_color = sigma_color  # Filtro sigma en el espacio de color
+        self.sigma_space = sigma_space  # Filtro sigma en el espacio de coordenadas
+    
+    def __call__(self, img):
+        # Convertir PIL Image a numpy array
+        img_np = np.array(img)
+        
+        # Aplicar filtro bilateral
+        img_filtered = cv2.bilateralFilter(
+            img_np, self.d, self.sigma_color, self.sigma_space)
+            
+        # Convertir de nuevo a PIL Image
+        return Image.fromarray(img_filtered)
+
+class DatasetExperiment1(Dataset):
+    def __init__(self, mode='train', batch_size=32,grey = False, local = False, path = ''):
+        """
+        Args:
+            mode (str): 'train', 'val' o 'test'.
+            transform: Transformaciones de torchvision a aplicar a las imágenes.
+        """
+        assert mode in ['train', 'val', 'test'], "Mode must be 'train', 'val', or 'test'"
+        if local:
+            print("LOCAL MODE ENABLED")
+        self.grey = grey
+        # Transformaciones del paper
+        # Histogram equalization for contrast adjustment
+        # and bilateral filtering for smoothness
+        self.transform =  transforms.Compose([
+            transforms.Resize((224, 224)),
+            HistogramEqualization(),
+            BilateralFilter(d=9, sigma_color=75, sigma_space=75),
+            transforms.ToTensor(),
+        ])
+        self.data_path = os.path.join(path, mode)
+        self.classes = sorted(os.listdir(self.data_path))  # Lista de clases
+        self.data = []
+        self.batch_size = batch_size
+        # Cargar imágenes con sus etiquetas
+        
+
+        for label, class_name in enumerate(self.classes):
+            class_path = os.path.join(self.data_path, class_name)
+            i = 0
+            for img_name in os.listdir(class_path):
+                if local and i >= 3:
+                    break
+                img_path = os.path.join(class_path, img_name)
+                self.data.append((img_path, label))
+                i += 1
+    def __len__(self):
+        return len(self.data)
+    
+    def __getitem__(self, idx):
+        img_path, label = self.data[idx]
+        if not self.grey:
+            image = Image.open(img_path).convert('RGB')
+        else:
+            image = Image.open(img_path).convert('L')
+        if self.transform:
+            image = self.transform(image)
+        
+        return image, label
+    
+    def get_dataloader(self, shuffle=True):       
+        return DataLoader(self, batch_size=self.batch_size, shuffle=shuffle)
+
+
+
+
 class OriginalOAIDataset(Dataset):
     def __init__(self, mode='train', batch_size=32, transform=None, local = False, path = MENDELEY_OAI_224_SPLIT_PATH):
         """

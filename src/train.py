@@ -5,7 +5,7 @@ from wandb import wandb
 def create_tqdm_bar(iterable, desc, mode):
     return tqdm(enumerate(iterable),total=len(iterable), ncols=200, desc=desc)
 
-def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', save_model = "", name="Test", wdb=True, project="oai-knee-cartilage-segmentation"):
+def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', save_model = "", name="Test", wdb=True, local=False, project="oai-knee-cartilage-segmentation"):
     if wdb:
         if wandb.run is not None:
             wandb.finish()
@@ -15,7 +15,7 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
             # track hyperparameters and run metadata
             config={
                 "model": model.name,
-                "Batch_size": trainer.batch_size,
+                "Batch_size": train_dataset.batch_size,
                 "learning_rate": trainer.learning_rate,
                 "L1": trainer.L1,
                 "L2": trainer.L2,
@@ -28,10 +28,10 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
     train_loader = train_dataset.get_dataloader(shuffle=True)
     val_loader = val_dataset.get_dataloader(shuffle=True)
     model.to(device)
-    train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_model = save_model)
+    train(model, train_loader, val_loader, trainer, epochs, device, wdb, local = local, save_model = save_model)
     
 
-def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_model = ""):
+def train(model, train_loader, val_loader, trainer, epochs, device, wdb, local = False, save_model = ""):
     """
     train the given model
     """
@@ -66,10 +66,10 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
                                       AUC=res['AUC'].item(),
                                       sensivity=res['recall'].item(),
                                       specificity=res['specificity'].item())
-            # Borrar
             if wdb:
                 
                 wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
+                           "complete_loss": complete_loss_num / (train_iteration + 1),
                         "train_acc": res['ACC'],
                         "train_recall": res['recall'].item(),
                         "train_precision": res['precision'].item(),
@@ -80,6 +80,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
                         "learning_rate": optimizer.param_groups[0]['lr']})
         trainer.restart_epoch(plot=False)
         # use validation data
+        if local:
+            continue
         model.eval()
         val_loop = create_tqdm_bar(val_loader, desc=f'Validation Epoch [{epoch + 1}/{epochs}]', mode='val')
         with torch.no_grad():
@@ -105,10 +107,9 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, save_mo
                     "learning_rate": optimizer.param_groups[0]['lr']})
         if validation_loss_num < best_loss:
             best_loss = validation_loss_num
-            best_model = model
             if save_model != "":
                 torch.save(model.state_dict(), f"best_model_{model.__class__.__name__}_{save_model}_epoch_{epoch}.pt")
-        scheduler.step(res['loss'].item())
+        scheduler.step(validation_loss_num)
         trainer.restart_epoch(plot=False)
     
     test_model(model, val_loader, trainer, device, wdb)
