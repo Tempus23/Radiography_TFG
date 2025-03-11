@@ -149,7 +149,7 @@ class ResNet18(nn.Module):
 class ResNet18_v2(nn.Module):
     def __init__(self, n_classes, in_channels=3):
         super(ResNet18_v2, self).__init__()
-        
+        self.name = "ResNet18_v2"
         self.dropout_percentage = 0.5
         self.relu = nn.ReLU()
         self.classes = n_classes
