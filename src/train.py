@@ -14,10 +14,10 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
             wandb.finish()
         wandb.init(
             project=project,
-            name=name,
+            name=f"{model.__class__.__name__}_{name}",
             # track hyperparameters and run metadata
             config={
-                "model": model.name,
+                "model": model.__class__.__name__,
                 "Batch_size": train_dataset.batch_size,
                 "learning_rate": trainer.learning_rate,
                 "L1": trainer.L1,
@@ -117,7 +117,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             best_epoch = epoch
             best_loss = validation_loss_num
             if save_model != "":
-                model_path = f"best_model_{model.__class__.__name__}_{save_model}_epoch_{epoch + 1}.pt"
+                model_path = f"best_model_{model.__class__.__name__}_epoch_{epoch + 1}.pt"
                 torch.save(model, model_path)
                 if wdb:
                     wandb.save(model_path)
