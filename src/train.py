@@ -5,8 +5,11 @@ from wandb import wandb
 def create_tqdm_bar(iterable, desc, mode):
     return tqdm(enumerate(iterable),total=len(iterable), ncols=200, desc=desc)
 
-def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, device='cuda', save_model = "", name="Test", wdb=True, local=False, project="oai-knee-cartilage-segmentation"):
+def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, 
+                device='cuda', save_model = False, name="Test", wdb=True, local=False, 
+                project="oai-knee-cartilage-segmentation", early_stopping_patience=10):
     if wdb:
+        save_model = True
         if wandb.run is not None:
             wandb.finish()
         wandb.init(
@@ -28,16 +31,20 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
     train_loader = train_dataset.get_dataloader(shuffle=True)
     val_loader = val_dataset.get_dataloader(shuffle=True)
     model.to(device)
-    train(model, train_loader, val_loader, trainer, epochs, device, wdb, local = local, save_model = save_model)
+    train(model, train_loader, val_loader, trainer, epochs, device, wdb, local = local, 
+          save_model = save_model, early_stopping_patience=early_stopping_patience)
     
 
-def train(model, train_loader, val_loader, trainer, epochs, device, wdb, local = False, save_model = ""):
+def train(model, train_loader, val_loader, trainer, epochs, device, wdb, 
+          local = False, save_model = True, early_stopping_patience=10):
     """
     train the given model
     """
     optimizer, scheduler = trainer.configure_optimizers()
     best_model = None
     best_loss = float('inf')
+    best_epoch = -1
+    early_stop_counter = 0
     for epoch in range(epochs):        
         training_loss = []
         validation_loss = []
@@ -76,7 +83,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, local =
                         "train_specifity": res['specificity'].item(),
                         "train_f1_score": res['f1_score'].item(),
                         "train_AUC": res['AUC'],
-                        "epoch": epoch,
+                        "epoch": epoch + 1,
                         "learning_rate": optimizer.param_groups[0]['lr']})
         trainer.restart_epoch(plot=False)
         # use validation data
@@ -103,12 +110,25 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb, local =
                     "val_specificity": res['specificity'].item(),
                     "val_f1_score": res['f1_score'].item(),
                     "val_AUC": res['AUC'],
-                    "epoch": epoch,
+                    "epoch": epoch + 1,
                     "learning_rate": optimizer.param_groups[0]['lr']})
         if validation_loss_num < best_loss:
+            early_stop_counter = 0
+            best_epoch = epoch
             best_loss = validation_loss_num
             if save_model != "":
-                torch.save(model.state_dict(), f"best_model_{model.__class__.__name__}_{save_model}_epoch_{epoch}.pt")
+                model_path = f"best_model_{model.__class__.__name__}_{save_model}_epoch_{epoch + 1}.pt"
+                torch.save(model, model_path)
+                if wdb:
+                    wandb.save(model_path)
+        else:
+            early_stop_counter += 1
+            if early_stop_counter >= early_stopping_patience:
+                print(f"Early stopping at epoch {epoch + 1}")
+                if wdb:
+                    wandb.run.summary["stopped_early"] = True
+                    wandb.run.summary["total_epoch_trained"] = epoch + 1
+                break
         scheduler.step(validation_loss_num)
         trainer.restart_epoch(plot=False)
     

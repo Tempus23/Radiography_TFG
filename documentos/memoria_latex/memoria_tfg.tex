@@ -108,56 +108,179 @@ En este contexto, el presente trabajo busca contribuir al avance del uso de inte
 
 \section{Aprendizaje automático}
 
-El aprendizaje automático (\textit{Machine Learning, ML}) es una rama de la inteligencia artificial que ha transformado múltiples disciplinas al permitir que los sistemas aprendan y mejoren su desempeño en tareas específicas a partir de la experiencia, sin necesidad de ser programados explícitamente para cada situación. Este enfoque se basa en la construcción de modelos matemáticos capaces de identificar patrones y relaciones en grandes volúmenes de datos, lo que resulta esencial para aplicaciones tan diversas como la visión por computadora, el procesamiento del lenguaje natural, la bioinformática y, en particular, el diagnóstico médico.
+El aprendizaje automático (\textit{Machine Learning, ML}) es una rama de la inteligencia artificial que se centra en el desarrollo de algoritmos y modelos capaces de aprender a partir de datos. Esta tecnología ha transformado múltiples disciplinas al permitir que los sistemas mejoren su desempeño en tareas específicas mediante la experiencia, sin requerir una programación explícita para cada situación. Desde sus orígenes en técnicas estadísticas básicas hasta los modernos enfoques de aprendizaje profundo, ML ha evolucionado significativamente, impulsado por el incremento en la disponibilidad de datos y el avance en capacidad computacional. 
+% //IMAGEN: Gráfico histórico que ilustra la evolución de las técnicas de ML (desde métodos clásicos hasta deep learning).
 
-En el contexto del análisis de imágenes médicas, el aprendizaje automático permite automatizar procesos de detección, clasificación y segmentación de patologías, facilitando diagnósticos más rápidos y precisos. Por ejemplo, modelos basados en redes neuronales profundas han alcanzado desempeños comparables a los de expertos humanos en la identificación de anomalías en radiografías, resonancias magnéticas y tomografías computarizadas.
-
+En el análisis de imágenes médicas, el aprendizaje automático permite automatizar procesos críticos como la detección, clasificación y segmentación de patologías, lo que resulta en diagnósticos más rápidos y precisos. Por ejemplo, modelos basados en redes neuronales profundas han demostrado rendimientos comparables a los de expertos humanos en la identificación de anomalías en radiografías, resonancias magnéticas y tomografías computarizadas.
+% //IMAGEN: Comparativa visual entre una imagen médica original y la detección de anomalías realizada por un modelo de ML.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{neural_network.png}
+    \caption{Descripción de la imagen}
+    \label{fig:mi_imagen}
+  \end{figure}
 \subsection{Categorías de Aprendizaje Automático}
 
-El aprendizaje automático se clasifica en tres paradigmas fundamentales:
+El aprendizaje automático se puede clasificar en tres paradigmas fundamentales:
 
-\begin{itemize} \item \textbf{Aprendizaje supervisado}: Se apoya en conjuntos de datos etiquetados, donde cada entrada cuenta con una salida o etiqueta conocida. Durante el entrenamiento, el modelo aprende a mapear las entradas a las salidas correctas, facilitando la predicción de etiquetas en datos nuevos. Entre los algoritmos más comunes en este paradigma se encuentran la regresión lineal, las máquinas de soporte vectorial (\textit{Support Vector Machines, SVM}) y las redes neuronales profundas.
-
-java
-Copy
-\item \textbf{Aprendizaje no supervisado}: Aquí, los datos carecen de etiquetas y el objetivo es descubrir patrones o estructuras subyacentes. Técnicas como el clustering (agrupamiento), la reducción de dimensionalidad mediante análisis de componentes principales (PCA) y los modelos generativos permiten identificar relaciones ocultas en los datos y organizar la información de forma significativa.
-
-\item \textbf{Aprendizaje por refuerzo}: En este enfoque, un agente interactúa con un entorno y aprende a tomar decisiones mediante un sistema de prueba y error, optimizando sus acciones en función de una función de recompensa. Este paradigma es especialmente útil en problemas de toma de decisiones secuenciales y en la optimización de estrategias en entornos dinámicos.
+\begin{itemize}
+    \item \textbf{Aprendizaje supervisado}: Este enfoque utiliza conjuntos de datos etiquetados para entrenar modelos que aprendan a mapear entradas a salidas correctas. Algoritmos comunes en este paradigma incluyen la regresión lineal, las máquinas de soporte vectorial (SVM) y las redes neuronales profundas. 
+    % //IMAGEN: Diagrama de flujo del proceso de aprendizaje supervisado.
+    
+    \item \textbf{Aprendizaje no supervisado}: En este caso, los datos no cuentan con etiquetas, y el objetivo es descubrir estructuras subyacentes o patrones en el conjunto de datos. Se emplean técnicas como el clustering, el análisis de componentes principales (PCA) y modelos generativos.
+    % //IMAGEN: Ejemplo visual de un algoritmo de clustering aplicado a datos.
+    
+    \item \textbf{Aprendizaje por refuerzo}: Aquí, un agente interactúa con su entorno, tomando decisiones basadas en un sistema de recompensas y penalizaciones. A través de la retroalimentación, el agente aprende a optimizar su comportamiento para maximizar la función de recompensa.
+    % //IMAGEN: Esquema que muestra el ciclo de interacción en el aprendizaje por refuerzo.
 \end{itemize}
 
 \subsection{Procesamiento de Datos en Aprendizaje Automático}
 
-El rendimiento y la capacidad de generalización de los modelos dependen en gran medida de la calidad de los datos de entrada. Por ello, el procesamiento de datos es una etapa crítica que involucra varias fases:
+La calidad de los datos de entrada es determinante para el rendimiento y la capacidad de generalización de un modelo de ML. Por ello, el procesamiento de datos abarca varias fases esenciales:
 
-\begin{itemize} \item \textbf{Preprocesamiento}: Incluye la limpieza, normalización y transformación de los datos para eliminar ruidos, gestionar valores faltantes y unificar las escalas de las variables. En el ámbito de imágenes médicas, esta fase puede implicar la corrección de artefactos, la estandarización de intensidades y la segmentación preliminar de regiones de interés. \item \textbf{División del conjunto de datos}: Se segmenta la información en subconjuntos de entrenamiento, validación y prueba. Esta división es crucial para ajustar los hiperparámetros del modelo, prevenir el sobreajuste y evaluar de manera objetiva el desempeño final. \item \textbf{Extracción y selección de características}: En ciertos casos, se realiza una selección o generación de características relevantes que potencien la capacidad del modelo para identificar patrones significativos, lo cual es particularmente importante en dominios con alta dimensionalidad o datos complejos. \end{itemize}
+\begin{itemize}
+    \item \textbf{Preprocesamiento}: Consiste en la limpieza, normalización y transformación de los datos para eliminar ruidos y gestionar valores faltantes. En el caso de imágenes médicas, este proceso puede incluir la corrección de artefactos, la estandarización de intensidades y la segmentación preliminar de regiones de interés.
+    % //IMAGEN: Diagrama que ilustra el flujo de preprocesamiento en imágenes médicas.
+    
+    \item \textbf{División del conjunto de datos}: Se segmenta la información en subconjuntos de entrenamiento, validación y prueba. Esta división es crucial para ajustar los hiperparámetros del modelo, prevenir el sobreajuste y evaluar de forma objetiva el desempeño final.
+    % //IMAGEN: Representación gráfica de la partición de datos en entrenamiento, validación y test.
+    
+    \item \textbf{Extracción y selección de características}: En algunos casos, es necesario identificar y extraer características relevantes que potencien la capacidad del modelo para detectar patrones significativos, especialmente en dominios de alta dimensionalidad.
+\end{itemize}
 
 \subsection{Métricas de Evaluación}
 
-Para medir la efectividad de un modelo de aprendizaje automático, se emplean diversas métricas que varían según el tipo de problema:
+La evaluación del rendimiento de los modelos de aprendizaje automático se realiza mediante diversas métricas, que varían según la naturaleza del problema:
 
-\begin{itemize} \item \textbf{Para clasificación}: Se utilizan métricas como la precisión (\textit{accuracy}), la precisión (precision), el recall (sensibilidad) y el F1-score, especialmente en contextos con clases desbalanceadas. La curva ROC y el área bajo la curva (AUC-ROC) son también indicadores fundamentales para evaluar la capacidad del modelo de distinguir entre clases. \item \textbf{Para regresión}: Se valora el desempeño mediante el error cuadrático medio (MSE) y el error absoluto medio (MAE), que cuantifican la diferencia entre las predicciones del modelo y los valores reales. \end{itemize}
+\begin{itemize}
+    \item \textbf{Para clasificación}: Se utilizan métricas como la precisión (\textit{accuracy}), la precisión (precision), la sensibilidad (recall) y el F1-score. La curva ROC y el área bajo la curva (AUC-ROC) también son fundamentales para evaluar la capacidad del modelo para distinguir entre clases.
+    % //IMAGEN: Ejemplo gráfico de una curva ROC con el cálculo del AUC.
+    
+    \item \textbf{Para regresión}: Se emplean métricas como el error cuadrático medio (MSE) y el error absoluto medio (MAE), que cuantifican la diferencia entre las predicciones y los valores reales.
+\end{itemize}
 
 \subsection{Aplicaciones del Aprendizaje Automático en Imágenes Médicas}
 
-La aplicación del aprendizaje automático en el análisis de imágenes médicas ha abierto nuevas fronteras en el diagnóstico y seguimiento de diversas patologías. Algunas de las aplicaciones más destacadas incluyen:
+La integración de ML en el análisis de imágenes médicas ha permitido avances significativos en el campo del diagnóstico y la intervención clínica. Entre las aplicaciones más relevantes se encuentran:
 
-\begin{itemize} \item \textbf{Detección de enfermedades}: Mediante modelos supervisados, se pueden identificar anomalías en radiografías, resonancias magnéticas y tomografías computarizadas, facilitando diagnósticos tempranos y precisos. \item \textbf{Segmentación de tejidos y órganos}: Algoritmos basados en redes neuronales permiten delimitar estructuras anatómicas y patologías en imágenes médicas, lo que es fundamental para planificar tratamientos y cirugías. \item \textbf{Clasificación de tumores}: Los modelos de aprendizaje profundo pueden diferenciar entre tumores benignos y malignos, aportando una segunda opinión automatizada que complementa la evaluación clínica. \end{itemize}
+\begin{itemize}
+    \item \textbf{Detección de enfermedades}: Modelos supervisados permiten identificar anomalías en diversos tipos de imágenes médicas, facilitando diagnósticos tempranos y precisos.
+    % //IMAGEN: Ejemplo de radiografía con áreas destacadas que indican anomalías.
+    
+    \item \textbf{Segmentación de tejidos y órganos}: Las redes neuronales, especialmente las CNN, posibilitan la delimitación precisa de regiones de interés, lo cual es esencial para planificar tratamientos y procedimientos quirúrgicos.
+    % //IMAGEN: Imagen segmentada de una resonancia magnética mostrando la delimitación de órganos.
+    
+    \item \textbf{Clasificación de tumores}: Los modelos de aprendizaje profundo pueden diferenciar entre tumores benignos y malignos, proporcionando una segunda opinión automatizada que complementa la evaluación clínica.
+\end{itemize}
 
-En este trabajo se explora la aplicación del aprendizaje profundo para la detección de artritis en imágenes de rodillas. La integración de técnicas avanzadas de ML en el análisis de imágenes médicas no solo mejora la precisión diagnóstica, sino que también reduce la variabilidad interobservador, ofreciendo un soporte robusto y automatizado que puede transformar el proceso de diagnóstico en el ámbito clínico. Con el continuo avance en el procesamiento de datos y el desarrollo de modelos más sofisticados, se espera que el aprendizaje automático siga abriendo nuevas posibilidades para la personalización y optimización del tratamiento médico.
+\subsection{Ventajas, Desafíos y Perspectivas Futuras}
+
+El aprendizaje automático ofrece múltiples ventajas en el ámbito médico, aunque también presenta desafíos que requieren atención:
+
+\begin{itemize}
+    \item \textbf{Ventajas}:
+    \begin{itemize}
+        \item Automatización del análisis de grandes volúmenes de datos.
+        \item Capacidad para detectar patrones complejos y no lineales.
+        \item Reducción de la variabilidad interobservador en el diagnóstico.
+    \end{itemize}
+    % //IMAGEN: Tabla comparativa de las ventajas del aprendizaje automático en imágenes médicas.
+    
+    \item \textbf{Desafíos}:
+    \begin{itemize}
+        \item La necesidad de contar con grandes volúmenes de datos etiquetados.
+        \item Riesgo de sobreajuste y la necesidad de aplicar técnicas de regularización.
+        \item Problemas de interpretabilidad, lo que puede dificultar la adopción en entornos clínicos.
+    \end{itemize}
+    % //IMAGEN: Diagrama que ilustra los desafíos del sobreajuste y la interpretabilidad en ML.
+    
+    \item \textbf{Perspectivas Futuras}:
+    La investigación en ML continúa avanzando hacia modelos más robustos y explicables. El desarrollo de técnicas de transferencia de aprendizaje, la integración de algoritmos híbridos y el fomento de la interpretabilidad serán clave para una mayor adopción en el ámbito médico, permitiendo sistemas de apoyo al diagnóstico cada vez más precisos y confiables.
+    % //IMAGEN: Esquema que presenta las tendencias futuras en el desarrollo de ML para aplicaciones médicas.
+\end{itemize}
+
+En resumen, el aprendizaje automático representa una herramienta poderosa que, a través de su continua evolución, promete revolucionar el análisis de imágenes médicas. Su capacidad para automatizar y mejorar procesos diagnósticos no solo optimiza la eficiencia clínica, sino que también abre la puerta a un futuro en el que la inteligencia artificial se integre de manera efectiva en la toma de decisiones médicas.
+
+
+\section{Redes neuronales}
+Las redes neuronales son modelos computacionales inspirados en el funcionamiento del cerebro humano, diseñados para reconocer patrones y aprender representaciones a partir de datos. Su capacidad para aproximar funciones complejas las ha convertido en una herramienta fundamental en el ámbito del aprendizaje profundo y el análisis de imágenes médicas.
+
+\subsection{Estructura y Funcionamiento}
+Una red neuronal se compone de varias capas de neuronas artificiales:
+\begin{itemize}
+    \item \textbf{Capa de entrada:} Recibe los datos iniciales y los distribuye a las neuronas de las capas siguientes.
+    \item \textbf{Capas ocultas:} Una o varias capas intermedias que transforman las entradas mediante combinaciones lineales y funciones de activación no lineales, permitiendo la extracción de características relevantes.
+    \item \textbf{Capa de salida:} Genera la respuesta final del modelo, que puede corresponder a una clasificación, una regresión u otra tarea específica.
+\end{itemize}
+Cada neurona realiza una suma ponderada de sus entradas, seguida de la aplicación de una función de activación (por ejemplo, sigmoide, ReLU o tanh), lo que introduce la no linealidad necesaria para modelar relaciones complejas.
+
+\subsection{Proceso de Aprendizaje y Optimización}
+El aprendizaje en redes neuronales se basa en la minimización de una función de coste, que cuantifica la diferencia entre las predicciones del modelo y los valores reales. Este proceso se lleva a cabo mediante:
+\begin{itemize}
+    \item \textbf{Backproping:} Algoritmo que permite calcular el gradiente del error con respecto a cada peso en la red, facilitando su ajuste.
+    \item \textbf{Descenso de gradiente:} Método de optimización utilizado para actualizar los pesos de forma iterativa y reducir la función de coste.
+\end{itemize}
+El éxito del aprendizaje depende, en gran medida, de la elección de la función de activación, la arquitectura de la red y los hiperparámetros del algoritmo de optimización.
+
+\subsection{Principales Arquitecturas de Redes Neuronales}
+Existen diversas configuraciones de redes neuronales, cada una adaptada a distintos tipos de problemas:
+\begin{itemize}
+    \item \textbf{Redes Feedforward:} La información fluye en una única dirección desde la entrada hasta la salida, siendo las más simples en estructura.
+    \item \textbf{Redes Convolucionales (CNN):} Especializadas en el procesamiento de datos con estructura de grilla, como imágenes. Su uso es fundamental en tareas de visión por computadora, donde permiten extraer características espaciales relevantes.
+    \item \textbf{Redes Recurrentes (RNN):} Diseñadas para trabajar con datos secuenciales, en las que la información de estados anteriores influye en las predicciones actuales.
+\end{itemize}
+
+\subsection{Aplicaciones en Imágenes Médicas}
+En el análisis de imágenes médicas, las redes neuronales, y en particular las CNN, han demostrado un alto rendimiento en tareas como:
+\begin{itemize}
+    \item \textbf{Detección de anomalías:} Identificación de patrones sutiles en radiografías, resonancias magnéticas y tomografías computarizadas.
+    \item \textbf{Clasificación de tejidos y tumores:} Diferenciación entre estructuras normales y patológicas, lo que contribuye a diagnósticos tempranos y precisos.
+    \item \textbf{Segmentación de imágenes:} Delimitación precisa de regiones de interés, facilitando la planificación de tratamientos y procedimientos quirúrgicos.
+\end{itemize}
+
+\subsection{Desafíos y Perspectivas Futuras}
+A pesar de su éxito, el uso de redes neuronales enfrenta desafíos importantes:
+\begin{itemize}
+    \item \textbf{Sobreajuste:} La tendencia del modelo a aprender de memoria los datos de entrenamiento, lo que afecta su capacidad de generalización.
+    \item \textbf{Necesidad de grandes volúmenes de datos:} La obtención de conjuntos de datos suficientemente amplios y representativos es crucial para el entrenamiento eficaz.
+    \item \textbf{Interpretabilidad:} La complejidad de los modelos dificulta la comprensión de las decisiones tomadas, lo que puede limitar su adopción en entornos clínicos.
+\end{itemize}
+La investigación continúa en áreas como la regularización, el aprendizaje por transferencia y los modelos interpretables, lo que promete mejorar la robustez y aplicabilidad de las redes neuronales en el ámbito médico.
 
 
 
+\section{ML aplicado a CV y tareas biomédicas (MedMNIST)}
+El uso de técnicas de Machine Learning (ML) en visión por computadora (CV) ha revolucionado el análisis de imágenes, permitiendo automatizar tareas que antes requerían la intervención humana directa. En el ámbito biomédico, estas técnicas han facilitado el diagnóstico y seguimiento de diversas patologías mediante la extracción de información relevante de imágenes médicas.
 
+\subsection{Aplicaciones de ML en Visión por Computadora}
+Las principales aplicaciones de ML en CV incluyen:
+\begin{itemize}
+    \item \textbf{Clasificación:} Consiste en asignar a cada imagen una etiqueta o categoría, aprovechando la capacidad de las redes neuronales para aprender características discriminativas de forma automática.
+    \item \textbf{Detección de Objetos:} Permite localizar y etiquetar instancias específicas dentro de una imagen, lo cual es crucial para identificar estructuras anatómicas o anomalías.
+    \item \textbf{Segmentación:} Divide una imagen en regiones o segmentos homogéneos, facilitando la delimitación de órganos o zonas afectadas, y ofreciendo un soporte esencial para diagnósticos precisos.
+\end{itemize}
+Estas técnicas se basan principalmente en arquitecturas de redes neuronales convolucionales (CNN), que han demostrado un desempeño sobresaliente en el procesamiento de imágenes.
 
+\subsection{MedMNIST: Un Benchmark para Imágenes Médicas}
+MedMNIST es un conjunto de datos diseñado específicamente para evaluar modelos de ML en tareas de clasificación de imágenes médicas. Entre sus características destacan:
+\begin{itemize}
+    \item \textbf{Diversidad de Modalidades:} Incluye imágenes provenientes de distintas modalidades médicas, como radiografías, resonancias magnéticas y tomografías computarizadas, lo que permite evaluar la versatilidad de los modelos.
+    \item \textbf{Baja Resolución:} Las imágenes en MedMNIST tienen resoluciones relativamente bajas, simulando escenarios donde la disponibilidad de datos de alta calidad es limitada y exigiendo modelos robustos y eficientes.
+    \item \textbf{Estándares de Evaluación:} El benchmark define protocolos de evaluación homogéneos, facilitando la comparación objetiva del desempeño de distintos algoritmos de ML.
+\end{itemize}
+El uso de MedMNIST permite a la comunidad investigadora explorar nuevas arquitecturas y técnicas de preprocesamiento, fomentando el desarrollo de modelos más adaptados a las condiciones reales del entorno biomédico.
 
+\subsection{Integración de ML en Proyectos Biomédicos}
+La aplicación de ML en proyectos biomédicos mediante técnicas de visión por computadora implica varios pasos:
+\begin{itemize}
+    \item \textbf{Preprocesamiento de Imágenes:} Involucra la normalización, corrección de artefactos y, en algunos casos, la segmentación preliminar para mejorar la calidad de las imágenes antes del análisis.
+    \item \textbf{Diseño de Arquitecturas CNN:} Se desarrollan modelos específicos que aprovechan el aprendizaje transferido y técnicas de data augmentation para contrarrestar la limitación en la cantidad de datos disponibles.
+    \item \textbf{Evaluación y Validación:} Se utilizan métricas especializadas, como la precisión, la sensibilidad, la especificidad y el AUC-ROC, para asegurar que el modelo sea robusto y fiable en contextos clínicos.
+\end{itemize}
+La integración de estas técnicas en sistemas de apoyo al diagnóstico contribuye a reducir la variabilidad interobservador y mejora la eficiencia en la detección temprana de patologías.
 
+En conclusión, la combinación de ML y CV ha abierto nuevas posibilidades en el análisis de imágenes médicas. MedMNIST se erige como una herramienta fundamental para la validación y comparación de algoritmos, impulsando la innovación en el desarrollo de soluciones que pueden transformar el proceso diagnóstico en entornos clínicos.
 
-\section{Redes neuronales}           % 2.2
-% Descripción breve de redes neuronales
-
-\section{ML aplicado a CV y tareas biomédicas (MedMNIST)} % 2.3
-% FIXME: Detalla aquí cómo se aplica ML en Computer Vision 
-% y en particular a tareas médicas con la herramienta MedMNIST
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 3                                     %
