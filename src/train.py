@@ -116,6 +116,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             early_stop_counter = 0
             best_epoch = epoch
             best_loss = validation_loss_num
+            best_model = model
             if save_model != "":
                 model_path = f"best_model_{model.__class__.__name__}_epoch_{epoch + 1}.pt"
                 torch.save(model, model_path)
@@ -132,7 +133,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
         scheduler.step(validation_loss_num)
         trainer.restart_epoch(plot=False)
     
-    test_model(model, val_loader, trainer, device, wdb)
+    test_model(best_model, val_loader, trainer, device, wdb)
 
 def test_model(model, test_loader, trainer, device, wdb=False):
     """
