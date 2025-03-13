@@ -329,15 +329,23 @@ La precisión obtenida se escogió en base a la época de entrenamiento con meno
 \midrule
 EfficientNetB0 (Pre-entrenado)  & 69.87\%    & 0.73 & 7 \\
 EfficientNetB5 (Pre-entrenado)  & 72.82\%    & 0.81 & 2 \\
+EfficientNetB7 (Pre-entrenado)  & 66.54\%    & 0.79 & 13 \\
+EfficientNetB4 (Desde Cero)     & 59.36\%    & 0.96 & 49 \\
 ResNet50 (Pre-entrenado)        & 66.66\%    & 0.78 & 4 \\
 ResNet50 (Desde Cero)           & 65.89\%    & 0.84 & 28 \\
-EfficientNetB4 (Desde Cero)     & 59.36\%    & 0.96 & 49 \\
 
 \bottomrule
 \end{tabular}
 \caption{Comparación de modelos y estrategias de entrenamiento}
 \label{tab:resultados_experimentos}
 \end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{EfficientNet_B7.png}
+    \caption{Descripción de la imagen}
+    \label{fig:matriz_confusion}
+\end{figure}
 
 \subsection{Impacto del Uso de Pesos Pre-entrenados}
 Los experimentos evidenciaron que:
