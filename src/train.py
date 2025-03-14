@@ -88,9 +88,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             training_loop.set_postfix(train_loss="{:.4f}".format(training_loss_num / (train_iteration + 1)),
                                       complete_loss="{:.4f}".format(complete_loss_num / (train_iteration + 1)),
                                       acc=res['ACC'].item(),
-                                      AUC=res['AUC'].item(),
-                                      sensivity=res['recall'].item(),
-                                      specificity=res['specificity'].item())
+                                      AUC=res['AUC'].item())
             if wdb:
                 
                 wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
@@ -125,8 +123,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
                 validation_loss_num += res['loss'].item()
                 val_loop.set_postfix(val_loss="{:.8f}".format(validation_loss_num / (val_iteration + 1)),
                                      acc=res['ACC'].item(),
-                                     AUC=res['AUC'].item(),
-                                     specificity=res['specificity'].item())
+                                     AUC=res['AUC'].item())
         
         # Calculate average validation loss for this epoch
         avg_val_loss = validation_loss_num / (val_iteration + 1)

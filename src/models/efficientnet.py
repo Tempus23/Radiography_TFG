@@ -53,6 +53,9 @@ class EfficientNetB0(nn.Module):
     
     def forward(self, x):
         return self.efficientnet(x)
+    
+    def features(self, x):
+        return self.efficientnet.features(x)
 
 # Clase EfficientNetB4
 class EfficientNetB4(nn.Module):
@@ -68,6 +71,8 @@ class EfficientNetB4(nn.Module):
     
     def forward(self, x):
         return self.efficientnet(x)
+    def features(self, x):
+        return self.efficientnet.features(x)
 
 # Clase EfficientNetB7
 class EfficientNetB7(nn.Module):

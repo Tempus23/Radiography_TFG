@@ -143,7 +143,17 @@ class BilateralFilter:
         return Image.fromarray(img_filtered)
 
 class DatasetExperiment1(Dataset):
-    def __init__(self, mode='train', batch_size=32,grey = False, local = False, path = ''):
+    def __init__(
+            self, 
+            mode='train', 
+            batch_size=32, 
+            sigma_color = 75, 
+            sigma_space=75, 
+            d=9, 
+            grey = False, 
+            local = False, 
+            path = ''
+        ):
         """
         Args:
             mode (str): 'train', 'val' o 'test'.
@@ -159,7 +169,7 @@ class DatasetExperiment1(Dataset):
         self.transform =  transforms.Compose([
             transforms.Resize((224, 224)),
             HistogramEqualization(),
-            BilateralFilter(d=9, sigma_color=75, sigma_space=75),
+            BilateralFilter(d=d, sigma_color=sigma_color, sigma_space=sigma_space),
             transforms.ToTensor(),
         ])
         self.data_path = os.path.join(path, mode)
