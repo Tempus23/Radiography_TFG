@@ -46,6 +46,8 @@
          {Palabras clave en español} % español
          {Keywords in English}       % inglés
 
+% Añade esto en el preámbulo (antes de \begin{document})
+\setcounter{tocdepth}{1} % Muestra solo capítulos y secciones en el índice
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,7 +103,7 @@ En este contexto, el presente trabajo busca contribuir al avance del uso de inte
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 2                                     %
-%                                PRELIMINARES                                 %
+%                                PRELIMINARES (STANDBY)                       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Preliminares}  % ~15 páginas
@@ -287,7 +289,13 @@ En conclusión, la combinación de ML y CV ha abierto nuevas posibilidades en el
 %                      PRIMERA CONTRIBUCIÓN (OBJETIVO 1)                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Capítulo 3 | contribución 1: Experimentación y Análisis de Resultados}
+\chapter{Capitulo 3 - Corpus}
+\section{Que poner aquí}
+Descripción del corpus OAI; cómo se adquirió, estadísticas
+
+básicas, ejemplos, subconjuntos estándar, etc.
+
+\chapter{Capítulo X | contribución 1: Experimentación y Análisis de Resultados}
 
 \section{Introducción}
 En este capítulo se presentan los experimentos realizados para evaluar el desempeño de diversas arquitecturas de redes neuronales en la detección de artrosis en rodillas. Con el objetivo de aportar evidencia empírica para la detección temprana de la enfermedad, se han probado variantes de modelos EfficientNet y ResNet utilizando dos estrategias de entrenamiento: el uso de pesos pre-entrenados (transfer learning) y el entrenamiento desde cero (\textit{from scratch}). Los experimentos se han llevado a cabo sobre el conjunto de datos Mendeley \cite{chen2018knee} y se han tomado como referencia las aportaciones teóricas y experimentales descritas en \cite{efficientnet_paper}. 
