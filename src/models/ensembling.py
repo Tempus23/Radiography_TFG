@@ -17,7 +17,7 @@ class Ensembling(nn.Module):
 
         #Clasificación 512 -> 256 -> 128 -> 65 -> num_classes con batchNormalization, l2regularization y dropout
         self.classifier = nn.Sequential(
-            nn.Linear(num_classes*2, 512),
+            nn.Linear(150528, 512),
             nn.BatchNorm1d(512),
             nn.Dropout(0.4),
             
@@ -49,7 +49,6 @@ class Ensembling(nn.Module):
 
         #Concatenar
         x = torch.cat((features_b0, features_b4), dim=1)
-
 
         #Clasificación 512 -> 256 -> 128 -> 65 -> num_classes con batchNormalization, l2regularization y dropout
         x = self.classifier(x)
