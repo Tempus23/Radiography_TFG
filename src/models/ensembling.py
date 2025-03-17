@@ -39,8 +39,7 @@ class Ensembling(nn.Module):
             nn.ReLU(),
             nn.BatchNorm1d(64),
             
-            nn.Linear(64, num_classes),
-            nn.Softmax2d()
+            nn.Linear(64, num_classes)
         )
 
     def forward(self, x: Tensor) -> Tensor:
