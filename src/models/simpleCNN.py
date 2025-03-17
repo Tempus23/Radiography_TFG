@@ -1,4 +1,5 @@
 from torch import nn
+import torch.nn.functional as F
 
 class SimpleCNN(nn.Module):
     def __init__(self, num_classes=10):
@@ -7,7 +8,6 @@ class SimpleCNN(nn.Module):
         self.name = "SimpleCNN"
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, padding=1)
         self.pool = nn.MaxPool2d(2, 2)
-        self.F = nn.functional
         # Capas totalmente conectadas
         self.fc1 = nn.Linear(16 * 112 * 112, 128)
         self.fc2 = nn.Linear(128, num_classes)
@@ -22,5 +22,5 @@ class SimpleCNN(nn.Module):
         x = self.F.relu(self.fc1(x))
         # Capa de salida
         x = self.fc2(x)
-        x = self.F.softmax(x, dim=1)
+        x = F.softmax(x, dim=1)
         return x
