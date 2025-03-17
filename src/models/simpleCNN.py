@@ -14,7 +14,7 @@ class SimpleCNN(nn.Module):
 
     def forward(self, x):
         # Primera convolución
-        x = self.pool(self.F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv1(x)))
 
         # Flatten
         x = x.view(-1, 16 * 112 * 112)
