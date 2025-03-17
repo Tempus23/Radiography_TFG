@@ -19,7 +19,7 @@ class SimpleCNN(nn.Module):
         # Flatten
         x = x.view(-1, 16 * 112 * 112)
         # Primera capa totalmente conectada
-        x = self.F.relu(self.fc1(x))
+        x = F.relu(self.fc1(x))
         # Capa de salida
         x = self.fc2(x)
         x = F.softmax(x, dim=1)
