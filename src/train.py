@@ -151,8 +151,6 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             if save_model != "":
                 model_path = f"best_model_{model.__class__.__name__}_epoch_{epoch + 1}.pt"
                 torch.save(model, model_path)
-                if wdb:
-                    wandb.save(model_path)
         else:
             early_stop_counter += 1
             if early_stop_counter >= early_stopping_patience:
