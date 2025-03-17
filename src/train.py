@@ -35,7 +35,7 @@ def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=
     train_loader = train_dataset.get_dataloader(shuffle=True)
     val_loader = val_dataset.get_dataloader(shuffle=True)
     model.to(device)
-    history = train(model, train_loader, val_loader, trainer, epochs, device, wdb, local=local, 
+    best_model, history = train(model, train_loader, val_loader, trainer, epochs, device, wdb, local=local, 
                     save_model=save_model, early_stopping_patience=early_stopping_patience)
     
     # Plot training & validation loss if requested
@@ -174,7 +174,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
     else:
         test_model(best_model, val_loader, trainer, device, wdb)
     
-    return history
+    return best_model if best_model else model, history
 
 def test_model(model, test_loader, trainer, device, wdb=False):
     """

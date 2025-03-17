@@ -286,14 +286,80 @@ En conclusión, la combinación de ML y CV ha abierto nuevas posibilidades en el
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 3                                     %
-%                      PRIMERA CONTRIBUCIÓN (OBJETIVO 1)                      %
+%                     DESCRIPCIÓN DEL CORPUS DEL DATASET OAI                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Corpus del Dataset OAI y del Paper}
+\label{chap:corpus}
+
+En este capítulo se presenta una descripción exhaustiva del corpus utilizado para la detección y gradación de la artrosis en rodillas. Se abordan aspectos fundamentales relativos al dataset OAI, obtenido de Mendeley Data, así como la integración de elementos experimentales extraídos del paper \cite{efficientnet_paper}. En este contexto, se detallan los procesos de adquisición, preprocesamiento, análisis estadístico y organización en subconjuntos, elementos esenciales para el éxito en la aplicación de modelos de aprendizaje profundo.
+
+\section{Adquisición y Descripción del Dataset OAI}
+El dataset OAI se obtuvo de la plataforma Mendeley Data y se ha consolidado como una fuente de referencia para el estudio de la artrosis de rodilla. Este corpus se compone de radiografías que permiten evaluar la severidad de la enfermedad mediante el sistema de gradación de Kellgren-Lawrence (KL). Durante la fase de adquisición se integraron las clases \textit{test}, \textit{train}, \textit{val} y \textit{auto-test} presentadas en el dataset original, logrando el split empleado en \cite{efficientnet_paper}. Concretamente, el conjunto se redistribuyó en un 75\% para entrenamiento, 17\% para prueba y 8\% para validación.
+
+\subsection{Distribución por Condición Médica y Estadísticas del Corpus}
+En este trabajo, las clases se denominan de acuerdo con la condición médica asociada a la artrosis:
+\begin{itemize}
+    \item \textbf{Sin artrosis} (KL 0)
+    \item \textbf{Leve} (KL 1)
+    \item \textbf{Moderada} (KL 2)
+    \item \textbf{Severa} (KL 3)
+    \item \textbf{Muy severa} (KL 4)
+\end{itemize}
+
+La siguiente tabla resume la distribución numérica de imágenes en cada subconjunto:
+
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Subconjunto} & \textbf{Sin artrosis} & \textbf{Leve} & \textbf{Moderada} & \textbf{Severa} & \textbf{Muy severa} \\
+\midrule
+\textit{train} & 2892 & 1327 & 1933 & 964 & 221 \\
+\textit{val}   & 308  & 141  & 206  & 102 & 23  \\
+\textit{test}  & 657  & 302  & 439  & 220 & 51  \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Como complemento, se detallan a continuación los porcentajes de distribución por clase en cada subconjunto:
+
+Conjunto de datos por clase
+\begin{itemize}
+    \item Sin artrosis: 39.5\%
+    \item Leve: 18\%
+    \item Moderada: 26.5\%
+    \item Severa: 13\%
+    \item Muy severa: 3\%
+\end{itemize}
+El corpus total se compone de 9786 imágenes, distribuidas en 7337 para entrenamiento, 780 para validación y 1669 para prueba. Esta distribución y el equilibrio en las condiciones médicas son fundamentales para el entrenamiento y evaluación robusta de los modelos de clasificación.
+
+\section{Preprocesamiento y Análisis del Corpus}
+El preprocesamiento de las imágenes es una etapa crucial para asegurar la calidad y homogeneidad de los datos. Se aplicaron las siguientes técnicas:
+
+\begin{itemize}
+    \item \textbf{Redimensionamiento y Conversión a RGB:} Se ajustaron todas las imágenes a un tamaño uniforme de 224$\times$224 píxeles y se convirtieron al formato RGB, cumpliendo con las especificaciones de entrada de arquitecturas como EfficientNet.
+    \item \textbf{Ecualización de Histograma:} Esta técnica se utilizó para mejorar el contraste, resaltando detalles fundamentales para la detección de patrones asociados a la artrosis.
+    \item \textbf{Filtrado Bilateral:} Aplicado para suavizar las imágenes preservando bordes y detalles críticos, esenciales para la correcta interpretación anatómica.
+    \item \textbf{Data Augmentation:} Se implementaron técnicas de aumento de datos (volteo horizontal y vertical) en el conjunto de entrenamiento, incrementando la variabilidad y robustez del modelo sin alterar la integridad de los conjuntos de validación y prueba.
+\end{itemize}
+
+El análisis estadístico del corpus resalta una distribución equilibrada entre las diferentes condiciones médicas, lo que es vital para el aprendizaje profundo y la posterior validación del modelo.
+
+\section{Integración con el Paper}
+El paper \cite{efficientnet_paper} utiliza el dataset OAI para evaluar un modelo ensemble basado en arquitecturas EfficientNet, mediante:
+
+\begin{itemize}
+    \item \textbf{Modelo Ensemble:} La combinación de EfficientNetB0 y EfficientNetB4 permite mejorar la precisión en la clasificación, aprovechando las fortalezas complementarias de cada arquitectura.
+    \item \textbf{Estrategia de Entrenamiento:} Se han empleado pesos pre-entrenados junto con técnicas de regularización (Dropout y penalización L2) para optimizar la convergencia del modelo y minimizar el riesgo de sobreajuste.
+    \item \textbf{Explainable AI:} La técnica Grad-CAM facilita la interpretación visual de las áreas críticas que influyen en las predicciones, aumentando la transparencia y confiabilidad del sistema.
+\end{itemize}
+
+La integración de estas metodologías, junto con el exhaustivo preprocesamiento y análisis del corpus, permite obtener resultados experimentales comparables con el estado del arte en la detección y gradación de la artrosis de rodilla.
+
+\section{Conclusiones}
+El análisis detallado del corpus del dataset OAI y su integración con las técnicas presentadas en \cite{efficientnet_paper} subraya la importancia de una adquisición y preprocesamiento minuciosos. La organización en subconjuntos, el equilibrio en la distribución de condiciones médicas y la aplicación de técnicas avanzadas en el tratamiento de imágenes sientan las bases para el desarrollo de modelos de aprendizaje profundo capaces de ofrecer diagnósticos precisos y fiables. Este enfoque contribuye significativamente al desarrollo de herramientas de asistencia al diagnóstico que combinan inteligencia artificial con técnicas de Explainable AI.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Capitulo 3 - Corpus}
-\section{Que poner aquí}
-Descripción del corpus OAI; cómo se adquirió, estadísticas
-
-básicas, ejemplos, subconjuntos estándar, etc.
 
 \chapter{Capítulo X | contribución 1: Experimentación y Análisis de Resultados}
 
