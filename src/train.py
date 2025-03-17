@@ -169,7 +169,10 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
     history['best_val_loss'] = best_loss
     if save_model and wdb:
         wandb.save(model_path)
-    test_model(best_model, val_loader, trainer, device, wdb)
+    if local:
+        test_model(model, train_loader, trainer, device, wdb)
+    else:
+        test_model(best_model, val_loader, trainer, device, wdb)
     
     return history
 

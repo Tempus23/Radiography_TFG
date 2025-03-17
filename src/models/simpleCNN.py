@@ -1,4 +1,5 @@
 from torch import nn
+
 class SimpleCNN(nn.Module):
     def __init__(self, num_classes=10):
         super(SimpleCNN, self).__init__()
@@ -21,4 +22,5 @@ class SimpleCNN(nn.Module):
         x = self.F.relu(self.fc1(x))
         # Capa de salida
         x = self.fc2(x)
+        x = self.F.softmax(x, dim=1)
         return x
