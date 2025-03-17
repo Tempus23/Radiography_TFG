@@ -17,14 +17,19 @@ class Ensembling(nn.Module):
 
         #Clasificación 512 -> 256 -> 128 -> 65 -> num_classes con batchNormalization, l2regularization y dropout
         self.classifier = nn.Sequential(
+            nn.BatchNorm1d(150528),
+
             nn.Linear(150528, 512),
-            nn.BatchNorm1d(512),
+            nn.ReLU(),
+
             nn.Dropout(0.4),
+            nn.BatchNorm1d(512),
             
             nn.Linear(512, 256),
             nn.ReLU(),
-            nn.BatchNorm1d(256),
+
             nn.Dropout(0.3),
+            nn.BatchNorm1d(256),
             
             nn.Linear(256, 128),
             nn.ReLU(),
@@ -35,6 +40,7 @@ class Ensembling(nn.Module):
             nn.BatchNorm1d(64),
             
             nn.Linear(64, num_classes),
+            nn.Softmax2d()
         )
 
     def forward(self, x: Tensor) -> Tensor:

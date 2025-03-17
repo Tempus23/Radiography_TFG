@@ -167,7 +167,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
     # Mark the best epoch in history
     history['best_epoch'] = best_epoch + 1
     history['best_val_loss'] = best_loss
-    
+    if save_model and wdb:
+        wandb.save(model_path)
     test_model(best_model, val_loader, trainer, device, wdb)
     
     return history
