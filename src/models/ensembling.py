@@ -2,7 +2,7 @@ from torch import nn, Tensor
 import torch
 from typing import Type
 from .efficientnet import EfficientNetB0, EfficientNetB4
-
+from torch.nn import functional as F
 # Clase Ensembling
 class Ensembling(nn.Module):
     def __init__(self, num_classes: int, pretrained: bool = False) -> None:
@@ -57,5 +57,5 @@ class Ensembling(nn.Module):
 
         #Clasificación 512 -> 256 -> 128 -> 65 -> num_classes con batchNormalization, l2regularization y dropout
         x = self.classifier(x)
-
+        x = F.softmax(x, dim=1)
         return x
