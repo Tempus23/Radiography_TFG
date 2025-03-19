@@ -6,7 +6,7 @@ from wandb import wandb
 import os
 
 def create_tqdm_bar(iterable, desc, mode):
-    return tqdm(enumerate(iterable), total=len(iterable), ncols=200, desc=desc)
+    return tqdm(enumerate(iterable), total=len(iterable), ncols=140, desc=desc)
 
 def train_model(model, trainer, train_dataset, val_dataset, epochs=5, transform=None, 
                 device='cuda', save_model=False, name="Test", wdb=True, local=False, 
@@ -86,9 +86,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             complete_loss_num += res['real_loss'].item()
             # Update the progress bar.
             training_loop.set_postfix(train_loss="{:.4f}".format(training_loss_num / (train_iteration + 1)),
-                                      complete_loss="{:.4f}".format(complete_loss_num / (train_iteration + 1)),
-                                      acc=res['ACC'].item(),
-                                      AUC=res['AUC'].item())
+                                      complete_loss="{:.2f}".format(complete_loss_num / (train_iteration + 1)),
+                                      acc=res['ACC'].item())
             if wdb:
                 
                 wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
@@ -122,8 +121,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
                 validation_loss.append(res['loss'].item())
                 validation_loss_num += res['loss'].item()
                 val_loop.set_postfix(val_loss="{:.8f}".format(validation_loss_num / (val_iteration + 1)),
-                                     acc=res['ACC'].item(),
-                                     AUC=res['AUC'].item())
+                                     acc=res['ACC'].item())
         
         # Calculate average validation loss for this epoch
         avg_val_loss = validation_loss_num / (val_iteration + 1)
@@ -148,16 +146,19 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             best_epoch = epoch
             best_loss = avg_val_loss
             best_model = model
-            if save_model != "":
-                model_path = f"best_model_{model.__class__.__name__}_epoch_{epoch + 1}.pt"
-                torch.save(model, model_path)
         else:
             early_stop_counter += 1
             if early_stop_counter >= early_stopping_patience:
                 print(f"Early stopping at epoch {epoch + 1}")
+                if save_model:
+                    model_path = f"best_model_{model.__class__.__name__}_epoch_{epoch + 1}.pt"
+                    torch.save(model, model_path)
+    
+           
                 if wdb:
                     wandb.run.summary["stopped_early"] = True
                     wandb.run.summary["total_epoch_trained"] = epoch + 1
+                    wandb.save(model_path)
                 break
         scheduler.step(avg_val_loss)
         trainer.restart_epoch(plot=False)
@@ -165,8 +166,11 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
     # Mark the best epoch in history
     history['best_epoch'] = best_epoch + 1
     history['best_val_loss'] = best_loss
-    if save_model and wdb:
-        wandb.save(model_path)
+    if save_model:
+        model_path = f"best_model_{model.__class__.__name__}_epoch_{epoch + 1}.pt"
+        torch.save(model, model_path)
+        if wdb:
+            wandb.save(model_path)
     if local:
         test_model(model, train_loader, trainer, device, wdb)
     else:
