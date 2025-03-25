@@ -31,11 +31,7 @@ class Regression(pl.LightningModule):
         self.linearLoss = nn.L1Loss()
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=num_classes).to(device)
         self.auc_metric = tm.AUROC(task="binary").to(device)
-        
-        # Initialize metrics logging
-        self.train_metrics = {"loss": [], "acc": [], "precision": [], "recall": [], "f1": [], "auc": []}
-        self.val_metrics = {"loss": [], "acc": [], "precision": [], "recall": [], "f1": [], "auc": []}
-
+        self.logs = {"predictions": [], "labels": [], "count": 0}
     def forward(self, x):
         return self.model(x)
         
@@ -84,10 +80,6 @@ class Regression(pl.LightningModule):
         precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
         
         # Log metrics
-        self.log('train_loss', prediction_loss, prog_bar=True)
-        self.log('train_acc', ACC, prog_bar=True)
-        self.log('train_f1', f1_score)
-        self.log('train_auc', AUC)
 
         return {"loss": regularized_loss, "base_loss": prediction_loss, "ACC": ACC, "recall": recall, 
                 "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
@@ -107,32 +99,29 @@ class Regression(pl.LightningModule):
         # Convert back for metrics
         y_orig = y * self.normalize
         y_pred = self.prediction(y_hat)
-        
+        self.logs["predictions"].append(y_hat * self.normalize)
+        self.logs["labels"].append(y_orig)
+        self.logs["count"] += len(y)
         self.confusion_matrix.update(y_pred, y_orig.int())
         self.auc_metric.update(y_hat, y_orig.int())
 
         precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
         
         # Log validation metrics
-        self.log('val_loss', loss, prog_bar=True)
-        self.log('val_acc', ACC, prog_bar=True)
-        self.log('val_f1', f1_score)
-        self.log('val_auc', AUC)
         
         return {"loss": loss, "linear_loss": linear_loss, "ACC": ACC, "precision": precision, 
                 "recall": recall, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
                 
-    def on_train_epoch_end(self):
-        self.restart_epoch(plot=False)
-        
-    def on_validation_epoch_end(self):
-        self.restart_epoch(plot=False)
 
     def restart_epoch(self, plot = False):
         if plot:
             self.plot()
+            self.plot_predictions_on_line()
         self.confusion_matrix.reset()
         self.auc_metric.reset()
+        self.logs["predictions"] = []
+        self.logs["labels"] = []
+        self.logs["count"] = 0
 
     def calculate_metrics_from_confusion_matrix(self):
         # Obtener la matriz de confusión (suponiendo que es un tensor de torch)
@@ -224,3 +213,73 @@ class Regression(pl.LightningModule):
                             colLabels=["Clase", "Precision", "Sensivity/Recall", "F1", "Specificity", "Support"],
                             cellLoc="center", loc="center")
         axs[1].set_title(f"Metrics por clase\nAccuracy General: {accuracy:.2f}", pad=20)
+
+        
+    def plot_predictions_on_line(self, max_samples=500):
+        """
+        Visualiza las predicciones del modelo en una recta numérica, 
+        coloreando los puntos según la clase real.
+        
+        Args:
+            dataloader: Dataloader con los datos a evaluar
+            epoch: Número de época actual para el título
+            max_samples: Máximo número de muestras a visualizar para evitar saturación
+        """
+        predictions = self.logs["predictions"]
+        true_labels = self.logs["labels"]
+        count = self.logs["count"]
+        # Convertir a numpy para la visualización
+        predictions = torch.cat(predictions).numpy()
+        true_labels = torch.cat(true_labels).numpy()
+        
+        # Crear figura
+        plt.figure(figsize=(12, 6))
+        
+        # Definir colores según las clases
+        colors = ['red', 'blue', 'green', 'purple', 'orange', 'brown', 'pink', 'gray', 'cyan', 'magenta']
+        classes = np.unique(true_labels)
+        
+        # Asegurarse de que tenemos suficientes colores
+        if len(classes) > len(colors):
+            colors = plt.cm.get_cmap('tab10', len(classes))
+        
+        # Plotear puntos en la recta numérica, agrupados por clase real
+        for i, cls in enumerate(classes):
+            mask = true_labels == cls
+            plt.scatter(
+                predictions[mask], 
+                np.zeros_like(predictions[mask]) + 0.05*i,  # Pequeño offset vertical para separar visualmente
+                color=colors[i % len(colors)],
+                label=f'Clase {int(cls)}',
+                alpha=0.7,
+                s=50,  # Tamaño del punto
+                edgecolors='black'
+            )
+        
+        # Añadir una línea para la predicción perfecta (y=x)
+        plt.axhline(y=0, color='black', linestyle='-', alpha=0.3)
+        
+        # Añadir líneas verticales para cada clase entera
+        for i in range(int(self.num_classes)):
+            plt.axvline(x=i, color='gray', linestyle='--', alpha=0.5)
+        
+        plt.xlim(-0.5, self.num_classes - 0.5)
+        plt.title(f'Predicciones del modelo')
+        plt.xlabel('Predicción del modelo')
+        plt.legend(title='Clase real')
+        plt.yticks([])  # Ocultar eje Y ya que solo es para visualización
+        
+        # Mostrar valores en el eje X correspondientes a cada clase
+        plt.xticks(range(self.num_classes))
+        
+        plt.tight_layout()
+        plt.show()
+        
+        # Calcular estadísticas de error por clase
+        print("\nEstadísticas de error por clase:")
+        for cls in sorted(classes):
+            mask = true_labels == cls
+            class_preds = predictions[mask]
+            mae = np.abs(class_preds - cls).mean()
+            std = np.abs(class_preds - cls).std()
+            print(f"Clase {int(cls)}: MAE = {mae:.4f}, STD = {std:.4f}, Muestras = {mask.sum()}")
