@@ -31,7 +31,11 @@ class Regression(pl.LightningModule):
         self.linearLoss = nn.L1Loss()
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=num_classes).to(device)
         self.auc_metric = tm.AUROC(task="binary").to(device)
-        self.logs = {"predictions": [], "labels": [], "count": 0}
+        
+        # Initialize metrics logging
+        self.train_metrics = {"loss": [], "acc": [], "precision": [], "recall": [], "f1": [], "auc": []}
+        self.val_metrics = {"loss": [], "acc": [], "precision": [], "recall": [], "f1": [], "auc": []}
+
     def forward(self, x):
         return self.model(x)
         
@@ -99,9 +103,7 @@ class Regression(pl.LightningModule):
         # Convert back for metrics
         y_orig = y * self.normalize
         y_pred = self.prediction(y_hat)
-        self.logs["predictions"].append(y_hat * self.normalize)
-        self.logs["labels"].append(y_orig)
-        self.logs["count"] += len(y)
+        
         self.confusion_matrix.update(y_pred, y_orig.int())
         self.auc_metric.update(y_hat, y_orig.int())
 
@@ -109,19 +111,20 @@ class Regression(pl.LightningModule):
         
         # Log validation metrics
         
-        return {"loss": loss, "ACC": ACC, "precision": precision, 
+        return {"loss": loss, "linear_loss": linear_loss, "ACC": ACC, "precision": precision, 
                 "recall": recall, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
                 
+    def on_train_epoch_end(self):
+        self.restart_epoch(plot=False)
+        
+    def on_validation_epoch_end(self):
+        self.restart_epoch(plot=False)
 
     def restart_epoch(self, plot = False):
         if plot:
             self.plot()
-            self.plot_predictions_on_line()
         self.confusion_matrix.reset()
         self.auc_metric.reset()
-        self.logs["predictions"] = []
-        self.logs["labels"] = []
-        self.logs["count"] = 0
 
     def calculate_metrics_from_confusion_matrix(self):
         # Obtener la matriz de confusión (suponiendo que es un tensor de torch)
@@ -215,7 +218,7 @@ class Regression(pl.LightningModule):
         axs[1].set_title(f"Metrics por clase\nAccuracy General: {accuracy:.2f}", pad=20)
 
         
-    def plot_predictions_on_line(self, max_samples=500):
+    def plot_predictions_on_line(self, dataloader, epoch=0, max_samples=500):
         """
         Visualiza las predicciones del modelo en una recta numérica, 
         coloreando los puntos según la clase real.
@@ -225,9 +228,33 @@ class Regression(pl.LightningModule):
             epoch: Número de época actual para el título
             max_samples: Máximo número de muestras a visualizar para evitar saturación
         """
-        predictions = self.logs["predictions"]
-        true_labels = self.logs["labels"]
-        count = self.logs["count"]
+        self.model.eval()
+        predictions = []
+        true_labels = []
+        count = 0
+        
+        with torch.no_grad():
+            for batch in dataloader:
+                if isinstance(batch, list) and len(batch) == 2:
+                    x, y = batch
+                else:
+                    x, y = batch, None
+                
+                y_hat = self.model(x)
+                if y_hat.dim() > 1:
+                    y_hat = y_hat.squeeze()
+                
+                # Convertir predicciones al rango original
+                y_hat_scaled = y_hat * self.normalize
+                
+                # Añadir a las listas
+                predictions.append(y_hat_scaled.cpu())
+                true_labels.append(y.cpu())
+                
+                count += len(y)
+                if count >= max_samples:
+                    break
+        
         # Convertir a numpy para la visualización
         predictions = torch.cat(predictions).numpy()
         true_labels = torch.cat(true_labels).numpy()
@@ -264,7 +291,7 @@ class Regression(pl.LightningModule):
             plt.axvline(x=i, color='gray', linestyle='--', alpha=0.5)
         
         plt.xlim(-0.5, self.num_classes - 0.5)
-        plt.title(f'Predicciones del modelo')
+        plt.title(f'Predicciones del modelo en la época {epoch}')
         plt.xlabel('Predicción del modelo')
         plt.legend(title='Clase real')
         plt.yticks([])  # Ocultar eje Y ya que solo es para visualización

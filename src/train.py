@@ -173,8 +173,12 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             wandb.save(model_path)
     if local:
         test_model(model, train_loader, trainer, device, wdb)
+        if hasattr(trainer, 'plot_predictions_on_line'):
+            trainer.plot_predictions_on_line(train_loader, epoch = epoch + 1)
     else:
         test_model(best_model, val_loader, trainer, device, wdb)
+        if hasattr(trainer, 'plot_predictions_on_line'):
+            trainer.plot_predictions_on_line(val_loader, epoch = epoch + 1)
     
     return best_model if best_model else model, history
 
