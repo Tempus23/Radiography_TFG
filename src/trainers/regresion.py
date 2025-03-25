@@ -81,7 +81,7 @@ class Regression(pl.LightningModule):
         
         # Log metrics
 
-        return {"loss": regularized_loss, "base_loss": prediction_loss, "ACC": ACC, "recall": recall, 
+        return {"loss": regularized_loss, "real_loss": prediction_loss, "ACC": ACC, "recall": recall, 
                 "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
 
     def validation_step(self, x, y):
@@ -109,7 +109,7 @@ class Regression(pl.LightningModule):
         
         # Log validation metrics
         
-        return {"loss": loss, "linear_loss": linear_loss, "ACC": ACC, "precision": precision, 
+        return {"loss": loss, "ACC": ACC, "precision": precision, 
                 "recall": recall, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
                 
 
