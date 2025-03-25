@@ -74,6 +74,7 @@ class Regression(pl.LightningModule):
         return {"loss": prediction_loss, "real_loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
 
     def validation_step(self, x, y):
+        x = x / 5.0
         y_hat = self.model(x)
         y = y.float()
         loss = self.loss(y_hat, y)
