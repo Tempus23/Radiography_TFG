@@ -26,7 +26,7 @@ class Regression(pl.LightningModule):
         self.patience = patience
         self.factor = factor
         self.betas = betas
-        self.normilize = 4.0
+        self.normalize = 4.0
         self.model = model
         self.loss = nn.MSELoss()
         self.linearLoss = nn.L1Loss()
@@ -36,7 +36,7 @@ class Regression(pl.LightningModule):
     def forward(self, x):
         return self.model(x)
     def prediction(self, y_hat):
-        y_hat = y_hat * self.normilize
+        y_hat = y_hat * self.normalize
         # Comparaciones y operaciones con tensores en PyTorch
         y_hat = torch.where(y_hat < 0.5, torch.tensor(0.0), y_hat)
         y_hat = torch.where(y_hat > 3.5, torch.tensor(4.0), y_hat)
@@ -63,7 +63,7 @@ class Regression(pl.LightningModule):
         # Calcular métricas
         loss.backward()
 
-        y = y.float() * self.normilize
+        y = y.float() * self.normalize
         y_pred = self.prediction(y_hat)
         # Calcular el número de aciertos
         self.confusion_matrix.update(y_pred.squeeze(), y.int())
@@ -74,7 +74,7 @@ class Regression(pl.LightningModule):
         return {"loss": prediction_loss, "real_loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
 
     def validation_step(self, x, y):
-        y = y / self.normilize
+        y = y / self.normalize
         y_hat = self.model(x)
         y = y.float()
         loss = self.loss(y_hat, y)
@@ -82,7 +82,7 @@ class Regression(pl.LightningModule):
         #Redondear y_hat para obtener la clase predicha
         # Calcular el número de aciertos
         y_pred = self.prediction(y_hat)
-        y = y.float() * self.normilize
+        y = y.float() * self.normalize
         self.confusion_matrix.update(y_pred.squeeze(), y.int())
         self.auc_metric.update(y_hat, y.int())
 
