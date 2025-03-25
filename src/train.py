@@ -88,18 +88,18 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
             training_loop.set_postfix(train_loss="{:.4f}".format(training_loss_num / (train_iteration + 1)),
                                       complete_loss="{:.2f}".format(complete_loss_num / (train_iteration + 1)),
                                       acc=res['ACC'].item())
-            if wdb:
-                
-                wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
-                           "complete_loss": complete_loss_num / (train_iteration + 1),
-                        "train_acc": res['ACC'],
-                        "train_recall": res['recall'].item(),
-                        "train_precision": res['precision'].item(),
-                        "train_specifity": res['specificity'].item(),
-                        "train_f1_score": res['f1_score'].item(),
-                        "train_AUC": res['AUC'],
-                        "epoch": epoch + 1,
-                        "learning_rate": optimizer.param_groups[0]['lr']})
+        if wdb:
+            
+            wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
+                        "complete_loss": complete_loss_num / (train_iteration + 1),
+                    "train_acc": res['ACC'],
+                    "train_recall": res['recall'].item(),
+                    "train_precision": res['precision'].item(),
+                    "train_specifity": res['specificity'].item(),
+                    "train_f1_score": res['f1_score'].item(),
+                    "train_AUC": res['AUC'],
+                    "epoch": epoch + 1,
+                    "learning_rate": optimizer.param_groups[0]['lr']})
         
         # Store training metrics for this epoch
         avg_train_loss = training_loss_num / (train_iteration + 1)
