@@ -63,7 +63,7 @@ class Regression(pl.LightningModule):
         y = y.float()
         y_pred = self.prediction(y_hat)
         # Calcular el número de aciertos
-        self.confusion_matrix.update(y_hat.squeeze(), y)
+        self.confusion_matrix.update(y_pred.squeeze(), y.int())
         self.auc_metric.update(y_hat, y.int())
 
         precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
@@ -76,11 +76,10 @@ class Regression(pl.LightningModule):
         loss = self.loss(y_hat, y)
         linear_loss = self.linearLoss(y_hat, y)
         #Redondear y_hat para obtener la clase predicha
-         # Calcular el número de aciertos
+        # Calcular el número de aciertos
         y_pred = self.prediction(y_hat)
-        self.confusion_matrix.update(y.squeeze(), y)
+        self.confusion_matrix.update(y_pred.squeeze(), y.int())
         self.auc_metric.update(y_hat, y.int())
-
 
         precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
         return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC, "specificity": specificity}
