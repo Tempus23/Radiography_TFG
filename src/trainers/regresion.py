@@ -13,7 +13,7 @@ class Regression(pl.LightningModule):
     Trainer para entrenar un modelo de regresion ordinal
     y de 1dim con valores [0 - num_classes] con orden
     """
-    def __init__(self, model, device, L1=0.001, L2=0.001, lr=0.001, patience=5, factor=0.1, betas=(0.9, 0.999), num_classes = 5):
+    def __init__(self, model, device, L1=0.001, L2=0.001, lr=0.001, patience=5, factor=0.1, betas=(0.9, 0.999), num_classes=5):
         super().__init__()
         self.save_hyperparameters(ignore=("model",))
 
@@ -27,19 +27,22 @@ class Regression(pl.LightningModule):
         self.factor = factor
         self.betas = betas
         self.normalize = 4.0
-        self.model = model
         self.loss = nn.MSELoss()
         self.linearLoss = nn.L1Loss()
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=num_classes).to(device)
-        self.auc_metric = tm.AUROC(task="binary").to(device)  # Definir métrica AUROC para clasificación binaria
+        self.auc_metric = tm.AUROC(task="binary").to(device)
+        
+        # Initialize metrics logging
+        self.train_metrics = {"loss": [], "acc": [], "precision": [], "recall": [], "f1": [], "auc": []}
+        self.val_metrics = {"loss": [], "acc": [], "precision": [], "recall": [], "f1": [], "auc": []}
 
     def forward(self, x):
         return self.model(x)
+        
     def prediction(self, y_hat):
         y_hat = y_hat * self.normalize
-        # Comparaciones y operaciones con tensores en PyTorch
-        y_hat = torch.where(y_hat < 0.5, torch.tensor(0.0), y_hat)
-        y_hat = torch.where(y_hat > 3.5, torch.tensor(4.0), y_hat)
+        # Improved clipping with cleaner torch operations
+        y_hat = torch.clamp(y_hat, min=0.0, max=4.0)
         return torch.round(y_hat).float()
 
     def training_step(self, x, y):
@@ -47,47 +50,84 @@ class Regression(pl.LightningModule):
 
         y_hat = self.model(x)
         y = y.float()
-        loss = self.loss(y_hat.squeeze(), y)
-        # Regularización L1
-        L1_reg = torch.tensor(0., requires_grad=True)
-        for param in self.model.parameters():
-            L1_reg = L1_reg + torch.sum(torch.abs(param))
-        # Regularización L2
-        L2_reg = torch.tensor(0., requires_grad=True)
-        for param in self.model.parameters():
-            L2_reg = L2_reg + torch.sum(param ** 2)
         
-        # Añadir regularización a la pérdida
-        prediction_loss = loss
-        loss = loss + self.L1 * L1_reg + self.L2 * L2_reg
-        # Calcular métricas
-        loss.backward()
-
-        y = y.float() * self.normalize
+        # Ensure dimensions match for loss calculation
+        if y_hat.dim() > y.dim():
+            y_hat = y_hat.squeeze()
+        
+        loss = self.loss(y_hat, y)
+        
+        # Regularization with more efficient computation
+        if self.L1 > 0:
+            L1_reg = sum(torch.sum(torch.abs(param)) for param in self.model.parameters())
+        else:
+            L1_reg = 0
+        if self.L2 > 0:
+            L2_reg = sum(torch.sum(param ** 2) for param in self.model.parameters())
+        else:
+            L2_reg = 0
+        L1_reg = sum(torch.sum(torch.abs(param)) for param in self.model.parameters())
+        L2_reg = sum(torch.sum(param ** 2) for param in self.model.parameters())
+        
+        # Separate loss components for better tracking
+        prediction_loss = loss.detach()
+        regularized_loss = loss + self.L1 * L1_reg + self.L2 * L2_reg
+        
+        # Transform back to original scale for metrics
+        y_orig = y * self.normalize
         y_pred = self.prediction(y_hat)
-        # Calcular el número de aciertos
-        self.confusion_matrix.update(y_pred.squeeze(), y.int())
-        self.auc_metric.update(y_hat, y.int())
+        
+        # Update metrics
+        self.confusion_matrix.update(y_pred, y_orig.int())
+        self.auc_metric.update(y_hat, y_orig.int())
 
         precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
+        
+        # Log metrics
+        self.log('train_loss', prediction_loss, prog_bar=True)
+        self.log('train_acc', ACC, prog_bar=True)
+        self.log('train_f1', f1_score)
+        self.log('train_auc', AUC)
 
-        return {"loss": prediction_loss, "real_loss": loss, "ACC": ACC, "recall": recall, "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
+        return {"loss": regularized_loss, "base_loss": prediction_loss, "ACC": ACC, "recall": recall, 
+                "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
 
     def validation_step(self, x, y):
         y = y / self.normalize
         y_hat = self.model(x)
         y = y.float()
+        
+        # Ensure dimensions match
+        if y_hat.dim() > y.dim():
+            y_hat = y_hat.squeeze()
+            
         loss = self.loss(y_hat, y)
         linear_loss = self.linearLoss(y_hat, y)
-        #Redondear y_hat para obtener la clase predicha
-        # Calcular el número de aciertos
+        
+        # Convert back for metrics
+        y_orig = y * self.normalize
         y_pred = self.prediction(y_hat)
-        y = y.float() * self.normalize
-        self.confusion_matrix.update(y_pred.squeeze(), y.int())
-        self.auc_metric.update(y_hat, y.int())
+        
+        self.confusion_matrix.update(y_pred, y_orig.int())
+        self.auc_metric.update(y_hat, y_orig.int())
 
         precision, recall, f1_score, ACC, AUC, specificity = self.calculate_metrics_from_confusion_matrix()
-        return {"loss": loss, "ACC": ACC, "precision" : precision, "recall": recall, "f1_score" : f1_score, "AUC": AUC, "specificity": specificity}
+        
+        # Log validation metrics
+        self.log('val_loss', loss, prog_bar=True)
+        self.log('val_acc', ACC, prog_bar=True)
+        self.log('val_f1', f1_score)
+        self.log('val_auc', AUC)
+        
+        return {"loss": loss, "linear_loss": linear_loss, "ACC": ACC, "precision": precision, 
+                "recall": recall, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
+                
+    def on_train_epoch_end(self):
+        self.restart_epoch(plot=False)
+        
+    def on_validation_epoch_end(self):
+        self.restart_epoch(plot=False)
+
     def restart_epoch(self, plot = False):
         if plot:
             self.plot()
