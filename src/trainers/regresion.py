@@ -218,7 +218,7 @@ class Regression(pl.LightningModule):
         axs[1].set_title(f"Metrics por clase\nAccuracy General: {accuracy:.2f}", pad=20)
 
         
-    def plot_predictions_on_line(self, dataloader, epoch=0, max_samples=500):
+    def plot_predictions_on_line(self, dataloader, epoch=0, max_samples=1000):
         """
         Visualiza las predicciones del modelo en una recta numérica, 
         coloreando los puntos según la clase real.
