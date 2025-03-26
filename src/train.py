@@ -110,6 +110,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
         trainer.restart_epoch(plot=False)
         # use validation data
         if local:
+            trainer.restart_epoch(plot=False)
             continue
             
         model.eval()
@@ -172,13 +173,10 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
         if wdb:
             wandb.save(model_path)
     if local:
+        print(f"Testing with train data")
         test_model(model, train_loader, trainer, device, wdb)
-        if hasattr(trainer, 'plot_predictions_on_line'):
-            trainer.plot_predictions_on_line(train_loader, epoch = epoch + 1)
     else:
         test_model(best_model, val_loader, trainer, device, wdb)
-        if hasattr(trainer, 'plot_predictions_on_line'):
-            trainer.plot_predictions_on_line(val_loader, epoch = epoch + 1)
     
     return best_model if best_model else model, history
 
@@ -221,6 +219,8 @@ def test_model(model, test_loader, trainer, device, wdb=False):
     print(f"Test model {model.__class__.__name__} - Loss: {avg_loss:.2f}, ACC: {ACC_value:.2f}, AUC: {AUC_value:.2f}, Sensivility: {recall_value:.2f}, Specificity: {precision_value:.2f}")
 
     trainer.restart_epoch(plot=True)
+    if hasattr(trainer, 'plot_predictions_on_line'):
+            trainer.plot_predictions_on_line(test_loader)
 
 def plot_training_history(history, model_name, experiment_name, save_model=None):
     """

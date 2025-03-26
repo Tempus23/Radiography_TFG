@@ -46,10 +46,9 @@ class Regression(pl.LightningModule):
         return torch.round(y_hat).float()
 
     def training_step(self, x, y):
-        y = y / self.normalize
+        y = y.float() / self.normalize
 
         y_hat = self.model(x)
-        y = y.float()
         
         # Ensure dimensions match for loss calculation
         if y_hat.dim() > y.dim():
@@ -73,6 +72,7 @@ class Regression(pl.LightningModule):
         prediction_loss = loss.detach()
         regularized_loss = loss + self.L1 * L1_reg + self.L2 * L2_reg
         
+        regularized_loss.backward()
         # Transform back to original scale for metrics
         y_orig = y * self.normalize
         y_pred = self.prediction(y_hat)
