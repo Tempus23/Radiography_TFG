@@ -85,7 +85,7 @@ class Regression(pl.LightningModule):
         
         # Log metrics
 
-        return {"loss": regularized_loss, "real_loss": prediction_loss, "ACC": ACC, "recall": recall, 
+        return {"loss": prediction_loss, "real_loss": regularized_loss, "ACC": ACC, "recall": recall, 
                 "precision": precision, "f1_score": f1_score, "AUC": AUC, "specificity": specificity}
 
     def validation_step(self, x, y):
@@ -234,12 +234,11 @@ class Regression(pl.LightningModule):
         count = 0
         
         with torch.no_grad():
-            for batch in dataloader:
-                if isinstance(batch, list) and len(batch) == 2:
-                    x, y = batch
-                else:
-                    x, y = batch, None
-                
+            for x, y in dataloader:
+                device = next(self.model.parameters()).device
+                x = x.to(device)
+                y = y.to(device)
+
                 y_hat = self.model(x)
                 if y_hat.dim() > 1:
                     y_hat = y_hat.squeeze()
