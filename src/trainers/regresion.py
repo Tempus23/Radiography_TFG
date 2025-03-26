@@ -218,94 +218,147 @@ class Regression(pl.LightningModule):
         axs[1].set_title(f"Metrics por clase\nAccuracy General: {accuracy:.2f}", pad=20)
 
         
-    def plot_predictions_on_line(self, dataloader, epoch=0, max_samples=1000):
+    def plot_predictions_on_line(self, dataloader, epoch=0, max_samples=2000):
         """
-        Visualiza las predicciones del modelo en una recta numérica, 
-        coloreando los puntos según la clase real.
-        
+        Visualiza las estadísticas de predicciones del modelo en una recta numérica,
+        mostrando la media y los rangos de confianza (75% y 95%) para cada clase.
+
         Args:
-            dataloader: Dataloader con los datos a evaluar
-            epoch: Número de época actual para el título
-            max_samples: Máximo número de muestras a visualizar para evitar saturación
+            dataloader: Dataloader con los datos a evaluar.
+            epoch: Número de época actual para el título.
+            max_samples: Máximo número de muestras a considerar.
         """
         self.model.eval()
-        predictions = []
-        true_labels = []
+        predictions_by_class = {}
         count = 0
-        
+
         with torch.no_grad():
-            for x, y in dataloader:
+            for batch in dataloader:
+                # Manejar el batch según el formato (tuple/list) o solo datos
+                if isinstance(batch, (list, tuple)) and len(batch) == 2:
+                    x, y = batch
+                else:
+                    x, y = batch, None
+
                 device = next(self.model.parameters()).device
                 x = x.to(device)
-                y = y.to(device)
+                if y is not None:
+                    y = y.to(device)
 
                 y_hat = self.model(x)
                 if y_hat.dim() > 1:
                     y_hat = y_hat.squeeze()
-                
+
                 # Convertir predicciones al rango original
                 y_hat_scaled = y_hat * self.normalize
-                
-                # Añadir a las listas
-                predictions.append(y_hat_scaled.cpu())
-                true_labels.append(y.cpu())
-                
+
+                # Convertir tensores a arrays de NumPy
+                y_cpu = y.cpu().numpy() if y is not None else np.zeros_like(y_hat_scaled.cpu().numpy())
+                y_hat_cpu = y_hat_scaled.cpu().numpy()
+
+                # Agrupar predicciones por clase
+                for cls in np.unique(y_cpu):
+                    cls_int = int(cls)
+                    mask = y_cpu == cls
+                    if cls_int not in predictions_by_class:
+                        predictions_by_class[cls_int] = []
+                    predictions_by_class[cls_int].extend(y_hat_cpu[mask].tolist())
+
                 count += len(y)
                 if count >= max_samples:
                     break
+
+        # Configurar figura y ejes usando subplots
+        fig, ax = plt.subplots(figsize=(14, 8))
         
-        # Convertir a numpy para la visualización
-        predictions = torch.cat(predictions).numpy()
-        true_labels = torch.cat(true_labels).numpy()
+        # Usar colormap para asignar colores automáticamente
+        cmap = plt.get_cmap('tab10')
+        classes = sorted(predictions_by_class.keys())
+        offsets = np.linspace(-0.3, 0.3, len(classes))
         
-        # Crear figura
-        plt.figure(figsize=(12, 6))
+        ax.grid(True, alpha=0.3, linestyle='--')
+        ax.axhline(y=0, color='black', linestyle='-', alpha=0.5, linewidth=0.5)
         
-        # Definir colores según las clases
-        colors = ['red', 'blue', 'green', 'purple', 'orange', 'brown', 'pink', 'gray', 'cyan', 'magenta']
-        classes = np.unique(true_labels)
+        stats_table = []
+        headers = ["Clase", "Media", "Mediana", "P25", "P75", "P5", "P95", "MAE", "Muestras"]
         
-        # Asegurarse de que tenemos suficientes colores
-        if len(classes) > len(colors):
-            colors = plt.cm.get_cmap('tab10', len(classes))
-        
-        # Plotear puntos en la recta numérica, agrupados por clase real
+        scatter_handles = []  # Para las medias de cada clase
         for i, cls in enumerate(classes):
-            mask = true_labels == cls
-            plt.scatter(
-                predictions[mask], 
-                np.zeros_like(predictions[mask]) + 0.05*i,  # Pequeño offset vertical para separar visualmente
-                color=colors[i % len(colors)],
-                label=f'Clase {int(cls)}',
-                alpha=0.7,
-                s=50,  # Tamaño del punto
-                edgecolors='black'
-            )
+            preds = np.array(predictions_by_class[cls])
+            mean = np.mean(preds)
+            median = np.median(preds)
+            p25 = np.percentile(preds, 25)
+            p75 = np.percentile(preds, 75)
+            p5 = np.percentile(preds, 5)
+            p95 = np.percentile(preds, 95)
+            mae = np.mean(np.abs(preds - cls))
+            
+            stats_table.append([str(cls), f"{mean:.2f}", f"{median:.2f}", 
+                                f"{p25:.2f}", f"{p75:.2f}", f"{p5:.2f}", f"{p95:.2f}",
+                                f"{mae:.3f}", str(len(preds))])
+            
+            color = cmap(i % 10)
+            
+            # Línea vertical para la posición real de la clase
+            ax.axvline(x=cls, color='gray', linestyle='--', alpha=0.5)
+            
+            # Graficar la media como punto
+            size = min(300, max(100, len(preds) / 5))
+            sc = ax.scatter(mean, offsets[i], color=color, s=size, edgecolors='black', zorder=10)
+            scatter_handles.append(sc)
+            
+            # Graficar rangos: línea gruesa para 25%-75% y línea fina para 5%-95%
+            ax.plot([p25, p75], [offsets[i], offsets[i]], color=color, linewidth=4, alpha=0.7)
+            ax.plot([p5, p95], [offsets[i], offsets[i]], color=color, linewidth=2, alpha=0.4)
         
-        # Añadir una línea para la predicción perfecta (y=x)
-        plt.axhline(y=0, color='black', linestyle='-', alpha=0.3)
+        ax.set_xlim(-0.5, self.num_classes - 0.5)
+        ax.set_ylim(-0.5, 0.5)
+        ax.set_title(f'Estadísticas de predicciones por clase (Época {epoch})')
+        ax.set_xlabel('Predicción del modelo')
+        ax.set_xticks(range(self.num_classes))
+        ax.set_yticks([])  # Ocultar eje Y
         
-        # Añadir líneas verticales para cada clase entera
-        for i in range(int(self.num_classes)):
-            plt.axvline(x=i, color='gray', linestyle='--', alpha=0.5)
+        # Añadir etiquetas superiores para cada clase
+        for i in range(self.num_classes):
+            ax.text(i, 0.45, f'Clase {i}', ha='center', fontsize=10,
+                    bbox=dict(facecolor='white', alpha=0.5, boxstyle='round'))
         
-        plt.xlim(-0.5, self.num_classes - 0.5)
-        plt.title(f'Predicciones del modelo en la época {epoch}')
-        plt.xlabel('Predicción del modelo')
-        plt.legend(title='Clase real')
-        plt.yticks([])  # Ocultar eje Y ya que solo es para visualización
+        # Leyenda para las medias de las clases
+        legend1 = ax.legend(scatter_handles, [f'Clase {cls}' for cls in classes],
+                            title='Clases', loc='upper center',
+                            bbox_to_anchor=(0.5, -0.15), ncol=min(3, len(classes)))
+        ax.add_artist(legend1)
         
-        # Mostrar valores en el eje X correspondientes a cada clase
-        plt.xticks(range(self.num_classes))
+        # Leyenda adicional para los rangos de confianza
+        custom_lines = [
+            plt.Line2D([0], [0], color='gray', lw=4, alpha=0.7),
+            plt.Line2D([0], [0], color='gray', lw=2, alpha=0.4)
+        ]
+        ax.legend(custom_lines, ['Rango 25%-75%', 'Rango 5%-95%'],
+                loc='upper right', framealpha=0.9)
         
-        plt.tight_layout()
+        fig.tight_layout()
         plt.show()
         
-        # Calcular estadísticas de error por clase
-        print("\nEstadísticas de error por clase:")
-        for cls in sorted(classes):
-            mask = true_labels == cls
-            class_preds = predictions[mask]
-            mae = np.abs(class_preds - cls).mean()
-            std = np.abs(class_preds - cls).std()
-            print(f"Clase {int(cls)}: MAE = {mae:.4f}, STD = {std:.4f}, Muestras = {mask.sum()}")
+        # Mostrar la tabla de estadísticas en consola
+        print("\nEstadísticas detalladas por clase:")
+        try:
+            from tabulate import tabulate
+            print(tabulate(stats_table, headers=headers, tablefmt="grid"))
+        except ImportError:
+            print(" | ".join(headers))
+            print("-" * 80)
+            for row in stats_table:
+                print(" | ".join(row))
+        
+        # Visualizar la tabla en una figura de matplotlib
+        fig_table, ax_table = plt.subplots(figsize=(12, len(classes)*0.8 + 1.5))
+        ax_table.axis('off')
+        table = ax_table.table(cellText=stats_table, colLabels=headers, loc='center', cellLoc='center')
+        table.auto_set_font_size(False)
+        table.set_fontsize(10)
+        table.scale(1.2, 1.5)
+        plt.title("Estadísticas de predicciones por clase")
+        fig_table.tight_layout()
+        plt.show()
+
