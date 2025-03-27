@@ -49,7 +49,13 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
     train the given model and return training history
     """
     optimizer, scheduler = trainer.configure_optimizers()
-    best_model = None
+    best_model_state = {
+        'epoch': -1,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'scheduler_state_dict': scheduler.state_dict(),
+        'loss': float('inf'),
+    }
     best_loss = float('inf')
     best_epoch = -1
     early_stop_counter = 0
@@ -90,8 +96,8 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
                                       acc=res['ACC'].item())
         if wdb:
             
-            wandb.log({"train_loss": training_loss_num / (train_iteration + 1),
-                        "complete_loss": complete_loss_num / (train_iteration + 1),
+            wandb.log({"train_loss": training_loss_num / len(train_loader),
+                        "complete_loss": complete_loss_num / len(train_loader),
                     "train_acc": res['ACC'],
                     "train_recall": res['recall'].item(),
                     "train_precision": res['precision'].item(),
@@ -125,7 +131,7 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
                                      acc=res['ACC'].item())
         
         # Calculate average validation loss for this epoch
-        avg_val_loss = validation_loss_num / (val_iteration + 1)
+        avg_val_loss = validation_loss_num / len(val_loader)
         
         # Store validation metrics for this epoch
         history['val_loss'].append(avg_val_loss)
@@ -141,12 +147,19 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
                     "val_AUC": res['AUC'],
                     "epoch": epoch + 1,
                     "learning_rate": optimizer.param_groups[0]['lr']})
-                    
+        print(f"Avg val loss {avg_val_loss:.2f}, best loss {best_loss:.2f}")  
         if avg_val_loss < best_loss:
             early_stop_counter = 0
             best_epoch = epoch
+            
             best_loss = avg_val_loss
-            best_model = model
+            best_model_state = {
+                'epoch': epoch + 1,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'scheduler_state_dict': scheduler.state_dict(),
+                'loss': best_loss,
+            }
         else:
             early_stop_counter += 1
             if early_stop_counter >= early_stopping_patience:
@@ -169,9 +182,20 @@ def train(model, train_loader, val_loader, trainer, epochs, device, wdb,
     history['best_val_loss'] = best_loss
     if save_model:
         model_path = f"best_model_{model.__class__.__name__}_epoch_{epoch + 1}.pt"
-        torch.save(model, model_path)
+        torch.save({
+            'epoch': best_model_state['epoch'],
+            'model_state_dict': best_model_state['model_state_dict'],
+            'optimizer_state_dict': best_model_state['optimizer_state_dict'],
+            'scheduler_state_dict': best_model_state['scheduler_state_dict'],
+            'loss': best_model_state['loss'],
+        }, model_path)
         if wdb:
             wandb.save(model_path)
+
+    print("Restaurando mejor modelo desde el estado guardado del epoch ", best_model_state['epoch'])
+    best_model = model
+    best_model.load_state_dict(best_model_state['model_state_dict'])
+    best_model.to(device)
     if local:
         print(f"Testing with train data")
         test_model(model, train_loader, trainer, device, wdb)
