@@ -162,7 +162,7 @@ class DatasetExperiment1(Dataset):
         assert mode in ['train', 'val', 'test'], "Mode must be 'train', 'val', or 'test'"
         if local:
             print("LOCAL MODE ENABLED")
-        self.grey = grey
+        self.grey = grey 
         # Transformaciones del paper
         # Histogram equalization for contrast adjustment
         # and bilateral filtering for smoothness

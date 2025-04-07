@@ -18,7 +18,9 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{multirow}
+\usepackage{subcaption}
 
+ 
 
 \addbibresource{bib.bib}  % Enlazar el archivo .bib
 \addglobalbib{bib.bib}
@@ -33,7 +35,7 @@
 %                         DATOS DEL TRABAJO                                   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Uso de IA en la detección de Artrosis para rodillas}
+\title{Clasificación automática de artrosis en rodillas mediante redes neuronales convolucionales}
 \author{Hernández Martínez, Carlos}
 \tutor{Juan Ciscar, Alfonso}
 \curs{2024-2025}
@@ -107,18 +109,73 @@ En este contexto, el presente trabajo busca contribuir al avance del uso de inte
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Preliminares}  % ~15 páginas
-
 \section{Aprendizaje automático}
+El \textbf{aprendizaje automático} es una rama de la inteligencia artificial que se enfoca en que las máquinas mejoren 
+su desempeño en una tarea determinada a partir de la experiencia. Un sistema \textit{“aprende”} cuando su desempeño en una tarea, 
+medido por una métrica, mejora con la experiencia adquirida. En términos prácticos, esto implica diseñar algoritmos capaces de 
+\textit{generalizar} patrones a partir de datos, de forma que puedan hacer predicciones o tomar decisiones sobre datos no vistos 
+previamente. En aprendizaje automático se suelen representar los datos con un conjunto de \textit{características} (features) relevantes, y el algoritmo 
+construye un modelo matemático que relaciona estas características con las salidas esperadas. Un objetivo central es lograr un buen 
+equilibrio entre \textit{ajuste} a los datos de entrenamiento y \textit{capacidad de generalización} a nuevos datos, evitando problemas 
+como el \textit{sobreajuste} (overfitting).
 
-El aprendizaje automático (\textit{Machine Learning, ML}) es una rama de la inteligencia artificial que se centra en el desarrollo de algoritmos y modelos capaces de aprender a partir de datos. Esta tecnología ha transformado múltiples disciplinas al permitir que los sistemas mejoren su desempeño en tareas específicas mediante la experiencia, sin requerir una programación explícita para cada situación. Desde sus orígenes en técnicas estadísticas básicas hasta los modernos enfoques de aprendizaje profundo, ML ha evolucionado significativamente, impulsado por el incremento en la disponibilidad de datos y el avance en capacidad computacional. 
-% //IMAGEN: Gráfico histórico que ilustra la evolución de las técnicas de ML (desde métodos clásicos hasta deep learning).
+Existen varias categorías principales de aprendizaje automático, diferenciadas por la forma en que el algoritmo recibe la información 
+y el tipo de tarea a resolver:
 
-En el análisis de imágenes médicas, el aprendizaje automático permite automatizar procesos críticos como la detección, clasificación y segmentación de patologías, lo que resulta en diagnósticos más rápidos y precisos. Por ejemplo, modelos basados en redes neuronales profundas han demostrado rendimientos comparables a los de expertos humanos en la identificación de anomalías en radiografías, resonancias magnéticas y tomografías computarizadas.
-% //IMAGEN: Comparativa visual entre una imagen médica original y la detección de anomalías realizada por un modelo de ML.
+\begin{itemize}
+    \item \textbf{Aprendizaje supervisado}: El algoritmo recibe ejemplos de entrada y su correspondiente salida deseada (etiquetas). 
+    El objetivo es aprender una función que mapee las entradas a las salidas correctas. Son tareas típicas la \textit{clasificación} 
+    (p. ej., dado un conjunto de características de un paciente, predecir si tiene una enfermedad: salida categórica) y la 
+    \textit{regresión} (p. ej., predecir un valor numérico como el precio de una casa). El rendimiento se evalúa comúnmente con métricas
+    como la exactitud en clasificación o el error cuadrático medio en regresión.
+
+    \item \textbf{Aprendizaje no supervisado}: El algoritmo recibe datos de entrada sin etiquetas, y debe descubrir estructura oculta en 
+    ellos. Incluye tareas como la \textit{clustering} (agrupamiento de datos por similitud) o la \textit{reducción de dimensionalidad} 
+    (encontrar representaciones más compactas de los datos). Por ejemplo, un algoritmo no supervisado podría agrupar automáticamente 
+    imágenes médicas en tipos similares sin conocer de antemano las patologías presentes.
+    
+    \item \textbf{Aprendizaje por refuerzo}: El algoritmo (un \textit{agente}) aprende a través de la interacción con un entorno, 
+    recibiendo recompensas o penalizaciones según sus acciones. El agente debe descubrir una política de acciones que maximice la 
+    recompensa acumulada. Este paradigma es común en robótica y juegos, donde no se proporcionan ejemplos de solución directa sino una 
+    señal de calidad de cada acción.
+    
+\end{itemize}
+
+El proceso típico de aprendizaje supervisado consiste en entrenar un modelo ajustando sus parámetros para minimizar un 
+\textit{funcional de coste} (que mide el error de las predicciones del modelo sobre los datos de entrenamiento). El procedimiento de 
+optimización más difundido es el \textit{descenso de gradiente} y sus variantes (p. ej., descenso de gradiente estocástico para procesar 
+por lotes de ejemplos). En cada iteración, se calcula la gradiente del error respecto a los parámetros del modelo, y se ajustan los 
+parámetros en la dirección opuesta a dicha gradiente para reducir el error. Este ciclo se repite múltiples veces (\textit{épocas}) 
+hasta converger a un mínimo (generalmente un mínimo local del error). El pseudocódigo en el Algoritmo \ref{alg:gd-train} ilustra este 
+proceso de manera simplificada para un modelo supervisado entrenado mediante descenso de gradiente.
+
+\begin{algorithmic}
+    \label{alg:gd-train}
+    \REQUIRE Conjunto de entrenamiento ${(x_i, y_i)}_{i=1}^N$, tasa de aprendizaje $\eta$ función de error $\mathcal{L}$
+    \STATE Inicializar parámetros del modelo $\theta$ (p. ej. aleatoriamente)
+    \FOR{numero de épocas}
+        \FOR{cada $(x_i, y_i)$ en ${(x_i, y_i)}_{i=1}^N$}
+            \STATE calcular predicción $\hat{y}_i = f_\theta(x_i)$
+            \STATE calcular pérdida $L = \mathcal{L}(\hat{y}_i, y_i)$ \COMMENT{ej.: error cuadrático, entropía cruzada, etc.}
+            \STATE calcular gradiente $g = \nabla_{\theta} L$
+            \STATE actualizar parámetros: $\theta := \theta - \eta \cdot g$
+        \ENDFOR
+    \ENDFOR
+\end{algorithmic}
+
+\section{Apr}
+
+El aprendizaje automático (\textit{Machine Learning, ML}) es una rama de la inteligencia artificial que se centra en el 
+desarrollo de algoritmos y modelos capaces de aprender a partir de datos. Esta tecnología ha transformado múltiples 
+disciplinas al permitir que los sistemas mejoren su desempeño en tareas específicas mediante la experiencia, sin requerir 
+una programación explícita para cada situación. Desde sus orígenes en técnicas estadísticas básicas hasta los modernos 
+enfoques de aprendizaje profundo, ML ha evolucionado significativamente, impulsado por el incremento en la disponibilidad 
+de datos y el avance en capacidad computacional. 
+
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\textwidth]{neural_network.png}
-    \caption{Descripción de la imagen}
+    \includegraphics[width=0.7\textwidth]{neural_network.jpg}
+    \caption{Ejemplo de una red neuronal profunda \cite{neural_network}}
     \label{fig:mi_imagen}
   \end{figure}
 \subsection{Categorías de Aprendizaje Automático}
@@ -249,8 +306,6 @@ A pesar de su éxito, el uso de redes neuronales enfrenta desafíos importantes:
 \end{itemize}
 La investigación continúa en áreas como la regularización, el aprendizaje por transferencia y los modelos interpretables, lo que promete mejorar la robustez y aplicabilidad de las redes neuronales en el ámbito médico.
 
-
-
 \section{ML aplicado a CV y tareas biomédicas (MedMNIST)}
 El uso de técnicas de Machine Learning (ML) en visión por computadora (CV) ha revolucionado el análisis de imágenes, permitiendo automatizar tareas que antes requerían la intervención humana directa. En el ámbito biomédico, estas técnicas han facilitado el diagnóstico y seguimiento de diversas patologías mediante la extracción de información relevante de imágenes médicas.
 
@@ -288,9 +343,73 @@ En conclusión, la combinación de ML y CV ha abierto nuevas posibilidades en el
 %                              CAPÍTULO 3                                     %
 %                     DESCRIPCIÓN DEL CORPUS DEL DATASET OAI                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Corpus del Dataset OAI y del Paper}
+
+
+\chapter{Corpus del Dataset OAI y tareas comunes}
 \label{chap:corpus}
 
+\section{Introducción al dataset OAI}
+
+El estudio de la artrosis de rodilla requiere de conjuntos de datos que reflejen con fidelidad tanto la progresión clínica 
+como los cambios estructurales visibles en técnicas de imagen. En este contexto, el \textit{Osteoarthritis Initiative (OAI)}\cite{chen2018knee}
+se posiciona como una de las bases de datos públicas más relevantes y ampliamente utilizadas en investigaciones biomédicas. 
+Este repositorio fue concebido con el objetivo de identificar biomarcadores de progresión y aparición de la osteoartritis, 
+facilitando el desarrollo de herramientas diagnósticas y terapéuticas más precisas.
+
+El proyecto OAI comenzó en 2004 y ha recopilado datos longitudinales de aproximadamente 4.796 participantes durante más de una 
+década. Los sujetos fueron seleccionados de diferentes centros médicos de Estados Unidos, e incluyen tanto individuos con 
+diagnóstico clínico de artrosis como sujetos en riesgo de desarrollarla. Esta diversidad poblacional permite estudiar la 
+evolución de la enfermedad desde fases asintomáticas hasta estadios avanzados.
+
+El conjunto de datos integra una gran cantidad de información, incluyendo:
+
+\begin{itemize}
+    \item \textbf{Imágenes radiográficas de rodilla} en vista posteroanterior con carga (\textit{standing PA fixed-flexion}), obtenidas en diferentes visitas a lo largo del tiempo.
+    \item \textbf{Anotaciones clínicas} que comprenden edad, sexo, índice de masa corporal (IMC), presencia de dolor, entre otros.
+    \item \textbf{Evaluaciones estructurales} como el grado de severidad según la escala de Kellgren \& Lawrence (KLG), que clasifica la artrosis en cinco niveles (de 0 a 4).
+    \item \textbf{Datos funcionales} y cuestionarios de calidad de vida, como el WOMAC.
+\end{itemize}
+
+Este conjunto de datos es especialmente valioso para tareas de aprendizaje automático debido a su tamaño, su naturaleza longitudinal y la inclusión de etiquetas clínicamente validadas. Asimismo, permite abordar problemas tanto de clasificación como de predicción de progresión de la enfermedad.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{knee_0.png}
+        \caption{KL 0}
+        \label{fig:knee0}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{knee_1.png}
+        \caption{KL 1}
+        \label{fig:knee1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{knee_2.png}
+        \caption{KL 2}
+        \label{fig:knee2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{knee_3.png}
+        \caption{KL 3}
+        \label{fig:knee3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{knee_4.png}
+        \caption{KL 4}
+        \label{fig:knee4}
+    \end{subfigure}
+    \caption{Ejemplos de radiografías de rodilla clasificadas según la escala Kellgren \& Lawrence (KL)}
+    \label{fig:knee-examples}
+\end{figure}
+
+
+
+\section{--------Introducción---------}
 En este capítulo se presenta una descripción exhaustiva del corpus utilizado para la detección y gradación de la artrosis en rodillas. Se abordan aspectos fundamentales relativos al dataset OAI, obtenido de Mendeley Data, así como la integración de elementos experimentales extraídos del paper \cite{efficientnet_paper}. En este contexto, se detallan los procesos de adquisición, preprocesamiento, análisis estadístico y organización en subconjuntos, elementos esenciales para el éxito en la aplicación de modelos de aprendizaje profundo.
 
 \section{Adquisición y Descripción del Dataset OAI}
@@ -307,20 +426,21 @@ En este trabajo, las clases se denominan de acuerdo con la condición médica as
 \end{itemize}
 
 La siguiente tabla resume la distribución numérica de imágenes en cada subconjunto:
-
 \begin{center}
 \begin{tabular}{lccccc}
 \toprule
 \textbf{Subconjunto} & \textbf{Sin artrosis} & \textbf{Leve} & \textbf{Moderada} & \textbf{Severa} & \textbf{Muy severa} \\
 \midrule
-\textit{train} & 2892 & 1327 & 1933 & 964 & 221 \\
-\textit{val}   & 308  & 141  & 206  & 102 & 23  \\
-\textit{test}  & 657  & 302  & 439  & 220 & 51  \\
+\textit{auto-test} & 604 & 275 & 403 & 200 & 44 \\
+\textit{train}     & 2286 & 1046 & 1516 & 757 & 173 \\
+\textit{val}       & 328 & 153 & 212 & 106 & 27 \\
+\textit{test}      & 639 & 296 & 447 & 223 & 51 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Como complemento, se detallan a continuación los porcentajes de distribución por clase en cada subconjunto:
+Como complemento, se detallan a continuación los porcentajes de distribución por clase en cada
+ subconjunto:
 
 Conjunto de datos por clase
 \begin{itemize}
@@ -330,7 +450,9 @@ Conjunto de datos por clase
     \item Severa: 13\%
     \item Muy severa: 3\%
 \end{itemize}
-El corpus total se compone de 9786 imágenes, distribuidas en 7337 para entrenamiento, 780 para validación y 1669 para prueba. Esta distribución y el equilibrio en las condiciones médicas son fundamentales para el entrenamiento y evaluación robusta de los modelos de clasificación.
+El corpus total se compone de 9786 imágenes, distribuidas en 1526 para auto-test, 5778 para entrenamiento, 826 para validación y 
+1656 para prueba. Esta distribución y el equilibrio en las condiciones médicas son fundamentales para el entrenamiento y evaluación r
+obusta de los modelos de clasificación.
 
 \section{Preprocesamiento y Análisis del Corpus}
 El preprocesamiento de las imágenes es una etapa crucial para asegurar la calidad y homogeneidad de los datos. Se aplicaron las siguientes técnicas:

@@ -1,4 +1,5 @@
 @echo off
+
 echo Compilando con pdflatex...
 pdflatex memoria_tfg
 
