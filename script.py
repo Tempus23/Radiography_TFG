@@ -1,60 +1,130 @@
-import os
-import pydicom
-import matplotlib.pyplot as plt
+import torch
 import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+from PIL import Image
+from torch.utils.data import DataLoader, Dataset
+from src.models.efficientnet import EfficientNetB5Custom
+from src.grad_cam import GradCAM
+model_state = torch.load(r'models\OAI Mendeley\best_model_EfficientNetB5Custom_epoch_2.pt',map_location=torch.device('cpu'), weights_only=False)
+model = EfficientNetB5Custom(num_classes=5, pretrained=False)
+model.load_state_dict(model_state)
+model = torch.load(r'models\OAI Mendeley\best_model_EfficientNetB5_epoch_30.pt',map_location=torch.device('cpu'), weights_only=False)
+model.eval()
+target_layer = model.efficientnet.features[-1]
 
-# Ruta al directorio donde están las imágenes DICOM
-dicom_dir = "dataset/gatos/Normal"
+grad_cam = GradCAM(model, target_layer)
 
-def load_dicom_images(directory, num = None):
-    """Carga todas las imágenes DICOM de un directorio."""
-    dicom_files = [os.path.join(directory, f) for f in os.listdir(directory) if f.endswith('.dcm')]
-    dicom_images = []
-    for i, file in enumerate(dicom_files):
-        if num is not None and i >= num:
-            break
-        try:
-            ds = pydicom.dcmread(file)
-            dicom_images.append(ds)
-        except Exception as e:
-            print(f"Error al cargar {file}: {e}")
-    return dicom_images
+class gatosDataset(Dataset):
+    def __init__(self, batch_size=32, transform=None, local=False, path="dataset/gatos/jpg"):
+        if local:
+            print("LOCAL MODE ENABLED")
+        self.transform = transform
+        self.data_path = path
+        self.data = []
+        self.batch_size = batch_size
+        self.classes = sorted(os.listdir(self.data_path))  # Lista de clases
+        for label, class_name in enumerate(self.classes):
+            class_path = os.path.join(self.data_path, class_name)
+            for img_name in os.listdir(class_path):
+                img_path = os.path.join(class_path, img_name)
+                self.data.append((img_path, label))
 
-def display_dicom_image(dicom_image):
-    """Muestra una imagen DICOM usando matplotlib."""
-    plt.imshow(dicom_image.pixel_array, cmap=plt.cm.gray)
-    plt.title(f"Paciente: {dicom_image.PatientID}")
-    plt.axis('off')
-    plt.show()
-def print_dicom_clean_metadata(dicom_image):
-    """Imprime los metadatos DICOM, excluyendo los datos binarios (como Pixel Data)."""
-    for elem in dicom_image:
-        if elem.tag == (0x7FE0, 0x0010):  # Pixel Data
-            continue  # O puedes poner print("Pixel Data: [omitido]")
-        if elem.VR == 'OB' or elem.VR == 'OW' or elem.VR == 'UN':
-            print(f"{elem.tag} {elem.name}: [Tipo binario omitido]")
-        else:
-            print(f"{elem.tag} {elem.name}: {elem.value}")
-def compare_dicom_metadata(dcm1, dcm2):
-    """Compara dos objetos DICOM y muestra solo los campos que son distintos."""
-    print("\n📌 Comparando metadatos...")
-    tags1 = {elem.tag: elem for elem in dcm1 if elem.tag != (0x7FE0, 0x0010)}
-    tags2 = {elem.tag: elem for elem in dcm2 if elem.tag != (0x7FE0, 0x0010)}
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        img_path, label = self.data[idx]
+        image = Image.open(img_path).convert('RGB')
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, label
+
+    def get_dataloader(self, shuffle=True):
+        return DataLoader(self, batch_size=self.batch_size, shuffle=shuffle)
     
-    all_tags = set(tags1.keys()).union(tags2.keys())
 
-    for tag in sorted(all_tags):
-        val1 = tags1.get(tag)
-        val2 = tags2.get(tag)
+    import os
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 
-        if val1 is None or val2 is None:
-            print(f"{tag} sólo presente en una imagen")
-        elif val1.value != val2.value:
-            print(f"{tag} {val1.name}:")
-            print(f"    Imagen 1: {val1.value}")
-            print(f"    Imagen 2: {val2.value}")
+import torch
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
 
-dicom_images = load_dicom_images(dicom_dir,num=3)
+from src.config import *
+from src.data import *
+from src.models.efficientnet import *
+from src.utils import *
+from src.train import train, train_model, test_model
+from src.trainers.classification import Classification
+from src.trainers.regresion import Regression
 
-# Visualizar las primeras imágenes
-print_dicom_clean_metadata(dicom_images[1])    
+np.random.seed(RANDOM_SEED)
+torch.manual_seed(RANDOM_SEED)
+torch.cuda.manual_seed(RANDOM_SEED)
+torch.cuda.manual_seed_all(RANDOM_SEED)
+class HistogramEqualization:
+    """Aplica ecualización de histograma para ajuste de contraste"""
+    def __call__(self, img):
+        # Convertir PIL Image a numpy array
+        img_np = np.array(img)
+        
+        # Aplicar ecualización de histograma por canal
+        if len(img_np.shape) == 3:  # Imagen RGB
+            img_eq = np.zeros_like(img_np)
+            for i in range(3):
+                img_eq[:,:,i] = cv2.equalizeHist(img_np[:,:,i])
+        else:  # Imagen en escala de grises
+            img_eq = cv2.equalizeHist(img_np)
+            
+        # Convertir de nuevo a PIL Image
+        return Image.fromarray(img_eq)
+
+class BilateralFilter:
+    """Aplica filtrado bilateral para suavizado preservando bordes"""
+    def __init__(self, d=9, sigma_color=75, sigma_space=75):
+        self.d = d  # Diámetro de cada vecindario de píxeles
+        self.sigma_color = sigma_color  # Filtro sigma en el espacio de color
+        self.sigma_space = sigma_space  # Filtro sigma en el espacio de coordenadas
+    
+    def __call__(self, img):
+        # Convertir PIL Image a numpy array
+        img_np = np.array(img)
+        
+        # Aplicar filtro bilateral
+        img_filtered = cv2.bilateralFilter(
+            img_np, self.d, self.sigma_color, self.sigma_space)
+            
+        # Convertir de nuevo a PIL Image
+        return Image.fromarray(img_filtered)
+
+transform =  transforms.Compose([
+            transforms.Resize((224, 224)), #Normalizar 
+            HistogramEqualization(),
+            BilateralFilter(),
+            transforms.ToTensor(),
+        ])
+BATCH_SIZE = 10
+LEARNING_RATE = 0.001
+FACTOR = 0.001
+L1 = 0.00
+L2 = 0.00
+PATIENCE = 5
+BETAS=(0.9, 0.999)
+# Regularización L1 y L2
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+val_dataset = gatosDataset(batch_size=BATCH_SIZE, transform=transform)
+# Mosrar primera imagen
+img, label = val_dataset[0]
+plt.imshow(img.permute(1, 2, 0))
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+trainer = Regression(model, device, L1=L1, L2=L2, lr=LEARNING_RATE, factor=FACTOR, patience=PATIENCE, betas=BETAS)
+train_model(model,trainer,train_dataset=val_dataset, val_dataset=val_dataset, epochs=10, wdb=False, plot_loss=True, device=device)
+test_model(model,val_dataset.get_dataloader(),trainer,device)

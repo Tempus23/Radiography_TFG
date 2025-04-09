@@ -1,0 +1,11 @@
+torch==1.13.1
+torchvision==0.14.1
+tensorflow==2.10.0
+matplotlib==3.6.2
+numpy==1.23.5
+opencv-python==4.6.0.66
+tqdm==4.64.1
+wandb==0.13.5
+pytorch-lightning==1.8.6
+torchmetrics==0.11.0
+pydicom>=2.3.0

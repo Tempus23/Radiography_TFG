@@ -2,7 +2,7 @@ import torch
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
-from wandb import wandb
+import wandb
 import os
 
 def create_tqdm_bar(iterable, desc, mode):

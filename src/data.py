@@ -251,4 +251,66 @@ class OriginalOAIDataset(Dataset):
     def get_dataloader(self, shuffle=True):       
         return DataLoader(self, batch_size=self.batch_size, shuffle=shuffle)
 
+class DatasetFromList(Dataset):
+    """Dataset from a list of (image_path, label) tuples"""
+    def __init__(self, data_list, transform=None):
+        self.data_list = data_list
+        self.transform = transforms.Compose([
+                transforms.Resize((224, 224)),
+                transforms.ToTensor(),
+            ])
+        self.data = self.data_list
+    def __len__(self):
+        return len(self.data)
+    
+    def __getitem__(self, idx):
+        img_path, label = self.data[idx]
+        image = Image.open(img_path).convert('RGB')
 
+        image = self.transform(image)
+        
+        return image, label
+class DataGatos(Dataset):
+    def __init__(self, batch_size=32, transform=None, local=False, path="dataset/gatos/jpg"):
+        if local:
+            print("LOCAL MODE ENABLED")
+        self.transform = transforms.Compose([
+                transforms.Resize((224, 224)),
+                transforms.ToTensor(),
+            ])
+        self.data_path = path
+        self.transform = transform
+        self.classes = sorted(os.listdir(self.data_path))  # Lista de clases
+        self.data = []
+        self.batch_size = batch_size
+        # Cargar imágenes con sus etiquetas
+
+        for label, class_name in enumerate(self.classes):
+            class_path = os.path.join(self.data_path, class_name)
+            for img_name in os.listdir(class_path):
+                img_path = os.path.join(class_path, img_name)
+                self.data.append((img_path, label))
+        # Divide data in splits
+        self.train_data = self.data[:int(len(self.data)*0.5)]
+        self.val_data = self.data[int(len(self.data)*0.5):]
+    def __len__(self):
+        return len(self.data)
+    
+    def __getitem__(self, idx):
+        img_path, label = self.data[idx]
+        image = Image.open(img_path).convert('RGB')
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, label
+    
+    def get_dataloader(self, split='train', shuffle=True):
+        if split == 'train':
+            dataset = DatasetFromList(self.train_data, self.transform)
+            return DataLoader(dataset, batch_size=self.batch_size, shuffle=shuffle)
+        elif split == 'val':
+            dataset = DatasetFromList(self.val_data, self.transform)
+            return DataLoader(dataset, batch_size=self.batch_size, shuffle=shuffle)
+        else:
+            raise ValueError("Split must be 'train' or 'val'")

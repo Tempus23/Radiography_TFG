@@ -38,6 +38,12 @@ class Classification(pl.LightningModule):
         y = y
         y_hat = self.model(x)
         y_oh = self.transform_classes(y)
+        if y_hat.size(0) != y_oh.size(0):
+            min_size = min(y_hat.size(0), y_oh.size(0))
+            y_hat = y_hat[:min_size]
+            y_oh = y_oh[:min_size]
+            # Pasar a long
+            y_oh = y_oh.long()
         loss = self.loss_fn(y_hat, y_oh)
         
         # Regularización L1
