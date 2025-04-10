@@ -1,0 +1,33 @@
+itulo/s:
+    Clasificación automática de artrosis en rodillas mediante redes neuronales convolucionales
+    Desarrollo de un sistema basado en redes neuronales profundas para la detección y gradación de artrosis
+    
+
+Descripción:
+--
+    Las redes neuronales profundas han demostrado una notable eficacia en el análisis de imágenes médicas, especialmente en 
+    tareas de detección automática de patologías. Una estrategia habitual en este contexto es el uso de modelos preentrenados
+    mediante técnicas de transfer learning, lo cual resulta especialmente útil en escenarios con disponibilidad limitada de 
+    datos.
+
+    Este Trabajo de Fin de Grado tiene como objetivo reproducir y evaluar enfoques actuales para la detección y gradación
+    automática de artrosis de rodilla, utilizando arquitecturas como EfficientNet y ResNet sobre el conjunto de datos OAI. 
+    Se analizan diversas estrategias de entrenamiento y se comparan sus resultados cuantitativamente.
+
+    Adicionalmente, se empleará un conjunto limitado de imágenes de rodillas de gatos, previamente clasificadas por expertos, 
+    para explorar la capacidad de generalización de los modelos a través de técnicas de transfer learning.
+--
+    Las redes neuronales profundas han demostrado un alto rendimiento en el análisis de imágenes médicas, especialmente en 
+    la detección automática de patologías. Entre las técnicas más utilizadas destaca el transfer learning, eficaz en 
+    contextos con pocos datos.
+
+    Este Trabajo de Fin de Grado estudia y compara modelos actuales, como EfficientNet y ResNet, aplicados a la detección y
+    gradación de artrosis de rodilla en imágenes del conjunto OAI. Además, se explora la capacidad de generalización de estos 
+    modelos con un pequeño dataset de rodillas de gatos, clasificado por expertos veterinarios.
+--
+
+Objetivo principal:
+    Replicar estudios recientes comprobando reproducibilidad y técnicas de aumento de datos con posible extensión al ámbito veterinario
+
+
+
