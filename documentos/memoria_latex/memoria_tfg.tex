@@ -29,7 +29,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                             OTROS PAQUETES                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (Aquí puedes añadir los paquetes que necesites)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                         DATOS DEL TRABAJO                                   %
@@ -110,14 +109,16 @@ En este contexto, el presente trabajo busca contribuir al avance del uso de inte
 
 \chapter{Preliminares}  % ~15 páginas
 \section{Aprendizaje automático}
-El \textbf{aprendizaje automático} es una rama de la inteligencia artificial que se enfoca en que las máquinas mejoren 
-su desempeño en una tarea determinada a partir de la experiencia \cite{Mitchell1997}. Un sistema \textit{“aprende”} cuando su desempeño en una tarea, 
+
+
+El \textbf{aprendizaje automático} (ML) es una rama de la inteligencia artificial que se enfoca en que las máquinas mejoren 
+su desempeño en una tarea determinada a partir de la experiencia. Un sistema \textit{“aprende”} cuando su desempeño en una tarea, 
 medido por una métrica, mejora con la experiencia adquirida. En términos prácticos, esto implica diseñar algoritmos capaces de 
 \textit{generalizar} patrones a partir de datos, de forma que puedan hacer predicciones o tomar decisiones sobre datos no vistos 
 previamente. En aprendizaje automático se suelen representar los datos con un conjunto de \textit{características} (features) relevantes, y el algoritmo 
 construye un modelo matemático que relaciona estas características con las salidas esperadas. Un objetivo central es lograr un buen 
 equilibrio entre \textit{ajuste} a los datos de entrenamiento y \textit{capacidad de generalización} a nuevos datos, evitando problemas 
-como el \textit{sobreajuste} (overfitting) \cite{Goodfellow2016}. La Figura~\ref{fig:overfitting} ilustra de forma visual las diferencias entre 
+como el \textit{sobreajuste} (overfitting). La Figura~\ref{fig:overfitting} ilustra de forma visual las diferencias entre 
 subajuste, buen ajuste y sobreajuste en un modelo supervisado, conceptos fundamentales para entender el rendimiento de los modelos de aprendizaje automático.
 
 \begin{figure}[ht]
@@ -132,14 +133,14 @@ y el tipo de tarea a resolver:
 \begin{itemize}
     \item \textbf{Aprendizaje supervisado}: El algoritmo recibe ejemplos de entrada y su correspondiente salida deseada (etiquetas). 
     El objetivo es aprender una función que mapee las entradas a las salidas correctas. Son tareas típicas la \textit{clasificación} 
-    (p. ej., dado un conjunto de características de un paciente, predecir si tiene una enfermedad: salida categórica) y la 
-    \textit{regresión} (p. ej., predecir un valor numérico como el precio de una casa). El rendimiento se evalúa comúnmente con métricas
-    como la exactitud en clasificación o el error cuadrático medio en regresión.
+    (p. ej., dado un conjunto de características de un paciente, predecir que enfermedad tiene: salida categórica) y la 
+    \textit{regresión} (p. ej., dada las características de una casa predecir su precio). El rendimiento se evalúa comúnmente con funciones
+    que relacionan la predicción del modelo con el valor real (p. ej. error cuadrático en regressión o entropía cruzada en clasificación).
 
     \item \textbf{Aprendizaje no supervisado}: El algoritmo recibe datos de entrada sin etiquetas, y debe descubrir estructura oculta en 
     ellos. Incluye tareas como la \textit{clustering} (agrupamiento de datos por similitud) o la \textit{reducción de dimensionalidad} 
-    (encontrar representaciones más compactas de los datos). Por ejemplo, un algoritmo no supervisado podría agrupar automáticamente 
-    imágenes médicas en tipos similares sin conocer de antemano las patologías presentes.
+    (encontrar representaciones más compactas de los datos). Un claro ejemplo de aprendizaje no supervisado consiste en la agrupación de
+    correos en distintos tipos.
     
     \item \textbf{Aprendizaje por refuerzo}: El algoritmo (un \textit{agente}) aprende a través de la interacción con un entorno, 
     recibiendo recompensas o penalizaciones según sus acciones. El agente debe descubrir una política de acciones que maximice la 
@@ -148,16 +149,17 @@ y el tipo de tarea a resolver:
     
 \end{itemize}
 
-El proceso típico de \textbf{aprendizaje supervisado} consiste en entrenar un modelo ajustando sus parámetros para minimizar un 
-\textit{funcional de coste}, que mide el error de las predicciones del modelo sobre los datos de entrenamiento. El procedimiento de 
-optimización más utilizado es el \textit{descenso de gradiente} y sus variantes, como el descenso de gradiente estocástico, que permite 
-procesar los datos por lotes. En cada iteración, se calcula la gradiente del error respecto a los parámetros del modelo, y se ajustan los 
-parámetros en la dirección opuesta a dicha gradiente para reducir el error. Este ciclo se repite múltiples veces (\textit{épocas}) 
+En el ámbito médico se utiliza comunmente el \textbf{aprendizaje supervidado}. El proceso típico de esta tarea consiste en entrenar
+un modelo ajustando sus parámetros para minimizar una función de error o \textit{función de pérdida} (loss function) que mide el error 
+de las predicciones del modelo sobre los datos de entrenamiento. El procedimiento de optimización más utilizado es el 
+\textit{descenso de gradiente} y sus variantes, como el descenso de gradiente estocástico, que permite procesar los datos por lotes. 
+En cada iteración, se calcula la gradiente del error respecto a los parámetros del modelo, y se ajustan los parámetros en la dirección 
+opuesta a dicha gradiente para reducir el error. Este ciclo se repite múltiples veces (\textit{épocas}) 
 hasta converger a un mínimo local del error.
 
-La Figura~\ref{fig:gd_flow} muestra esquemáticamente el flujo de este proceso, desde la entrada de los datos hasta la actualización 
-de los parámetros. A continuación, el Algoritmo~\ref{alg:gd-train} detalla los pasos fundamentales que se siguen durante el entrenamiento 
-de un modelo mediante esta técnica.
+La Figura~\ref{fig:gd_flow} muestra esquemáticamente el flujo de este proceso, donde la posicion inicial tiene el error máximo y en cada
+iteración se va reduciendo el error (como una pelota que rueda por una pendiente). A continuación, el Algoritmo~\ref{alg:gd-train} detalla 
+los pasos fundamentales que se siguen durante el entrenamiento de un modelo mediante esta técnica.
 
 \begin{figure}[ht]
     \centering
@@ -185,12 +187,10 @@ Además, suelen emplearse técnicas como \textit{validación cruzada} y conjunto
 que no se aprenden directamente, como la profundidad de un árbol de decisión o la tasa de aprendizaje $\eta$). Un buen enfoque de validación ayuda a prevenir 
 el sobreajuste y a seleccionar modelos más robustos.
 
-Existen algoritmos clásicos de AA como los \textit{árboles de decisión}, \textit{máquinas de vector soporte} (SVM), \textit{vecinos más cercanos} (k-NN), entre otros,
+Existen algoritmos clásicos de ML como los \textit{árboles de decisión}, \textit{máquinas de vector soporte} (SVM), \textit{vecinos más cercanos} (k-NN), entre otros,
 cada uno con sus supuestos y ámbitos de aplicación. Por ejemplo, las SVM buscan hiperplanos que separen clases maximizando el margen, mientras que los árboles de 
 decisión realizan particiones recursivas del espacio de características para homogeneizar las etiquetas en los nodos hoja. La elección del algoritmo adecuado depende 
-de la naturaleza de los datos y del problema a resolver, no existiendo un modelo único que sea óptimo para todas las tareas (teorema \textit{no free lunch}). Para 
-profundizar en los fundamentos teóricos y prácticos del aprendizaje automático, se recomienda la literatura especializada, como los libros de Mitchell \cite{Mitchell1997} 
-y Bishop \cite{Bishop2006}, que proporcionan una introducción comprensible y a la vez rigurosa al campo.
+de la naturaleza de los datos y del problema a resolver, no existiendo un modelo único que sea óptimo para todas las tareas.
 
 En resumen, el aprendizaje automático proporciona las bases para construir modelos que extraen conocimiento de los datos. Estos conceptos preliminares resultan 
 imprescindibles para entender técnicas más avanzadas como las redes neuronales profundas y su aplicación en tareas de visión por computador y medicina, que se 
@@ -202,21 +202,21 @@ Las \textbf{redes neuronales artificiales} (RNA) constituyen una familia de mode
 La unidad básica de una RNA es la \textit{neurona artificial}, un elemento que realiza una operación sencilla: calcula una combinación lineal de sus entradas y 
 le aplica una función no lineal llamada \textit{función de activación}. Matemáticamente, si una neurona recibe como entradas $x_1, x_2, \dots, x_n$ con pesos 
 sinápticos $w_1, w_2, \dots, w_n$ y tiene un sesgo $b$, produce una salida $y = \sigma(w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + b)$, donde $\sigma(\cdot)$ podría ser, 
-por ejemplo, una función sigmoide, tangente hiperbólica o ReLU (Unidad Lineal Rectificada). Las primeras RNA, como el \textit{Perceptrón} de Rosenblatt \cite{Rosenblatt1958},  tenían una 
+por ejemplo, una función sigmoide, tangente hiperbólica o ReLU (Unidad Lineal Rectificada). Las primeras RNA, como el \textit{Perceptrón} de Rosenblatt,  tenían una 
 sola capa de neuronas (una capa de entrada proyectada directamente a una capa de salida) y podían aprender a clasificar datos que fueran linealmente separables. 
 Sin embargo, se demostró que una sola neurona (o capa lineal) tiene limitaciones significativas en su capacidad de representación.
 
 La potencia de las redes neuronales radica en su capacidad para formar \textbf{arquitecturas multicapa}, también conocidas como \textit{redes neuronales de múltiples capas} 
 o \textit{perceptrones multicapa} (MLP). Estas redes están organizadas en capas: una capa de entrada (los datos originales), una o varias capas \textit{ocultas} que 
 realizan transformaciones intermedias mediante neuronas con sus pesos, y una capa de salida que produce la predicción final. Al agregar capas ocultas con funciones de 
-activación no lineales, las redes adquieren la habilidad de aproximar relaciones no lineales arbitrariamente complejas entre la entrada y la salida (teorema de 
-aproximación universal). 
+activación no lineales, las redes adquieren la habilidad de aproximar relaciones no lineales arbitrariamente complejas entre la entrada y la salida. En la imagen
+\ref{fig:neural_network} se observa un ejemplo de una red neuronal profunda, donde cada círculo representa una neurona y las líneas indican las conexiones entre ellas.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\textwidth]{neural_network.jpg}
     \caption{Ejemplo de una red neuronal profunda \cite{neural_network}}
-    \label{fig:mi_imagen}
+    \label{fig:neural_network}
 \end{figure}
 
 
@@ -227,17 +227,17 @@ través de la red (\textit{fase backward}) calculando las derivadas parciales de
 indican cómo ajustar cada peso para reducir el error, y se aplican las actualizaciones de los pesos en consecuencia. Gracias a la retropropagación, las redes neuronales 
 pueden entrenarse eficientemente incluso con muchas capas, ajustando millones de parámetros para adaptarse a complejos conjuntos de datos. Este avance fue crucial para 
 el renacimiento de las redes neuronales en la década de 1980, tras un período de estancamiento parcial debido a las limitaciones de los perceptrones simples destacadas 
-por Minsky y Papert en 1969 (quienes señalaron, por ejemplo, que un perceptrón no podía aprender la función XOR). El trabajo de Rumelhart, Hinton y Williams (1986) \cite{Rumelhart1986}
+por Minsky y Papert en 1969 (quienes señalaron, por ejemplo, que un perceptrón no podía aprender la función XOR). El trabajo de Rumelhart, Hinton y Williams (1986) 
 introdujo formalmente la retropropagación, mostrando que las redes de múltiples capas podían aprender características jerárquicas y superar esas limitaciones previas.
 
 A medida que se dispuso de más datos y mayor potencia de cómputo, especialmente con la llegada de unidades de procesamiento gráfico (GPU) que aceleraron el cálculo 
 matricial masivo, las redes neuronales crecieron en profundidad y capacidad. Surge así el campo del \textbf{aprendizaje profundo} (\textit{deep learning}), que no es 
 más que el uso de redes neuronales con muchas capas (a veces decenas o incluso cientos) entrenadas sobre grandes volúmenes de datos. Un hito simbólico fue la competición 
-ImageNet de 2012, en la cual una red convolucional profunda llamada \textit{AlexNet} \cite{Krizhevsky2012} obtuvo un rendimiento muy superior al de los métodos tradicionales en la tarea de 
+ImageNet de 2012, en la cual una red convolucional profunda llamada \textit{AlexNet} obtuvo un rendimiento muy superior al de los métodos tradicionales en la tarea de 
 clasificación de imágenes a gran escala. AlexNet, desarrollada por Krizhevsky et al. (2012), tenía 8 capas entrenables y introdujo técnicas como capas de \textit{dropout} 
 para regularización y entrenamiento en GPU, marcando el inicio de una nueva era en visión por computador impulsada por redes neuronales profundas. Desde entonces, 
 arquitecturas aún más profundas y sofisticadas han emergido, como \textit{VGGNet} (2014, 16-19 capas), \textit{Inception/GoogLeNet} (2015, con módulos de convolución 
-en paralelo) y \textit{ResNet} \cite{He2016} (2016, más de 50 capas). En particular, las \textbf{redes residuales} (ResNets) de He et al. (2016) introdujeron conexiones de atajo 
+en paralelo) y \textit{ResNet} (2016, más de 50 capas). En particular, las \textbf{redes residuales} (ResNets) de He et al. (2016) introdujeron conexiones de atajo 
 (skip connections) que mitigaron el problema de la degradación del gradiente en redes muy profundas, permitiendo entrenar exitosamente redes de incluso 152 capas con 
 mejoras significativas en la precisión de tareas de visión.
 
@@ -262,56 +262,59 @@ esquemáticamente un ejemplo de arquitectura CNN simple, con sus etapas de convo
 
 Las CNN han demostrado ser extremadamente efectivas en visión por computador, logrando reconocer objetos en fotos con gran precisión, segmentar imágenes píxel a píxel, 
 detectar rostros, entre muchas otras aplicaciones. En el ámbito de imágenes médicas, han superado enfoques tradicionales al detectar patrones sutiles en radiografías, 
-resonancias o microscopías que serían difíciles de modelar manualmente. No obstante, entrenar redes profundas con éxito requiere prácticas adecuadas: grandes conjuntos 
-de datos anotados, técnicas de regularización (como \textit{dropout}, normalización batch, data augmentation), y a menudo un ajuste cuidadoso de hiperparámetros. 
-Cuando el conjunto de datos disponible es limitado (situación común en aplicaciones biomédicas), es frecuente recurrir a \textit{aprendizaje por transferencia}, 
-utilizando redes pre-entrenadas en un dominio amplio (p. ej., ImageNet) y refinándolas (fine-tuning) sobre la tarea específica, aprovechando características visuales 
-genéricas aprendidas previamente.
+resonancias o microscopías que serían difíciles de modelar manualmente. No obstante, entrenar redes profundas con éxito requiere una gran cantidad de datos
+clasificadas de manera manual, siendo de mayor dificultad en el ámbito médico donde la anotación de imágenes es costosa y requiere experiencia especializada.
+Cuando el conjunto de datos disponible es limitado, es frecuente recurrir a \textit{aprendizaje por transferencia}, utilizando redes pre-entrenadas en un dominio 
+amplio (p. ej., ImageNet) y refinándolas (fine-tuning) sobre la tarea específica, aprovechando características visuales genéricas aprendidas previamente.
 
 Otro aspecto relevante es la \textit{interpretabilidad} de las predicciones de las redes neuronales. Las RNA profundas han sido criticadas como “cajas negras” 
 difíciles de entender; sin embargo, se han desarrollado técnicas para visualizar y explicar qué han aprendido. Por ejemplo, en imágenes, métodos como \textit{Grad-CAM} 
-(Gradiente-Weighted Class Activation Mapping) \cite{vanDerVelden2022} permiten resaltar las regiones de la imagen que más contribuyen a una determinada predicción de la red, proporcionando 
-pistas sobre qué está “mirando” la CNN al tomar su decisión. Estas técnicas forman parte de la llamada \textbf{IA explicable} (XAI, \textit{Explainable AI}), 
-un campo emergente que busca hacer más transparente el funcionamiento de modelos complejos, especialmente crítico en entornos como la medicina donde es necesario ganar 
-la confianza del especialista humano.
+(Gradiente-Weighted Class Activation Mapping) permiten resaltar las regiones de la imagen que más contribuyen a una determinada predicción de la red, proporcionando 
+pistas sobre qué está “mirando” la CNN al tomar su decisión, pudiendo determinar si la red se basa en características relevantes o si ha aprendido patrones no generalizables
+(p. ej. clasificando imagenes por el fondo en lugar del objeto de interés). 
 
 En suma, las redes neuronales (especialmente las convolucionales profundas) constituyen la columna vertebral de muchos sistemas modernos de inteligencia artificial, 
-logrando avances sin precedentes en reconocimiento de patrones. Para una cobertura más amplia sobre arquitecturas y fundamentos de aprendizaje profundo, puede 
-consultarse el texto de Goodfellow et al. En la siguiente sección se explorará cómo estas técnicas de AA y redes neuronales se aplican en el ámbito de la visión por 
-computador biomédica, con énfasis en el caso concreto de la clasificación de artrosis de rodilla mediante CNN.
+logrando avances sin precedentes en reconocimiento de patrones. En la siguiente sección se explorará cómo estas técnicas de ML y redes neuronales se aplican en el ámbito de la visión por 
+computador biomédica, con énfasis en el caso MedMNIST y la clasificación de artrosis en rodillas.
 
 \section{ML aplicado a VC y tareas biomédicas: caso MedMNIST}\label{sec:ml-medical} 
-La combinación de aprendizaje automático y visión por computador ha impulsado grandes avances en el análisis de imágenes biomédicas 
-en la última década. En el pasado, la interpretación de imágenes médicas (radiografías, resonancias, microscopia, etc.) dependía 
-enteramente de la pericia humana, pero hoy en día los algoritmos de \textit{deep learning} han logrado igualar e incluso superar 
-el rendimiento de expertos en ciertas tareas diagnósticas \cite{Liu2019}. Por ejemplo, se han entrenado redes neuronales convolucionales para 
-detectar retinopatía diabética en fotos de retina, cáncer de piel en imágenes dermatoscópicas, neumonía en radiografías de tórax, 
-entre otros, con niveles de sensibilidad y especificidad comparables a los de médicos especialistas. Un metaanálisis de Liu et al. 
-(2019) recopiló numerosos estudios y concluyó que los clasificadores basados en aprendizaje profundo tenían, en promedio, un 
-desempeño similar al de profesionales de la salud en la detección de enfermedades a partir de imágenes médicas, lo que subraya el 
-potencial de estas técnicas para apoyar la labor clínica.
+La integración de técnicas de aprendizaje profundo y visión por computadora ha revolucionado el análisis de imágenes biomédicas en 
+la última década. Tradicionalmente, la interpretación de imágenes médicas como radiografías, resonancias magnéticas y microscopías 
+dependía exclusivamente de la habilidad humana. Sin embargo, en la actualidad, los algoritmos de \textit{deep learning} han igualado 
+e incluso superado el desempeño de especialistas en diversas tareas diagnósticas.
+
+Un ejemplo destacado es la empresa Quibim, fundada por el exalumno de la UPV, Ángel Alberich-Bayarri. Quibim ha desarrollado modelos 
+basados en inteligencia artificial para la detección del cáncer de próstata en resonancias magnéticas. Su herramienta, QP-Prostate®, 
+utiliza algoritmos avanzados para identificar y clasificar lesiones sospechosas en la glándula prostática, mejorando la precisión 
+diagnóstica y facilitando la planificación de biopsias dirigidas.
+
+Además, se han entrenado redes neuronales convolucionales para detectar retinopatía diabética en fotografías de retina, cáncer de 
+piel en imágenes dermatoscópicas y neumonía en radiografías de tórax, alcanzando niveles de sensibilidad y especificidad 
+comparables a los de médicos especialistas. Un metaanálisis realizado por Liu et al. (2019) concluyó que los clasificadores 
+basados en aprendizaje profundo presentan, en promedio, un desempeño similar al de profesionales de la salud en la detección de 
+enfermedades a partir de imágenes médicas, resaltando el potencial de estas técnicas para apoyar la labor clínica.
 
 En el caso particular de la \textbf{artrosis de rodilla} (u osteoartritis), la radiografía es la técnica más utilizada para evaluar 
-la gravedad de la enfermedad. Los radiólogos emplean un criterio estandarizado, la \textit{escala Kellgren-Lawrence (KL)} \cite{kellgren_lawrence_radiopaedia}, que asigna 
+la gravedad de la enfermedad. Los radiólogos emplean un criterio estandarizado, la \textit{escala Kellgren-Lawrence (KL)}, que asigna 
 un grado de 0 a 4 a la rodilla en función de signos radiográficos de degeneración (osteofitos, estrechamiento del espacio articular, 
 esclerosis, deformidad). Sin embargo, la lectura de estas radiografías puede ser subjetiva y presentar variabilidad entre observadores.
 Por ello, existe un gran interés en desarrollar sistemas automáticos que clasifiquen el grado KL a partir de la imagen de rayos X de 
-la rodilla de forma consistente y reproducible. Las redes neuronales convolucionales se adaptan muy bien a este problema: pueden 
-entrenarse con conjuntos grandes de radiografías anotadas con su grado KL para aprender directamente las características visuales 
-asociadas \cite{Rani2024} a cada nivel de severidad.
+la rodilla de forma consistente y reproducible. 
 
-Dado el amplio espectro de modalidades y problemas en imágenes médicas, han surgido iniciativas para facilitar la investigación 
-y comparación de algoritmos en múltiples tareas. Un caso notable es \textbf{MedMNIST} \cite{Yang2022}, una colección de datasets biomédicos de 
-pequeño tamaño inspirada en el famoso MNIST (dataset de dígitos escritos a mano) pero orientada a imágenes médicas . MedMNIST, en 
-su versión más reciente \textit{MedMNIST v2}, recopila 12 conjuntos de datos 2D (imágenes estáticas de 28$\times$28 píxeles) y 6 
-conjuntos 3D (volúmenes de 28$\times$28$\times$28 voxeles), abarcando diversas modalidades y tareas de clasificación biomédica. 
-Por ejemplo, incluye desde láminas histológicas coloreadas (\textit{PathMNIST}, 9 clases de tejidos patológicos), imágenes 
-dermatoscópicas de lunares (\textit{DermaMNIST}, clasificación de lesiones cutáneas), y radiografías de tórax 
-(\textit{ChestMNIST}, etiquetas multilabel de hallazgos torácicos), hasta estudios de retina OCT (\textit{OCTMNIST}, detección 
-de patologías retinales), entre otros. Cada subconjunto viene ya preprocesado y separado en particiones de entrenamiento, 
-validación y prueba estandarizadas, lo que facilita la aplicación directa de algoritmos y la comparación justa entre ellos.
+Dado el amplio espectro de modalidades y problemas en imágenes médicas, han surgido iniciativas para facilitar la investigación y 
+comparación de algoritmos en múltiples tareas. Un ejemplo es la \textbf{Osteoarthritis Initiative (OAI)}, que ha desarrollado un conjunto 
+de datos de radiografías de rodilla con anotaciones de grado Kellgren-Lawrence (KL) el cual se desarrollará mas adelante. 
+Otro caso notable es \textbf{MedMNIST}, una colección de conjuntos de datos biomédicos de pequeño tamaño inspirada 
+en el famoso MNIST (conjunto de datos de dígitos escritos a mano) pero orientada a imágenes médicas. En su versión más reciente, 
+\textit{MedMNIST v2}, recopila 12 conjuntos de datos 2D (imágenes estáticas de 28$\times$28 píxeles) y 6 conjuntos 3D (volúmenes de 
+28$\times$28$\times$28 vóxeles), abarcando diversas modalidades y tareas de clasificación biomédica. Por ejemplo, incluye láminas 
+histológicas coloreadas (\textit{PathMNIST}, 9 clases de tejidos patológicos), imágenes dermatoscópicas de lunares (\textit{DermaMNIST}, 
+clasificación de lesiones cutáneas) y radiografías de tórax (\textit{ChestMNIST}, etiquetas multilabel de hallazgos torácicos), 
+hasta estudios de retina OCT (\textit{OCTMNIST}, detección de patologías retinales), entre otros. Cada subconjunto viene preprocesado 
+y separado en particiones de entrenamiento, validación y prueba estandarizadas, lo que facilita la aplicación directa de algoritmos 
+y la comparación justa entre ellos.
 
-MedMNIST \cite{Yang2022} fue diseñado con varios objetivos clave en mente:
+MedMNIST  fue diseñado con varios objetivos clave en mente:
 \begin{itemize}
     \item \textbf{Diversidad}: Cubre múltiples modalidades de imagen (radiografías, tomografías, resonancias, ecografías, 
     imágenes microscopias, etc.), distintos tamaños de datos (desde $\sim$100 hasta $>$100,000 imágenes) y tareas de 
@@ -340,12 +343,11 @@ MedMNIST \cite{Yang2022} fue diseñado con varios objetivos clave en mente:
 
 En resumen, iniciativas como MedMNIST complementan a los grandes desafíos clínicos (ej. clasificar artrosis en radiografías 
 completas) ofreciendo un “laboratorio” controlado para probar métodos de aprendizaje automático en imágenes biomédicas. 
-El presente proyecto de TFG se enmarca precisamente en este contexto: la aplicación de redes neuronales convolucionales 
-al diagnóstico automatizado de artrosis de rodilla, un problema relevante en el campo de la salud musculoesquelética. 
-Aprovechando conjuntos de datos como el de OAI \cite{chen2018knee} (con imágenes reales de pacientes) y los avances reportados en la literatura, se 
-buscará entrenar un modelo capaz de predecir el estado de la articulación a partir de la radiografía, evaluando su desempeño 
-y explorando técnicas de interpretación (por ejemplo, visualizando las regiones de la rodilla más influyentes en la decisión 
-de la red mediante mapas de calor al estilo Grad-CAM). De este modo, se pretende contribuir tanto a la validación de las 
+El presente proyecto de TFG se enmarca precisamente en este contexto: la aplicación del aprendizaje automatico 
+a la clasificación de artrosis de rodilla, un problema relevante en el campo de la salud musculoesquelética. 
+Aprovechando conjuntos de datos como el de OAI \cite{chen2018knee} (con imágenes reales de pacientes) y los avances reportados 
+en la literatura, se buscará entrenar un modelo capaz de predecir el estado de la articulación a partir de la radiografía, evaluando su desempeño 
+y utilizando técncias de interpretación como \textit{Grad-CAM}. De este modo, se pretende contribuir tanto a la validación de las 
 técnicas de aprendizaje profundo en una tarea biomédica específica como a la comprensión de sus alcances y limitaciones en 
 un entorno clínico real.
 
@@ -361,18 +363,47 @@ un entorno clínico real.
 
 \section{Introducción al dataset OAI}
 
-El estudio de la artrosis de rodilla requiere de conjuntos de datos que reflejen con fidelidad tanto la progresión clínica 
-como los cambios estructurales visibles en técnicas de imagen. En este contexto, el \textit{Osteoarthritis Initiative (OAI)}\cite{chen2018knee}
-se posiciona como una de las bases de datos públicas más relevantes y ampliamente utilizadas en investigaciones biomédicas. 
-Este repositorio fue concebido con el objetivo de identificar biomarcadores de progresión y aparición de la osteoartritis, 
-facilitando el desarrollo de herramientas diagnósticas y terapéuticas más precisas.
+El estudio exhaustivo de la artrosis de rodilla (OA, por sus siglas en inglés \textit{Osteoarthritis}), una de las principales causas de dolor y discapacidad a nivel mundial, 
+requiere imperativamente conjuntos de datos robustos, detallados y representativos. Estos datasets son cruciales no solo para investigar los complejos mecanismos subyacentes 
+a la iniciación y progresión de la enfermedad, sino también para desarrollar y validar rigurosamente nuevas herramientas diagnósticas, pronósticas y terapéuticas. En este 
+panorama, la \textit{Osteoarthritis Initiative (OAI)} \cite{niamsOAI} se destaca como uno de los recursos de investigación públicos más influyentes y extensamente utilizados 
+por la comunidad científica internacional dedicada al estudio de la OA de rodilla. Establecida gracias a una colaboración público-privada liderada por los Institutos Nacionales 
+de Salud de EE.UU. (NIH), la OAI fue lanzada oficialmente en 2004 como un estudio observacional, multicéntrico y longitudinal. Su objetivo primordial y ambicioso ha sido 
+identificar y validar biomarcadores, que estén asociados de manera fiable con el desarrollo (incidencia) y el empeoramiento (progresión) de la OA de rodilla sintomática. 
+Los datos generados por la OAI han impulsado numerosos avances en la comprensión de la enfermedad.
 
-El proyecto OAI comenzó en 2004 y ha recopilado datos longitudinales de aproximadamente 4.796 participantes durante más de una 
-década. Los sujetos fueron seleccionados de diferentes centros médicos de Estados Unidos, e incluyen tanto individuos con 
-diagnóstico clínico de artrosis como sujetos en riesgo de desarrollarla. Esta diversidad poblacional permite estudiar la 
-evolución de la enfermedad desde fases asintomáticas hasta estadios avanzados.
+El diseño del estudio implicó el reclutamiento de una cohorte considerable de 4.796 participantes, con edades comprendidas entre los 45 y 79 años en el momento de la inclusión, 
+distribuidos en cuatro centros clínicos de Estados Unidos (Universidad de Pittsburgh, Ohio State University, Universidad de Maryland y Memorial Hospital de Rhode Island). 
+Estratégicamente, esta cohorte se diseñó para incluir tanto a individuos que ya presentaban OA de rodilla sintomática como a un grupo significativo de 
+personas consideradas en alto riesgo de desarrollar la enfermedad (por factores como edad, sobrepeso, historial familiar o lesiones previas), pero sin diagnóstico confirmado 
+al inicio. Esta composición heterogénea es particularmente valiosa porque permite investigar tanto los factores asociados a la aparición de la OA en individuos previamente 
+sanos o en riesgo, como los determinantes de su progresión estructural y sintomática en aquellos ya afectados. Durante un periodo de seguimiento que se extendió por más de 
+una década, se realizó una recopilación sistemática y estandarizada de una vasta cantidad de información en visitas periódicas (generalmente anuales, tras una evaluación basal 
+exhaustiva). Estos datos incluyen detallados cuestionarios sobre síntomas (dolor, rigidez, función física - p.ej., usando escalas como WOMAC), exámenes físicos completos, 
+mediciones de rendimiento físico, un extenso panel de análisis de biospecímenes (sangre, orina para biomarcadores solubles y genéticos), y, de forma central para muchos 
+análisis, un protocolo riguroso de adquisición de imágenes médicas. Este protocolo incluye principalmente radiografías simples de ambas rodillas y resonancias magnéticas (RM) 
+de alta resolución, obtenidas con secuencias específicas para evaluar el cartílago, meniscos, hueso subcondral y otras estructuras articulares.
 
-Este conjunto de datos es especialmente valioso para tareas de aprendizaje automático debido a su tamaño, su naturaleza longitudinal y la inclusión de etiquetas clínicamente validadas. Asimismo, permite abordar problemas tanto de clasificación como de predicción de progresión de la enfermedad.
+Dentro del arsenal de datos de imagen recopilados por la OAI, las radiografías simples (rayos X) de rodilla continúan siendo un componente fundamental. Específicamente, 
+las proyecciones posteroanteriores (PA) con la rodilla en flexión fija (\textit{fixed-flexion view}) se consideran el estándar de oro radiográfico para la evaluación clínica 
+rutinaria y la clasificación de la severidad estructural de la OA. La popularidad de la radiografía se debe a su amplia disponibilidad, bajo 
+coste relativo y su capacidad para visualizar características clave de la OA. La severidad radiográfica objetivada en estas imágenes se gradúa convencionalmente mediante la 
+escala \textbf{Kellgren-Lawrence (KL)}, un sistema de clasificación semicuantitativo y ordinal propuesto originalmente en 1957. Esta escala 
+evalúa globalmente la presencia y magnitud de varios signos radiográficos característicos de la OA, principalmente la formación de osteofitos (crecimientos óseos marginales) 
+y el pinzamiento o estrechamiento del espacio articular (JSN, \textit{Joint Space Narrowing}), además de considerar la esclerosis subcondral y las deformidades óseas en los 
+grados más avanzados. La escala KL distingue cinco grados de severidad, desde el grado 0 (ausencia de signos de OA) hasta el grado 4 (OA severa):
+
+\begin{itemize}
+    \item \textbf{Grado 0:} Normal. Sin características radiográficas de OA.
+    \item \textbf{Grado 1:} Dudoso. Pinzamiento mínimo del espacio articular o posible formación de osteofitos marginales.
+    \item \textbf{Grado 2:} Leve. Presencia definida de osteofitos y posible pinzamiento del espacio articular.
+    \item \textbf{Grado 3:} Moderado. Osteofitos moderados múltiples, pinzamiento definido del espacio articular y posible esclerosis ósea leve.
+    \item \textbf{Grado 4:} Severo. Grandes osteofitos, pinzamiento importante del espacio articular, esclerosis ósea marcada y deformidad ósea definida.
+\end{itemize}
+
+La Figura \ref{fig:knee-examples} muestra ejemplos visuales de radiografías correspondientes a cada uno de los grados KL. A pesar de su amplio uso, la escala KL presenta 
+limitaciones conocidas, como su subjetividad y variabilidad interobservador, lo que motiva la búsqueda de métodos automáticos y objetivos para la evaluación de la OA 
+\cite{chen2019fully}.
 
 \begin{figure}[htbp]
     \centering
@@ -409,81 +440,187 @@ Este conjunto de datos es especialmente valioso para tareas de aprendizaje autom
     \label{fig:knee-examples}
 \end{figure}
 
+Este conjunto de datos constituye la base del presente Trabajo de Fin de Grado, ya que proporciona imágenes de rodilla etiquetadas 
+con el grado de artrosis según la escala KL. Gracias a su fiabilidad y a su estructura previamente curada, permite el entrenamiento
+de redes neuronales convolucionales de manera reproducible, facilitando la comparación con estudios previos y la validación de nuevas 
+propuestas de clasificación automática en imágenes médicas.
 
+% --- Características del Dataset (Versión Mendeley/Kaggle) ---
+\section{Características del Dataset (Versión Mendeley/Kaggle)}
+\label{sec:dataset_characteristics}
 
-\section{--------Previo---------}
-En este capítulo se presenta una descripción exhaustiva del corpus utilizado para la detección y gradación de la artrosis en rodillas. Se abordan aspectos fundamentales relativos al dataset OAI, obtenido de Mendeley Data, así como la integración de elementos experimentales extraídos del paper \cite{efficientnet_paper}. En este contexto, se detallan los procesos de adquisición, preprocesamiento, análisis estadístico y organización en subconjuntos, elementos esenciales para el éxito en la aplicación de modelos de aprendizaje profundo.
+Si bien la base de datos completa de la OAI es extraordinariamente rica, su gran volumen y complejidad estructural pueden dificultar su uso directo para tareas específicas de 
+aprendizaje automático, como el entrenamiento de modelos de clasificación de imágenes. Por esta razón, diversos investigadores han creado y distribuido públicamente 
+versiones curadas y procesadas de subconjuntos de datos radiográficos del OAI. Estas versiones facilitan enormemente el acceso y la aplicación de técnicas de inteligencia 
+artificial. Dos de las plataformas donde se encuentran frecuentemente estas versiones adaptadas son Mendeley Data, como el conjunto de datos publicado por Chen (2018) 
+\cite{chen2018knee} pudiendose encontrar en Mendeley y Kaggle, dataset utilizado en numerosos trabajos.
 
-\section{Adquisición y Descripción del Dataset OAI}
-El dataset OAI se obtuvo de la plataforma Mendeley Data y se ha consolidado como una fuente de referencia para el estudio de la artrosis de rodilla. Este corpus se compone de radiografías que permiten evaluar la severidad de la enfermedad mediante el sistema de gradación de Kellgren-Lawrence (KL). Durante la fase de adquisición se integraron las clases \textit{test}, \textit{train}, \textit{val} y \textit{auto-test} presentadas en el dataset original, logrando el split empleado en \cite{efficientnet_paper}. Concretamente, el conjunto se redistribuyó en un 75\% para entrenamiento, 17\% para prueba y 8\% para validación.
-
-\subsection{Distribución por Condición Médica y Estadísticas del Corpus}
-En este trabajo, las clases se denominan de acuerdo con la condición médica asociada a la artrosis:
-\begin{itemize}
-    \item \textbf{Sin artrosis} (KL 0)
-    \item \textbf{Leve} (KL 1)
-    \item \textbf{Moderada} (KL 2)
-    \item \textbf{Severa} (KL 3)
-    \item \textbf{Muy severa} (KL 4)
-\end{itemize}
-
-La siguiente tabla resume la distribución numérica de imágenes en cada subconjunto:
-\begin{center}
-\begin{tabular}{lccccc}
-\toprule
-\textbf{Subconjunto} & \textbf{Sin artrosis} & \textbf{Leve} & \textbf{Moderada} & \textbf{Severa} & \textbf{Muy severa} \\
-\midrule
-\textit{auto-test} & 604 & 275 & 403 & 200 & 44 \\
-\textit{train}     & 2286 & 1046 & 1516 & 757 & 173 \\
-\textit{val}       & 328 & 153 & 212 & 106 & 27 \\
-\textit{test}      & 639 & 296 & 447 & 223 & 51 \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-Como complemento, se detallan a continuación los porcentajes de distribución por clase en cada
- subconjunto:
-
-Conjunto de datos por clase
-\begin{itemize}
-    \item Sin artrosis: 39.5\%
-    \item Leve: 18\%
-    \item Moderada: 26.5\%
-    \item Severa: 13\%
-    \item Muy severa: 3\%
-\end{itemize}
-El corpus total se compone de 9786 imágenes, distribuidas en 1526 para auto-test, 5778 para entrenamiento, 826 para validación y 
-1656 para prueba. Esta distribución y el equilibrio en las condiciones médicas son fundamentales para el entrenamiento y evaluación r
-obusta de los modelos de clasificación.
-
-\section{Preprocesamiento y Análisis del Corpus}
-El preprocesamiento de las imágenes es una etapa crucial para asegurar la calidad y homogeneidad de los datos. Se aplicaron las siguientes técnicas:
+El dataset publicado en Mendeley Data por Chen, estrechamente vinculado a su trabajo posterior sobre clasificación automática de grados KL mediante 
+redes neuronales profundas \cite{chen2019fully}, es un ejemplo prominente y fue específicamente organizado para facilitar tareas de detección de la articulación y clasificación 
+de la severidad. Las características generales de estas versiones procesadas, que constituyen la base de numerosos estudios posteriores (incluido el presente trabajo), suelen ser 
+las siguientes:
 
 \begin{itemize}
-    \item \textbf{Redimensionamiento y Conversión a RGB:} Se ajustaron todas las imágenes a un tamaño uniforme de 224$\times$224 píxeles y se convirtieron al formato RGB, cumpliendo con las especificaciones de entrada de arquitecturas como EfficientNet.
-    \item \textbf{Ecualización de Histograma:} Esta técnica se utilizó para mejorar el contraste, resaltando detalles fundamentales para la detección de patrones asociados a la artrosis.
-    \item \textbf{Filtrado Bilateral:} Aplicado para suavizar las imágenes preservando bordes y detalles críticos, esenciales para la correcta interpretación anatómica.
-    \item \textbf{Data Augmentation:} Se implementaron técnicas de aumento de datos (volteo horizontal y vertical) en el conjunto de entrenamiento, incrementando la variabilidad y robustez del modelo sin alterar la integridad de los conjuntos de validación y prueba.
+    \item \textbf{Imágenes:} El conjunto total incluye \textbf{9\,786 imágenes}, distribuidas en cuatro particiones diferenciadas: \textit{train} (5\,778), \textit{validation} (826), \textit{test} (1\,656) y \textit{auto\_test} (1\,526), como se muestra en la Tabla~\ref{tab:splits}.
+    
+    \begin{table}[h]
+        \centering
+        \caption{Distribución de imágenes por partición}
+        \label{tab:splits}
+        \begin{tabular}{lrr}
+            \toprule
+            \textbf{Partición} & \textbf{Número de imágenes} & \textbf{Porcentaje} \\
+            \midrule
+            Entrenamiento (Train) & 5\,778 & 59.04\,\% \\
+            Validación (Validation) & 826 & 8.44\,\% \\
+            Prueba (Test) & 1\,656 & 16.92\,\% \\
+            Autoevaluación (AutoTest) & 1\,526 & 15.59\,\% \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.6\textwidth]{class_distribution_train.png}
+        \caption{Distribución de clases (KL 0 a KL 4) en el conjunto de entrenamiento del dataset OAI. Se observa un desbalance significativo hacia los grados más leves.}
+        \label{fig:class_barplot}
+    \end{figure}
+
+    \item \textbf{Etiquetas:} Cada imagen está etiquetada con un grado KL (de 0 a 4), siguiendo el criterio de radiólogos expertos de la OAI. Esta información es clave 
+    para entrenar modelos supervisados de clasificación.
+
+    \item \textbf{Resolución y preprocesamiento:} En la versión de Mendeley, las imágenes se encuentran disponibles en dos resoluciones estándar: \textbf{224x224} y 
+    \textbf{299x299} píxeles, facilitando el uso de arquitecturas preentrenadas como ResNet o EfficientNet. En la versión de Kaggle solo están disponibles en 224x224
+    píxeles, lo que la hace más directa para su uso en modelos CNN comunes.
+
+    \item \textbf{Distribución de clases:} La Tabla~\ref{tab:class_distribution} muestra la distribución de clases en el conjunto de entrenamiento. Se observa un claro 
+    desbalance hacia las clases más leves de artrosis, lo que debe considerarse en el diseño de los modelos de clasificación.
+
+    \begin{table}[h]
+        \centering
+        \caption{Distribución de clases en el conjunto de entrenamiento}
+        \label{tab:class_distribution}
+        \begin{tabular}{lrrrr}
+            \toprule
+            \textbf{Clase KL} & \textbf{Índice} & \textbf{Imágenes} & \textbf{Porcentaje} \\
+            \midrule
+            0 (Sin artrosis) & 0 & 2\,286 & 39.56\,\% \\
+            1 (Ligera) & 1 & 1\,046 & 18.10\,\% \\
+            2 (Leve) & 2 & 1\,516 & 26.24\,\% \\
+            3 (Moderada) & 3 & 757 & 13.10\,\% \\
+            4 (Severa) & 4 & 173 & 2.99\,\% \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    Como se observa, el conjunto de entrenamiento presenta un notable desbalance de clases, con predominancia de imágenes etiquetadas con 
+    grado 0 (sin artrosis) y grado 2 (leve), y una clara escasez de imágenes con grado 4 (severa). Este desbalance puede inducir a que el modelo 
+    favorezca las clases más frecuentes durante el entrenamiento, afectando negativamente su capacidad para detectar los casos más críticos. 
+
+    \item \textbf{Divisiones (Splits):} La existencia de splits predefinidos facilita la reproducibilidad de experimentos y la comparación entre distintos enfoques. 
+    Considerando únicamente los subconjuntos \textit{train}, \textit{validation} y \textit{test} —que son los habitualmente utilizados para entrenar y evaluar modelos— 
+    se mantiene una proporción aproximada de \textbf{70\,\% entrenamiento}, \textbf{10\,\% validación} y \textbf{20\,\% test}, ampliamente adoptada en la comunidad. 
+    El conjunto \textit{auto\_test}, aunque no se utiliza en todos los trabajos, está disponible como recurso adicional que se utiliza en ocasiones para aumentar la cantidad de 
+    imagenes en el entrenamiento.
 \end{itemize}
 
-El análisis estadístico del corpus resalta una distribución equilibrada entre las diferentes condiciones médicas, lo que es vital para el aprendizaje profundo y la posterior validación del modelo.
+\section{Taras comunes en el dataset OAI}
+\label{sec:common_tasks}
 
-\section{Integración con el Paper}
-El paper \cite{efficientnet_paper} utiliza el dataset OAI para evaluar un modelo ensemble basado en arquitecturas EfficientNet, mediante:
+El conjunto de datos de la *Osteoarthritis Initiative* (OAI) ha sido ampliamente empleado en la literatura científica como base para el desarrollo de modelos de aprendizaje
+profundo orientados al diagnóstico automatizado de la artrosis de rodilla. Gracias a su riqueza clínica y su volumen de imágenes radiográficas etiquetadas según la escala de
+Kellgren-Lawrence (KL), este dataset se ha convertido en una referencia para la validación de nuevas arquitecturas y metodologías dentro del ámbito de la inteligencia 
+artificial aplicada a la medicina.
+
+A lo largo del tiempo, diferentes líneas de investigación han coincidido en una serie de tareas recurrentes que abordan distintos enfoques sobre la severidad de la artrosis. 
+Estas tareas pueden clasificarse, principalmente, en función de tres criterios:
 
 \begin{itemize}
-    \item \textbf{Modelo Ensemble:} La combinación de EfficientNetB0 y EfficientNetB4 permite mejorar la precisión en la clasificación, aprovechando las fortalezas complementarias de cada arquitectura.
-    \item \textbf{Estrategia de Entrenamiento:} Se han empleado pesos pre-entrenados junto con técnicas de regularización (Dropout y penalización L2) para optimizar la convergencia del modelo y minimizar el riesgo de sobreajuste.
-    \item \textbf{Explainable AI:} La técnica Grad-CAM facilita la interpretación visual de las áreas críticas que influyen en las predicciones, aumentando la transparencia y confiabilidad del sistema.
+    \item El tipo de clasificación: binaria (presencia o ausencia de artrosis) o multiclase (grados de KL de 0 a 4).
+    \item La metodología de entrenamiento: desde cero (*from scratch*) o mediante *transfer learning* con redes preentrenadas.
+    \item La formulación del problema: como clasificación ordinaria o regresión ordinal.
 \end{itemize}
 
-La integración de estas metodologías, junto con el exhaustivo preprocesamiento y análisis del corpus, permite obtener resultados experimentales comparables con el estado del arte en la detección y gradación de la artrosis de rodilla.
+Cabe destacar que estas tareas no son excluyentes, y muchas publicaciones recientes exploran combinaciones de estos enfoques. Además, se ha popularizado el uso de técnicas complementarias 
+como el ensamblado de modelos (ensembling), el ajuste fino de pesos (fine-tuning) o el uso de funciones de pérdida adaptadas a la naturaleza ordinal del problema.
 
-\section{Conclusiones}
-El análisis detallado del corpus del dataset OAI y su integración con las técnicas presentadas en \cite{efficientnet_paper} subraya la importancia de una adquisición y preprocesamiento minuciosos. La organización en subconjuntos, el equilibrio en la distribución de condiciones médicas y la aplicación de técnicas avanzadas en el tratamiento de imágenes sientan las bases para el desarrollo de modelos de aprendizaje profundo capaces de ofrecer diagnósticos precisos y fiables. Este enfoque contribuye significativamente al desarrollo de herramientas de asistencia al diagnóstico que combinan inteligencia artificial con técnicas de Explainable AI.
+En el contexto de este Trabajo de Fin de Grado, el foco se centrará exclusivamente en la tarea de clasificación del grado de artrosis, descartando explícitamente la tarea de detección automática de 
+la articulación de la rodilla. Se parte de imágenes radiográficas previamente recortadas como se encuentran en los datasets disponibles en Mendeley y Kaggle, donde la articulación ya ha sido
+detectada y centrada, pudiendo replicar los experimentos de otros autores y comparar los resultados obtenidos de una manera más directa. 
+
+A modo de ejemplo representativo de las tareas descritas, se presentan a continuación varios estudios recientes que han abordado el problema de clasificación de la artrosis de 
+rodilla utilizando el dataset OAI, cada uno desde una perspectiva metodológica distinta. Estos trabajos ilustran bien la diversidad de aproximaciones y motivaciones que existen 
+en la literatura científica actual, y permiten contextualizar el enfoque adoptado en este Trabajo de Fin de Grado.
+
+\textbf{Chen et al. (2019)} \cite{chen2019fully} desarrollan un sistema completamente automatizado para la clasificación de la severidad de la 
+artrosis de rodilla, combinando detección de la articulación con YOLOv2 y posterior clasificación mediante redes neuronales profundas. 
+En el contexto de este TFG, el interés se centra en la segunda fase del pipeline: la predicción del grado de artrosis según la escala de 
+Kellgren-Lawrence (KL). Los autores emplean arquitecturas CNN preentrenadas como VGG, ResNet, InceptionV3 y DenseNet, afinadas con una función de 
+pérdida personalizada denominada adjustable ordinal loss, diseñada para penalizar más severamente los errores a mayor distancia ordinal. 
+Los resultados muestran que esta función mejora el rendimiento frente a la entropía cruzada tradicional, alcanzando una precisión del 70.4\% con 
+VGG-19 como mejor modelo. Esta propuesta es destacable por introducir de manera explícita la naturaleza ordinal de las etiquetas KL en el proceso 
+de entrenamiento, aspecto esencial para tareas clínicas con niveles de severidad escalonados.
+
+\textbf{Srikijkasemwat et al. (2024)} \cite{kneexnet2024} presentan KneeXNet, un sistema basado en ensamblado de modelos para la clasificación 
+automática del grado de artrosis a partir de radiografías del dataset OAI. Evalúan diez modelos preentrenados en ImageNet —incluyendo ResNet, 
+VGG, DenseNet, EfficientNet y GoogLeNet— y aplican dos estrategias de fusión: votación mayoritaria y una red neuronal superficial. Además, 
+integran técnicas como muestreo ponderado para lidiar con el desequilibrio de clases y Smooth-GradCAM++ para mejorar la interpretabilidad. 
+El modelo ensamblado mediante red superficial alcanza una precisión del 72\%, superando individualmente a cada arquitectura evaluada.
+Este trabajo subraya la utilidad del ensamblado y de la explicabilidad en escenarios clínicos, aportando un marco sólido con el que se pueden 
+comparar propuestas futuras.
+
+\textbf{Nabil et al. (2024)} \cite{nabil2024automatic} optan por una estrategia simplificada que agrupa las clases KL 0, 1 y 2 bajo la categoría 
+“sano”, lo cual responde a la dificultad recurrente en la clasificación precisa del grado KL1. Comparan tres arquitecturas profundas 
+—EfficientNetB7, DenseNet169 e InceptionResNetV2— y reportan un rendimiento superior de EfficientNetB7, con una precisión del 93.90\%. 
+Su propuesta destaca por una cuidadosa fase de preprocesamiento, uso extensivo de técnicas de aumento de datos y regularización, así 
+como una formulación del problema como clasificación en tres niveles (sano, moderado, severo). Pese a su elevado coste computacional, 
+EfficientNetB7 se presenta como una solución idónea para entornos clínicos donde la precisión diagnóstica es prioritaria.
+
+\textbf{Fei et al. (2024)} \cite{fei2024diagnosing} plantean un cambio conceptual al abordar la clasificación de la artrosis como un problema 
+de regresión continua, en lugar de una clasificación discreta. Utilizando redes neuronales convolucionales, sus modelos generan puntuaciones 
+decimales entre 0 y 4 que reflejan con mayor precisión la progresión de la enfermedad. Evalúan cuatro arquitecturas —VGG16, ResNet34, 
+DenseNet196 y EfficientNetV2 small— sobre 8260 imágenes del dataset OAI, siendo EfficientNetV2 la más destacada, con una precisión del 71\%, 
+AUC de 0.83 y un error absoluto medio (MAE) de 0.42. Este enfoque permite un análisis más granular y continuo del estado articular, abriendo 
+la puerta a aplicaciones como el seguimiento longitudinal, la predicción de progresión y el soporte a la decisión clínica.
+
+Cabe destacar que, al igual que la función de pérdida adjustable ordinal loss utilizada por Chen et al. (2019), el uso de una pérdida de tipo 
+error cuadrático medio en este estudio refleja la intención de penalizar proporcionalmente según la distancia ordinal entre la predicción y 
+la etiqueta real. Aunque desde una perspectiva técnica se trata de una formulación regresiva en lugar de categórica, ambas propuestas comparten 
+el objetivo de capturar la estructura ordinal inherente al sistema de gradación de Kellgren-Lawrence, superando así las limitaciones de la entropía 
+cruzada convencional.
+
+En la Tabla~\ref{tab:comparative_oai} se presenta una síntesis comparativa de los principales trabajos analizados que han utilizado el dataset OAI. 
+Se resumen los modelos empleados, el tipo de tarea formulada, las métricas clave reportadas y observaciones destacadas de cada enfoque. Esta 
+comparativa permite tener una visión global del panorama actual, así como identificar tendencias metodológicas relevantes para este TFG.
+
+\begin{table}[h]
+    \centering
+    \caption{Comparativa de trabajos previos con el dataset OAI}
+    \label{tab:comparative_oai}
+    \begin{tabular}{lllll}
+        \toprule
+        \textbf{Estudio} & \textbf{Tarea} & \textbf{Precisión} & \textbf{Observaciones} \\
+        \midrule
+        Chen et al. (2019) & Clasificación ordinal & 70.4\% & Adjustable loss \\
+        Srikijkasemwat et al. (2024) & Multiclase & 72\% & Interpretabilidad \\
+        Nabil et al. (2024)  & Binaria (agrupada) & 93.9*\%  & Aumento de datos \\
+        Fei et al. (2024)  & Regresión & 71\% & Output continuo \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+El análisis de estos trabajos evidencia una creciente tendencia a incorporar la naturaleza ordinal del problema, así como a experimentar 
+con formulaciones alternativas como la regresión o el uso de modelos ensamblados. Esta revisión proporciona una base sólida para el diseño 
+experimental planteado en los capítulos siguientes, donde se compararán distintos enfoques de clasificación aplicados sobre el dataset OAI, 
+considerando también la interpretación de resultados mediante técnicas como Grad-CAM.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\chapter{Capítulo 4 | Contribución 1: Experimentación y Análisis de Resultados}
+\label{chap:experiments}
+
+Experimentos hechos con el dataset de kaggle replicando papers
 
 \chapter{Capítulo X | contribución 1: Experimentación y Análisis de Resultados}
 
