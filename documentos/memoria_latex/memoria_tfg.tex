@@ -622,6 +622,124 @@ considerando también la interpretación de resultados mediante técnicas como G
 
 Experimentos hechos con el dataset de kaggle replicando papers
 
+
+\section{Modelo Denso}
+
+\textbf{Precisión total:} 39.7\%
+
+\noindent\textbf{Matriz de Confusión}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lrrrrr}
+    \toprule
+    \textbf{Verdadera \textbackslash{} Predicha} & 0 & 1 & 2 & 3 & 4 \\
+    \midrule
+    \textbf{0} & 328 & 0 & 0 & 0 & 0 \\
+    \textbf{1} & 153 & 0 & 0 & 0 & 0 \\
+    \textbf{2} & 212 & 0 & 0 & 0 & 0 \\
+    \textbf{3} & 106 & 0 & 0 & 0 & 0 \\
+    \textbf{4} & 27  & 0 & 0 & 0 & 0 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Matriz de confusión del modelo denso en el conjunto de validación.}
+\end{table}
+
+
+    
+\section{Tiny CNN}
+
+\textbf{Precisión total:} 44.2\% (365/826)
+
+\noindent\textbf{Matriz de Confusión:}
+\begin{tabular}{lrrrrr}
+    & 0   & 1   & 2   & 3   & 4   \\ \hline
+  0 & 264 & 4   & 58  & 2   & 0   \\
+  1 & 117 & 2   & 31  & 3   & 0   \\
+  2 & 122 & 2   & 87  & 0   & 1   \\
+  3 & 41  & 1   & 52  & 11  & 1   \\
+  4 & 4   & 0   & 13  & 9   & 1   
+\end{tabular}
+
+\bigskip
+
+\noindent\textbf{Observaciones:}
+\begin{itemize}
+  \item Clase 0: recall = 81\%, precision = 48\%.
+  \item Clases 1 \& 4: recall < 5\%, alta confusión con clase 0.
+  \item Clase 2: recall = 41\%, precision = 36\%.
+  \item Clase 3: recall = 10\%, precision = 44\%.
+  \item Clase 4: recall = 3.7\%, precision = 33\%, confusión con clases 2 y 3.
+\end{itemize}
+
+\section{Simple CNN}
+
+\textbf{Precisión total:} 48.2\%
+
+\bigskip
+
+\noindent\textbf{Datos:}
+\begin{itemize}
+  \item Clases: 5
+  \item Validación: 826 muestras
+\end{itemize}
+
+\medskip
+
+\noindent\textbf{Matriz de Confusión:}
+\begin{tabular}{lrrrrr}
+    & 0   & 1   & 2   & 3   & 4   \\ \hline
+  0 & 271 & 21  & 34  & 2   & 0   \\
+  1 & 105 & 13  & 31  & 4   & 0   \\
+  2 & 105 & 12  & 84  & 10  & 1   \\
+  3 & 28  & 6   & 45  & 27  & 0   \\
+  4 & 0   & 0   & 11  & 13  & 3   
+\end{tabular}
+
+\bigskip
+
+\noindent\textbf{Observaciones:}
+\begin{itemize}
+  \item Clase 0: recall = 82.6\% (271/328), precision = 53.2\% (271/509).
+  \item Clase 1: recall = 8.5\% (13/153), precision = 25.0\% (13/52).
+  \item Clase 2: recall = 39.6\% (84/212), precision = 41.0\% (84/205).
+  \item Clase 3: recall = 25.5\% (27/106), precision = 48.2\% (27/56).
+  \item Clase 4: recall = 11.1\% (3/27), precision = 75.0\% (3/4), confusión con clases 2 y 3.
+\end{itemize}
+
+\section*{Advanced CNN}
+
+\textbf{Precisión total:} 55.4\% (457/826)
+
+\bigskip
+
+\noindent\textbf{Matriz de Confusión (Validación)}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{c|ccccc}
+    \toprule
+    \textbf{Clase real \textbackslash{} Predicha} & 0   & 1   & 2    & 3   & 4   \\ 
+    \midrule
+    \textbf{0} & 294 & 1   & 32   & 1   & 0   \\
+    \textbf{1} & 121 & 1   & 28   & 3   & 0   \\
+    \textbf{2} & 103 & 1   & 101  & 7   & 0   \\
+    \textbf{3} & 13  & 0   & 37   & 51  & 5   \\
+    \textbf{4} & 0   & 0   & 0    & 17  & 10  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\bigskip
+
+\noindent\textbf{Observaciones}
+\begin{itemize}
+  \item \textbf{Clase 0:} recall $\approx 89.6\%$ (294/328), precisión $\approx 55.4\%$ (294/531).
+  \item \textbf{Clase 1:} recall $\approx 0.7\%$ (1/153), precisión $\approx 33.3\%$ (1/3).
+  \item \textbf{Clase 2:} recall $\approx 47.6\%$ (101/212), precisión $\approx 51.0\%$ (101/198).
+  \item \textbf{Clase 3:} recall $\approx 48.1\%$ (51/106), precisión $\approx 64.6\%$ (51/79).
+  \item \textbf{Clase 4:} recall $\approx 37.0\%$ (10/27), precisión $\approx 66.7\%$ (10/15), confusión principal con clase~3.
+\end{itemize}
+
+
 \chapter{Capítulo X | contribución 1: Experimentación y Análisis de Resultados}
 
 \section{Introducción}
