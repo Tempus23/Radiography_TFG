@@ -281,7 +281,7 @@
    \addto\captionsspanish{\def\keywords{#2}}
    \addto\captionsenglish{\def\keywords{#3}}}
 
-\newenvironment{abstract}[1][catalan]{%
+\newenvironment{abstract}[1][spanish]{%
         \begingroup
           \selectlanguage{#1}\addvspace{\baselineskip}\par\hfill
           {\sffamily\bfseries\Huge\abstractname}\smallskip\par}{%

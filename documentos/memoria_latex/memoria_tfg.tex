@@ -57,20 +57,33 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-Aquí citamos a un datajkjkset \cite{gornale2020digital}.
-Citación paper IEE \cite{10863523}, Dataset \cite{chen2018knee}
-aqui citamos un paper \cite{VAATTOVAARA2025100580}
-otra cita \cite{comprehensive_review}
 
-Quitar imagenes brillantes -> \cite{efficientnet_paper}
+El presente Trabajo de Fin de Grado (TFG) aborda el desarrollo de un sistema de clasificación automática de artrosis en rodillas mediante redes neuronales convolucionales (CNN), una técnica avanzada de aprendizaje profundo (Deep Learning). La artrosis es una de las enfermedades musculoesqueléticas más prevalentes a nivel mundial, caracterizada por la degeneración del cartílago articular y que afecta principalmente a adultos mayores. Sin embargo, su diagnóstico sigue siendo un proceso subjetivo que depende en gran medida de la interpretación visual de imágenes médicas por parte de especialistas.
+
+Para enfrentar esta problemática, se ha implementado un modelo basado en redes neuronales convolucionales entrenado con el dataset OAI (Osteoarthritis Initiative), que contiene radiografías de rodillas etiquetadas según la escala Kellgren-Lawrence (KL), un estándar clínico para evaluar la severidad de la enfermedad. El sistema propuesto se ha diseñado utilizando distintas arquitecturas de redes, incluyendo modelos desde cero y redes preentrenadas (Transfer Learning) adaptadas para esta tarea.
+
+El desarrollo del sistema ha seguido un enfoque incremental, evaluando el desempeño de modelos simples y progresivamente complejos, comparando métricas de precisión, F1-score y error absoluto medio (MAE) en la clasificación de imágenes. Adicionalmente, se ha explorado la capacidad de generalización del modelo aplicándolo a un conjunto externo de imágenes de radiografías de gatos, simulando una transferencia de conocimiento hacia otro dominio anatómico.
+
+Los resultados obtenidos muestran que las redes convolucionales profundas, especialmente aquellas ajustadas mediante aprendizaje por transferencia, ofrecen un rendimiento superior en la clasificación del grado de artrosis, alcanzando niveles de precisión comparables a los de estudios previos en la literatura. No obstante, también se identificaron desafíos relacionados con el desbalance de clases en el dataset y la necesidad de técnicas avanzadas de interpretación de modelos, como Grad-CAM.
+
+En conclusión, este TFG demuestra la viabilidad del uso de redes neuronales convolucionales para la clasificación automática de artrosis en rodillas, destacando el potencial de estas técnicas para apoyar la labor diagnóstica de los profesionales médicos y abriendo la posibilidad de extender el sistema a otros dominios, como la artrosis en animales.
+
 \end{abstract}
 
-\begin{abstract}[spanish]
-(Resumen en castellano)
-\end{abstract}
+
 
 \begin{abstract}[english]
-(Resumen en inglés)
+    
+This Final Degree Project (TFG) addresses the development of an automatic classification system for knee osteoarthritis using Convolutional Neural Networks (CNNs), an advanced deep learning technique. Osteoarthritis is one of the most prevalent musculoskeletal diseases worldwide, characterized by the degeneration of articular cartilage, primarily affecting older adults. However, its diagnosis remains a subjective process, heavily dependent on the visual interpretation of medical images by specialists.
+    
+To tackle this problem, a model based on convolutional neural networks was implemented, trained with the OAI (Osteoarthritis Initiative) dataset, which contains knee radiographs labeled according to the Kellgren-Lawrence (KL) scale, a clinical standard for assessing disease severity. The proposed system was designed using various network architectures, including models built from scratch and pre-trained networks (Transfer Learning) adapted for this task.
+    
+The system development followed an incremental approach, evaluating the performance of simple and progressively complex models, comparing metrics such as accuracy, F1-score, and Mean Absolute Error (MAE) in image classification. Additionally, the model's generalization capability was explored by applying it to an external set of cat knee radiographs, simulating knowledge transfer to another anatomical domain.
+    
+The results obtained show that deep convolutional networks, especially those adjusted through transfer learning, offer superior performance in classifying the severity of osteoarthritis, achieving precision levels comparable to previous studies in the literature. However, challenges related to class imbalance in the dataset and the need for advanced model interpretation techniques, such as Grad-CAM, were also identified.
+    
+In conclusion, this TFG demonstrates the feasibility of using convolutional neural networks for the automatic classification of knee osteoarthritis, highlighting the potential of these techniques to support the diagnostic work of medical professionals and opening the possibility of extending the system to other domains, such as osteoarthritis in animals.
+    
 \end{abstract}
 
 \mainmatter
@@ -96,9 +109,26 @@ Además, se plantea la posibilidad de realizar \textit{transfer learning} utiliz
 En este contexto, el presente trabajo busca contribuir al avance del uso de inteligencia artificial en la detección y análisis de la artritis, evaluando diferentes enfoques de redes neuronales y analizando su rendimiento en la clasificación de imágenes médicas. La motivación principal es demostrar la viabilidad y efectividad de estos modelos en un problema biomédico concreto, promoviendo la integración de tecnologías emergentes en el ámbito de la salud.
 
 
-\section{Objetivos}      % 1.2
-% Presenta aquí los 3 objetivos principales
-% p.e. Objetivo 1, Objetivo 2, Objetivo 3
+
+\section{Objetivos del TFG}
+
+El presente Trabajo de Fin de Grado (TFG) tiene como objetivo desarrollar un sistema de clasificación automática de artrosis en rodillas mediante redes neuronales convolucionales (CNN). Este objetivo se justifica en la necesidad de mejorar la precisión y eficiencia del diagnóstico de la artrosis, una enfermedad que afecta a millones de personas en todo el mundo, y que actualmente depende en gran medida de la interpretación subjetiva de imágenes radiográficas por parte de especialistas.
+
+Para alcanzar este objetivo general, se plantean los siguientes objetivos específicos:
+
+\begin{itemize}
+\item \textbf{Desarrollar un modelo de clasificación automática de artrosis en rodillas} utilizando redes neuronales convolucionales (CNN). Este modelo será entrenado y evaluado sobre el conjunto de datos OAI (Osteoarthritis Initiative), uno de los recursos más utilizados en la literatura para el estudio de la artrosis de rodilla. El desarrollo incluirá una fase de diseño, implementación y ajuste de hiperparámetros para maximizar el rendimiento.
+
+```
+\item \textbf{Evaluar la capacidad de transferencia del modelo a otro dominio anatómico}, aplicando técnicas de aprendizaje por transferencia (Transfer Learning). En concreto, se analizará cómo el modelo, entrenado en imágenes de rodillas humanas, puede adaptarse a la clasificación de artrosis en radiografías de gatos. Esto permitirá estudiar el impacto del cambio de dominio en el rendimiento del modelo y su capacidad de generalización.
+
+\item \textbf{Analizar el rendimiento del modelo propuesto}, evaluando su precisión, sensibilidad, especificidad, F1-score y MAE. Además, se identificarán las limitaciones del modelo y las fuentes de error, proponiendo posibles mejoras mediante técnicas avanzadas de aprendizaje profundo, como la optimización de arquitecturas, ajuste fino (fine-tuning) y visualización interpretativa con Grad-CAM.
+```
+
+\end{itemize}
+
+Con estos objetivos, el presente TFG busca no solo desarrollar un sistema eficiente para la clasificación de artrosis, sino también aportar un análisis crítico de su rendimiento y explorar estrategias para su optimización.
+
 
 \section{Estructura del documento}  % 1.3
 % Describe la organización de los capítulos y secciones
@@ -955,6 +985,38 @@ y mejorar la robustez del modelo.
     \end{tabular}
 \end{table}
 
+\textbf{Resultados EfficientNetB0:}
+\begin{table}[h]
+    \centering
+    \caption{Resultados EfficientNetB0 en clasificación y regresión}
+    \label{tab:cnn_grande_results}
+    \begin{tabular}{@{} l l l c c c c c c @{}} 
+      \toprule
+      \textbf{Dataset} & \textbf{Tarea} & \textbf{Métrica} 
+        & \multicolumn{6}{c}{\textbf{Particiones}} \\
+      \cmidrule(lr){4-9}
+      & & & 0--4 & 0-3-4 & 0 vs 1 & 0 vs 2 & 0 vs 3 & 0 vs 4 \\
+      \midrule
+      \multirow{2}{*}{OAI}
+        & Clasif. & Accuracy   & 68.64\% & 94.07\% & 74.01\% & 87.22\% & 97.70\% & ?? \\
+        & Clasif. & F1-score   & 64.82\% & 93.84\% & 71.78\% & 87.77\% & 97.67\% & ?? \\
+      \addlinespace
+      \multirow{2}{*}{Gatos}
+        & Clasif. & Accuracy   & 25.30\% & 84.34\% & 55.77\% & 60\% & 66.67\% &  \\
+        & Clasif. & F1-score   & 10.91\% & 77.17\% & 46.73\% & 60\% & 53.33\% &  \\
+      \midrule
+      \multirow{3}{*}{OAI}
+        & Regr.   & Accuracy   & 65.13\% & 93.83\% & -- & -- & -- & -- \\
+        & Regr.   & F1-score   & 65.84\% & 93.67\% & -- & -- & -- & -- \\
+        & Regr.   & MAE        & 0.463   & 0.102   & -- & -- & -- & -- \\
+      \addlinespace
+      \multirow{3}{*}{Gatos}
+        & Regr.   & Accuracy   & 36.14\% & 85.54\% & -- & -- & -- & -- \\
+        & Regr.   & F1-score   & 19.19\% & 79.89\% & -- & -- & -- & -- \\
+        & Regr.   & MAE        & 0.8498 & 0.2120 & -- & -- & -- & -- \\
+      \bottomrule
+    \end{tabular}
+\end{table}
 
 
 
@@ -1050,6 +1112,12 @@ para los modelos convolucionales.
 %                              CAPÍTULO 5                                     %
 %                     TERCERA CONTRIBUCIÓN (OBJETIVO 3)                       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Fine-tuning para radiografías de gatos}
+\label{chap:finetuning_cats}
+
+\section{Introducción}
+\label{sec:cat_intro}
+
 
 \chapter{Conclusiones}  % ~5 páginas
 
