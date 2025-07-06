@@ -505,10 +505,10 @@ las siguientes:
             \toprule
             \textbf{Partición} & \textbf{Número de imágenes} & \textbf{Porcentaje} \\
             \midrule
-            Entrenamiento (Train) & 5\,778 & 59.04\,\% \\
-            Validación (Validation) & 826 & 8.44\,\% \\
-            Prueba (Test) & 1\,656 & 16.92\,\% \\
-            Autoevaluación (AutoTest) & 1\,526 & 15.59\,\% \\
+            Entrenamiento (Train) & 5\,778 & 59.0\,\% \\
+            Validación (Validation) & 826 & 8.4\,\% \\
+            Prueba (Test) & 1\,656 & 16.9\,\% \\
+            Autoevaluación (AutoTest) & 1\,526 & 15.6\,\% \\
             \bottomrule
         \end{tabular}
     \end{table}
@@ -531,11 +531,11 @@ las siguientes:
             \toprule
             \textbf{Clase KL} & \textbf{Índice} & \textbf{Imágenes} & \textbf{Porcentaje} \\
             \midrule
-            0 (Sin artrosis) & 0 & 2\,286 & 39.56\,\% \\
-            1 (Ligera) & 1 & 1\,046 & 18.10\,\% \\
-            2 (Leve) & 2 & 1\,516 & 26.24\,\% \\
-            3 (Moderada) & 3 & 757 & 13.10\,\% \\
-            4 (Severa) & 4 & 173 & 2.99\,\% \\
+            0 (Sin artrosis) & 0 & 2\,286 & 40\% \\
+            1 (Ligera) & 1 & 1\,046 & 18\% \\
+            2 (Leve) & 2 & 1\,516 & 26\% \\
+            3 (Moderada) & 3 & 757 & 13\% \\
+            4 (Severa) & 4 & 173 & 3\% \\
             \bottomrule
         \end{tabular}
     \end{table}
@@ -593,6 +593,8 @@ Tabla~\ref{tab:cat_class_distribution} muestra la distribución de clases de tod
     \end{tabular}
 \end{table}
 
+% #TODO Imagenes de gatos :)
+
 Este conjunto de imágenes felinas funcionará como un conjunto de validación externo durante el proceso de entrenamiento de 
 los modelos basados en el dataset OAI. Su propósito es poner a prueba la capacidad de generalización de los clasificadores 
 aprendidos sobre radiografías humanas, aplicándolos a un dominio anatómico distinto pero con la misma tarea de gradación 
@@ -607,7 +609,7 @@ En ambas estrategias se adoptará un enfoque conservador: las capas iniciales de
 afinándose únicamente las capas superiores y la cabeza de clasificación. De esta forma, se minimiza el riesgo de 
 sobreajuste y se maximiza la transferencia de características útiles a pesar del tamaño reducido del dataset de gatos.
 
-\section{Taras comunes}
+\section{Tareas comunes}
 \label{sec:common_tasks}
 
 El conjunto de datos de la *Osteoarthritis Initiative* (OAI) ha sido ampliamente empleado en la literatura científica como base para el desarrollo de modelos de aprendizaje
@@ -699,15 +701,21 @@ comparativa permite tener una visión global del panorama actual, así como iden
     \footnotesize\raisebox{0.5ex}{*} 0 agrupa las clases KL 0, 1 y 2 como “sano”, frente a los grados 3 y 4 (“avanzado”).
 \end{flushleft}
 
-
-
-
 El análisis de estos trabajos evidencia una creciente tendencia a incorporar la naturaleza ordinal del problema, así como a experimentar 
 con formulaciones alternativas como la regresión o el uso de modelos ensamblados. Esta revisión proporciona una base sólida para el diseño 
 experimental planteado en los capítulos siguientes, donde se compararán distintos enfoques de clasificación aplicados sobre el dataset OAI, 
 considerando también la interpretación de resultados mediante técnicas como Grad-CAM.
 
+\section{Conclusiones}
+\label{sec:3_5_conclusiones}
 
+En este capítulo se ha presentado una visión integral de los recursos de datos utilizados en este Trabajo de Fin de Grado, destacando tanto el \emph{dataset} OAI, ampliamente reconocido en la investigación médica para la artrosis de rodilla, como el \emph{dataset} de gatos, que permite evaluar la generalización de los modelos desarrollados a un dominio anatómico distinto. La inclusión de estos dos conjuntos de datos, provenientes de contextos tan diversos, ha permitido establecer una base sólida para el desarrollo y la validación de modelos de clasificación profunda.
+
+El \emph{dataset} OAI se ha caracterizado en profundidad, especificando su estructura, distribución de clases y las particularidades de sus particiones. Esto ha puesto de manifiesto tanto su riqueza en términos de metadatos clínicos como el desafío del desbalance de clases inherente a la escala de severidad Kellgren-Lawrence (KL). Se ha evidenciado que este desbalance constituye un reto metodológico que debe abordarse adecuadamente durante el diseño de los modelos de clasificación.
+
+Por su parte, el \emph{dataset} de gatos ha sido introducido como un conjunto adicional que facilita la evaluación de las capacidades de transferencia de los modelos desarrollados. Su menor tamaño y variabilidad en las condiciones de imagen plantean un escenario complementario y desafiante, idóneo para probar la robustez de las técnicas implementadas.
+
+Finalmente, las tareas comunes definidas para ambos conjuntos de datos, desde la clasificación binaria hasta la clasificación ordinal, proporcionan un marco metodológico claro para el desarrollo de los modelos en los capítulos siguientes. La comprensión de estas tareas y sus variantes asegura una base conceptual sólida para el diseño experimental que se llevará a cabo, y permite contextualizar los resultados que se obtendrán.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 4                                     %
 %                        REDES CONVOLUCIONALES                                %
@@ -868,6 +876,48 @@ estabilidad del entrenamiento y mitigar el sobreajuste. Además, se ha implement
 reflejos verticales y horizontales, y variaciones de brillo y contraste. Estas transformaciones buscan enriquecer la variabilidad del conjunto de entrenamiento 
 y mejorar la robustez del modelo.
 
+\textbf{Resultados obtenidos}
+Este apartado presenta de forma detallada los resultados experimentales obtenidos a lo largo del desarrollo del presente Trabajo de Fin de Grado. La evaluación de los modelos diseñados se ha centrado en analizar el impacto de la arquitectura, la formulación del problema (clasificación vs. regresión) y la partición de tareas (multiclase, binaria y ordinal) sobre la capacidad del sistema para predecir de forma automática el grado de artrosis de rodilla a partir de radiografías del conjunto de datos OAI.
+
+En línea con los estudios revisados en el capítulo anterior, los experimentos se han concebido de forma progresiva, comenzando por modelos simples construidos desde cero y avanzando hacia arquitecturas más complejas y robustas. Esta progresión arquitectónica permite establecer una base comparativa sólida y observar cómo se incrementa la capacidad de representación de los modelos a medida que se introducen nuevas técnicas de normalización, regularización y profundidad.
+
+\textbf{Evaluación de modelos simples construidos desde cero.}
+El primer bloque de resultados corresponde a las tres CNN personalizadas (simple, mediana y profunda), entrenadas desde cero. El propósito inicial de estos modelos no es alcanzar una precisión máxima, sino establecer una línea base interpretativa que permita entender qué nivel de rendimiento puede obtenerse sin recurrir al aprendizaje por transferencia ni a arquitecturas sofisticadas. Así, la \emph{Simple CNN}, con una única capa convolucional y una densidad de parámetros mínima, permite observar la capacidad de generalización más básica del sistema.
+
+En las tareas multiclase (KL 0 a 4), el modelo simple logra una precisión del 42\% y un F1-score del 30\%, lo que evidencia sus limitaciones para discriminar clases ordinales cercanas. No obstante, en tareas binarias extremas como KL 0 vs KL 4, la precisión asciende al 97.18\%, con un F1-score de 97.02\%, revelando que incluso modelos muy básicos pueden captar diferencias marcadas cuando las clases son visualmente muy dispares. Este comportamiento sugiere que la dificultad no reside únicamente en el modelo, sino en la naturaleza ambigua de los casos intermedios (KL1, KL2), en línea con lo reportado por Rafique et al. (2024).
+
+La \emph{CNN mediana}, con dos capas convolucionales y una capa densa intermedia, introduce una mejora sustancial al permitir la detección de patrones jerárquicos más complejos. Su rendimiento en clasificación multiclase asciende al 46.85\%, con un F1-score del 39.71\%. La mejora más significativa se observa en tareas como 0 vs 3 y 0 vs 4, donde supera el 84\% y el 97\% de precisión, respectivamente. Estos resultados reflejan que con un incremento moderado en la profundidad y la capacidad de abstracción del modelo, se logran mejoras tangibles en la discriminación de clases intermedias.
+
+Por su parte, la \emph{CNN profunda}, estructurada en tres bloques con \texttt{BatchNormalization} y \texttt{Dropout}, consigue consolidarse como la mejor red entre las diseñadas ad-hoc. En clasificación multiclase alcanza una precisión del 58.47\% y un F1-score del 52.03\%, lo que representa una mejora absoluta de más de 16 puntos respecto al modelo simple. En tareas binarias, destaca especialmente en las comparaciones intermedias (0 vs 2, 0 vs 3), donde su rendimiento supera ampliamente el 85\%, y alcanza el 99.72\% en la comparación 0 vs 4, con un F1-score idéntico. Estos resultados evidencian el papel crucial que desempeñan las técnicas de regularización en la mejora de la generalización.
+
+\textbf{Resultados en formulación ordinal (regresión).}
+Además de la clasificación categórica, se ha explorado una formulación regresiva del problema, utilizando las mismas arquitecturas pero adaptando la función de pérdida a un error cuadrático medio (MSE). Esta aproximación tiene como objetivo capturar la continuidad inherente al sistema de gradación Kellgren-Lawrence, penalizando más severamente los errores proporcionales a la distancia ordinal entre la predicción y la etiqueta real.
+
+En esta configuración, los modelos muestran una tendencia coherente con lo observado en clasificación: la CNN profunda obtiene el mejor MAE (0.651), seguida por la CNN mediana (0.771) y la simple (0.897). De manera interesante, se observa que la formulación regresiva permite obtener mejores resultados en tareas reagrupadas (0-3-4), donde la CNN profunda alcanza un 84.34\% de precisión y un F1-score de 77.17\%, siendo este un resultado comparable al de estudios como Fei et al. (2024), quienes defienden también el enfoque continuo como una vía prometedora en tareas clínicas.
+
+En esta segunda parte se presentan los resultados obtenidos al aplicar técnicas de \textit{transfer learning} sobre dos arquitecturas profundas ampliamente utilizadas en visión por computador: EfficientNetB0 y ResNet50. A diferencia de los modelos diseñados desde cero, estas redes aprovechan conocimiento previamente aprendido sobre grandes bases de datos como ImageNet, lo que permite partir de representaciones visuales genéricas y afinarlas para la tarea específica de clasificación de la artrosis.
+
+\textbf{Resultados con EfficientNetB0.}
+Este modelo ha destacado especialmente por su eficiencia y capacidad de generalización con un número relativamente reducido de parámetros. En su configuración óptima (ajuste fino completo), alcanza una precisión del 68.64\% en la tarea multiclase (KL 0-4), con un F1-score del 64.82\%. Estas cifras superan ampliamente las obtenidas por las CNN propias, con una mejora de más de 10 puntos porcentuales respecto al mejor modelo desde cero.
+
+En las tareas binarias, EfficientNetB0 obtiene resultados notablemente altos, con una precisión del 94.07\% en la tarea 0-3-4 y del 97.70\% en 0 vs 3, consolidando su robustez en escenarios de clasificación clínica práctica. La formulación ordinal mediante regresión también resulta efectiva, alcanzando un MAE de solo 0.463 y una precisión del 65.13\%, lo que respalda la hipótesis de que estas arquitecturas permiten capturar mejor la continuidad inherente al grado de artrosis.
+
+\textbf{Evaluación cruzada en el dominio felino.}
+Uno de los objetivos específicos de este TFG ha sido evaluar la capacidad de generalización de los modelos desarrollados a un dominio anatómicamente distinto: el conjunto de imágenes radiográficas de gatos. Aunque este conjunto es de menor tamaño y presenta mayor variabilidad en las condiciones de adquisición, se ha mantenido como evaluación externa sin intervenir en los procesos de entrenamiento o validación.
+
+Los resultados obtenidos muestran que los modelos preentrenados (especialmente EfficientNetB0) conservan un nivel razonable de precisión en este dominio externo, validando así la aplicabilidad del aprendizaje por transferencia inter-especie. Esta observación abre nuevas líneas de investigación en contextos veterinarios, donde los conjuntos de datos suelen ser mucho más escasos.
+
+\textbf{Comparativa global y análisis.}
+En la Figura~\ref{fig:comparativa_modelos_accuracy} se presenta una comparativa gráfica de la precisión multiclase (KL 0-4) alcanzada por los distintos modelos, permitiendo visualizar de forma directa la evolución del rendimiento conforme aumenta la complejidad de la arquitectura. Del mismo modo, la Tabla~\ref{tab:resumen_global_modelos} recoge de forma sintética las principales métricas (accuracy, F1, MAE) para cada configuración relevante.
+
+% #TODO TABLA MOSTRAR DATOS TABLAS O GRÁFICO
+
+Como puede observarse, la precisión y el F1-score mejoran de forma sostenida con el aumento de complejidad, y los modelos preentrenados presentan una clara ventaja en formulaciones multiclase. En tareas binarias extremas, sin embargo, incluso las CNN más simples alcanzan niveles notables, lo que refuerza la idea de que el grado de separación entre clases influye significativamente en la dificultad del problema.
+
+\section{Conclusiones}
+Los resultados obtenidos no solo confirman la viabilidad del uso de redes neuronales profundas para la clasificación automática de la artrosis de rodilla, sino que también validan el enfoque de este TFG al estructurar la evaluación de forma progresiva y comprensiva. La introducción de una evaluación interdominio basada en radiografías de gatos, aunque secundaria en este capítulo, ha servido para comprobar la robustez de los modelos desarrollados, lo que constituye una de las principales contribuciones del trabajo.
+
+En los capítulos siguientes se analizarán más a fondo las interpretaciones clínicas de los resultados, así como la visualización de activaciones mediante Grad-CAM, con el objetivo de avanzar hacia sistemas de ayuda a la decisión médica más transparentes y explicables.
 
 \textbf{Resultados simple CNN:}
 
@@ -887,23 +937,12 @@ y mejorar la robustez del modelo.
         & Clasif. & Accuracy   & 42\%   & 85.35\%   & 68.19\% &  65.37\%   &  80.88\%   &  97.18\%   \\
         & Clasif. & F1-score    & 30\%  & 80.35\%  & 55.29\%  &  62.84\%   &  77.98\%   &  97.02\%   \\
       \addlinespace
-      % Clasificación Gatos
-      \multirow{2}{*}{Gatos}
-        & Clasif. & Accuracy   & 25\%   & 83.8\%  & 57.69\% &  65\%     &  69.70\%   &  95.83\%   \\
-        & Clasif. & F1-score    & 11\%  & 77\%    & 57.88\% &  63.66\%  &  63.37\%   &  95.19\%   \\
-      \midrule
       % Regresión OAI
       \multirow{3}{*}{OAI}
         & Regr.   & Accuracy   & 34.87\%   & 84.38\% &  --      &  --   &  --   &  --   \\
         & Regr.   & F1-score    & 34.65\%  & 78.16\%  &  --      &  --   &  --   &  --   \\
         & Regr.   & MAE         & 0.897  & 0.291  &  --      &  --   &  --   &  --   \\
       \addlinespace
-      % Regresión Gatos
-      \multirow{3}{*}{Gatos}
-        & Regr.   & Accuracy   & 31\%   & 84.34\%  &  --    &  --   &  --   &  --   \\
-        & Regr.   & F1-score    & 23\%  & 77.17\%  &  --    &  --   &  --   &  --   \\
-        & Regr.   & MAE         & 1.014  & 0.181   &  --    &  --   &  --   &  --   \\
-      \bottomrule
     \end{tabular}
 \end{table}
   
@@ -927,23 +966,12 @@ y mejorar la robustez del modelo.
         & Clasif. & Accuracy   & 46.85\% & 85.35\% & 68.19\% & 62.41\% & 84.10\% & 97.46\% \\
         & Clasif. & F1-score   & 39.71\% & 80.35\% & 55.29\% & 54.41\% & 82.16\% & 97.35\% \\
       \addlinespace
-      % Clasificación Gatos
-      \multirow{2}{*}{Gatos}
-        & Clasif. & Accuracy   & 28.92\% & 85.54\% & 42.31\% & 55.00\% & 72.73\% & 100\% \\
-        & Clasif. & F1-score   & 18.89\% & 79.29\% & 25.16\% & 39.03\% & 65.60\% & 100\% \\
-      \midrule
       % Regresión OAI
       \multirow{3}{*}{OAI}
         & Regr.   & Accuracy   & 34.87\% & 84.02\% & -- & -- & -- & -- \\
         & Regr.   & F1-score   & 34.65\% & 82.71\% & -- & -- & -- & -- \\
         & Regr.   & MAE        & 0.771 & 0.237 & -- & -- & -- & -- \\
       \addlinespace
-      % Regresión Gatos
-      \multirow{3}{*}{Gatos}
-        & Regr.   & Accuracy   & 38.55\% & 84.34\% & -- & -- & -- & -- \\
-        & Regr.   & F1-score   & 22.44\% & 77.17\% & -- & -- & -- & -- \\
-        & Regr.   & MAE        & 0.9713 & 0.211 & -- & -- & -- & -- \\
-      \bottomrule
     \end{tabular}
 \end{table}
 
@@ -965,23 +993,12 @@ y mejorar la robustez del modelo.
         & Clasif. & Accuracy   & 58.47\% & 89.35\% & 68.40\% & 74.26\% & 86.64\% & 99.72\% \\
         & Clasif. & F1-score   & 52.03\% & 88.50\% & 55.78\% & 72.51\% & 86.14\% & 99.72\% \\
       \addlinespace
-      % Clasificación Gatos
-      \multirow{2}{*}{Gatos}
-        & Clasif. & Accuracy   & 34.94\% & 85.54\% & 53.85\% & 62.50\% & 66.67\% & 95.83\% \\
-        & Clasif. & F1-score   & 18.89\% & 79.29\% & 52.98\% & 61.99\% & 53.33\% & 95.19\% \\
-      \midrule
       % Regresión OAI
       \multirow{3}{*}{OAI}
         & Regr.   & Accuracy   & 43.95\% & 84.34\% & -- & -- & -- & -- \\
         & Regr.   & F1-score   & 46.22\% & 77.17\% & -- & -- & -- & -- \\
         & Regr.   & MAE        & 0.651 & 0.171 & -- & -- & -- & -- \\
       \addlinespace
-      % Regresión Gatos
-      \multirow{3}{*}{Gatos}
-        & Regr.   & Accuracy   & 39.76\% & -- & -- & -- & -- & -- \\
-        & Regr.   & F1-score   & 29.65\% & -- & -- & -- & -- & -- \\
-        & Regr.   & MAE        & 0.893 & -- & -- & -- & -- & -- \\
-      \bottomrule
     \end{tabular}
 \end{table}
 
@@ -998,30 +1015,40 @@ y mejorar la robustez del modelo.
       & & & 0--4 & 0-3-4 & 0 vs 1 & 0 vs 2 & 0 vs 3 & 0 vs 4 \\
       \midrule
       \multirow{2}{*}{OAI}
-        & Clasif. & Accuracy   & 68.64\% & 94.07\% & 74.01\% & 87.22\% & 97.70\% & ?? \\
-        & Clasif. & F1-score   & 64.82\% & 93.84\% & 71.78\% & 87.77\% & 97.67\% & ?? \\
+        & Clasif. & Accuracy   & 68.64\% & 94.07\% & 74.01\% & 87.22\% & 97.70\% & 99.72\% \\
+        & Clasif. & F1-score   & 64.82\% & 93.84\% & 71.78\% & 87.77\% & 97.67\% & 99.72\% \\
       \addlinespace
-      \multirow{2}{*}{Gatos}
-        & Clasif. & Accuracy   & 25.30\% & 84.34\% & 55.77\% & 60\% & 66.67\% &  \\
-        & Clasif. & F1-score   & 10.91\% & 77.17\% & 46.73\% & 60\% & 53.33\% &  \\
-      \midrule
       \multirow{3}{*}{OAI}
         & Regr.   & Accuracy   & 65.13\% & 93.83\% & -- & -- & -- & -- \\
         & Regr.   & F1-score   & 65.84\% & 93.67\% & -- & -- & -- & -- \\
         & Regr.   & MAE        & 0.463   & 0.102   & -- & -- & -- & -- \\
       \addlinespace
-      \multirow{3}{*}{Gatos}
-        & Regr.   & Accuracy   & 36.14\% & 85.54\% & -- & -- & -- & -- \\
-        & Regr.   & F1-score   & 19.19\% & 79.89\% & -- & -- & -- & -- \\
-        & Regr.   & MAE        & 0.8498 & 0.2120 & -- & -- & -- & -- \\
-      \bottomrule
     \end{tabular}
 \end{table}
 
+\begin{table}[h]
+    \centering
+    \caption{Resultados ResNet151 en clasificación y regresión}
+    \label{tab:cnn_grande_results}
+    \begin{tabular}{@{} l l l c c c c c c @{}} 
+      \toprule
+      \textbf{Dataset} & \textbf{Tarea} & \textbf{Métrica} 
+        & \multicolumn{6}{c}{\textbf{Particiones}} \\
+      \cmidrule(lr){4-9}
+      & & & 0--4 & 0-3-4 & 0 vs 1 & 0 vs 2 & 0 vs 3 & 0 vs 4 \\
+      \midrule
+      \multirow{2}{*}{OAI}
+        & Clasif. & Accuracy   & 67.07\% & 95.16\% & 68.61\% & 86.67\% & 96.31\% & 100\% \\
+        &         & F1-score   & 67.19\% & 94.89\% & 65.26\% & 86.55\% & 96.26\% & 100\% \\
+      \addlinespace
+      \multirow{3}{*}{OAI}
+        & Regr.   & Accuracy   & 59.56\% & 82.93\% &  &  &  &  \\
+        &         & F1-score   & 61.40\% & 79.17\% &  &  &  &  \\
+        &         & MAE        & 0.515   & 0.342 &  &  &  &  \\
+      \addlinespace
+    \end{tabular}
+\end{table}
 
-
-  
-\section{Conclusiones}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 5                                     %
@@ -1047,32 +1074,6 @@ Para evaluar el desempeño de los Transformers en esta tarea, se han seleccionad
 Un modelo Transformer puro que divide las imágenes en parches y aplica atención auto-regresiva para capturar relaciones globales entre estos. Su simplicidad y 
 capacidad de escalabilidad lo convierten en un buen punto de partida.
 
-\begin{itemize}
-\item 	\texttt{Patch Embedding (16x16)}
-\item 	\texttt{Multi-Head Self-Attention (12 heads)}
-\item 	\texttt{MLP Head (hidden\_dim=3072)}
-\item 	\texttt{Classification Head (num\_classes)}
-\end{itemize}
-
-\textbf{Swin Transformer.}
-Este modelo introduce ventanas deslizantes para limitar el alcance de la atención, mejorando la eficiencia en imágenes de alta resolución sin perder contexto global.
-
-\begin{itemize}
-\item 	\texttt{Patch Embedding (4x4)}
-\item 	\texttt{Swin Block (Window Size=7)}
-\item 	\texttt{Shifted Window Mechanism}
-\item 	\texttt{MLP Head}
-\item 	\texttt{Classification Head}
-\end{itemize}
-
-\textbf{Hybrid Transformer (ResNet + Transformer).}
-Un modelo híbrido que combina un backbone convolucional (ResNet) para extracción de características locales con un bloque Transformer para capturar relaciones globales.
-
-\begin{itemize}
-\item 	\texttt{Backbone: ResNet50}
-\item 	\texttt{Transformer Encoder (Multi-Head Self-Attention)}
-\item 	\texttt{Classification Head}
-\end{itemize}
 
 \section{Experimentos}
 Los experimentos se han diseñado para evaluar el rendimiento de los modelos Transformer bajo condiciones homogéneas, utilizando las mismas configuraciones de entrenamiento que en el capítulo anterior:
@@ -1109,14 +1110,54 @@ para los modelos convolucionales.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              CAPÍTULO 5                                     %
+%                              CAPÍTULO 6                                     %
 %                     TERCERA CONTRIBUCIÓN (OBJETIVO 3)                       %
+%                            TODO: REVISAR                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Fine-tuning para radiografías de gatos}
-\label{chap:finetuning_cats}
+\label{chap:gatos}
 
 \section{Introducción}
-\label{sec:cat_intro}
+La aplicación directa de modelos entrenados sobre radiografías humanas al dominio veterinario supone un reto interesante desde el punto de vista del aprendizaje por transferencia. En este capítulo se evalúa la viabilidad de adaptar modelos entrenados en el conjunto OAI a radiografías de rodillas de gatos, analizando su rendimiento y capacidad de generalización ante un cambio anatómico y de dominio visual.
+
+\section{Selección de tareas y análisis de sentido clínico}
+Dado el reducido tamaño del conjunto felino y la subjetividad de las clases más leves, se ha llevado a cabo una selección cuidadosa de las tareas más razonables. En particular, se han descartado aquellas con escasa diferencia visual o clínica. La elección de estás taraes no han sido al tum tum, si no que gracias a Bea, la veterinaria responsable de darme los datos hemos seleccionado las mejores tareas
+
+
+\section{Experimentos realizados}
+
+\subsection{Entrenamiento desde cero}
+Como línea base, se ha entrenado un modelo CNN desde cero utilizando únicamente las imágenes de gatos. El modelo ha mostrado una fuerte tendencia al sobreajuste, lo que confirma la necesidad de recurrir a técnicas de transferencia de conocimiento.
+
+\subsection{Fine-tuning desde modelos preentrenados}
+
+\subsubsection{Modelos preentrenados en OAI}
+Se ha reutilizado el modelo entrenado en humanos y se ha ajustado únicamente la cabeza de clasificación y las capas superiores. Esta estrategia ha resultado especialmente efectiva en tareas con mayor diferencia visual.
+
+\subsubsection{Modelos preentrenados en ImageNet}
+Se ha probado también el fine-tuning desde arquitecturas preentrenadas en ImageNet (por ejemplo, EfficientNetB0). Si bien el rendimiento ha sido aceptable, no ha superado al modelo transferido desde OAI en la mayoría de tareas.
+
+\section{Aplicación de técnicas de aumento de datos}
+Se ha implementado \textit{data augmentation} en tiempo real para mitigar el riesgo de sobreajuste. Las transformaciones incluyen:
+
+\begin{itemize}
+    \item Rotación aleatoria ($\pm 10^\circ$)
+    \item Inversión horizontal
+    \item Ajustes de brillo y contraste
+\end{itemize}
+
+Esta técnica ha demostrado ser crucial para mejorar el rendimiento en tareas multiclase y binarizadas con clases intermedias.
+
+\section{Resultados y análisis}
+A continuación, se muestran los principales resultados obtenidos en las tareas más representativas:
+
+
+Se observa que las tareas con mayor contraste (como 0 vs 4) obtienen métricas superiores, mientras que las tareas intermedias presentan un rendimiento más limitado. Esto sugiere que el conocimiento transferido se mantiene robusto ante diferencias notables, pero pierde precisión en clases ambiguas.
+
+\section{Conclusiones}
+Los modelos preentrenados en humanos pueden ser ajustados con éxito para detectar artrosis en gatos, especialmente en tareas con diferencias claras entre clases. El uso de fine-tuning parcial y aumento de datos ha sido clave para mitigar el impacto del reducido tamaño del conjunto felino. Sin embargo, las tareas con clases cercanas siguen suponiendo un reto significativo, lo que motiva futuras líneas de trabajo enfocadas en preprocesamiento adaptado y reetiquetado colaborativo con expertos veterinarios.
+
+
 
 
 \chapter{Conclusiones}  % ~5 páginas
