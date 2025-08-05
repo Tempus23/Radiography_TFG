@@ -1104,6 +1104,29 @@ Las métricas utilizadas para comparar el rendimiento de los modelos son:
 Se ha aplicado aumento de datos en tiempo real, incluyendo rotaciones aleatorias, reflejos y variaciones de brillo y contraste. Además, se ha utilizado Dropout y 
 Normalización por Lotes para mejorar la generalización.
 
+\begin{table}[h]
+    \centering
+    \caption{Resultados de google/vit-base-patch16-224}
+    \label{tab:cnn_grande_results}
+    \begin{tabular}{@{} l l l c c c c c c @{}} 
+      \toprule
+      \textbf{Dataset} & \textbf{Tarea} & \textbf{Métrica} 
+        & \multicolumn{6}{c}{\textbf{Particiones}} \\
+      \cmidrule(lr){4-9}
+      & & & 0--4 & 0-3-4 & 0 vs 1 & 0 vs 2 & 0 vs 3 & 0 vs 4 \\
+      \midrule
+      \multirow{2}{*}{OAI}
+        & Clasif. & Accuracy   & 65.45\%   & 92.37\%  & 69.64\% & 80.74\% & 96.54\% & 99.44\% \\
+        &         & F1-score   & 63.48\%   & 82.38\%  & 48.31\% & 80.00\% & 95.24\% & 98.00\% \\
+      \addlinespace
+      \multirow{3}{*}{OAI}
+        & Regr.   & Accuracy   & 68.70\%   & 91.71\%   &  &  &  &  \\
+        &         & F1-score   & 64.70\%   & 90.20\%   &  &  &  &  \\
+        &         & MAE        & 0.4617    & 0.0603    &  &  &  &  \\
+      \addlinespace
+    \end{tabular}
+\end{table}
+
 \textbf{Evaluación en dominio externo.}
 Se ha evaluado el rendimiento de los modelos en un conjunto adicional de imágenes de radiografías de gatos, replicando las condiciones de evaluación establecidas 
 para los modelos convolucionales.
@@ -1121,36 +1144,79 @@ para los modelos convolucionales.
 La aplicación directa de modelos entrenados sobre radiografías humanas al dominio veterinario supone un reto interesante desde el punto de vista del aprendizaje por transferencia. En este capítulo se evalúa la viabilidad de adaptar modelos entrenados en el conjunto OAI a radiografías de rodillas de gatos, analizando su rendimiento y capacidad de generalización ante un cambio anatómico y de dominio visual.
 
 \section{Selección de tareas y análisis de sentido clínico}
-Dado el reducido tamaño del conjunto felino y la subjetividad de las clases más leves, se ha llevado a cabo una selección cuidadosa de las tareas más razonables. En particular, se han descartado aquellas con escasa diferencia visual o clínica. La elección de estás taraes no han sido al tum tum, si no que gracias a Bea, la veterinaria responsable de darme los datos hemos seleccionado las mejores tareas
+Dado el reducido tamaño del conjunto felino y la subjetividad de las clases más leves, se ha llevado a cabo una selección de 2 tareas, la primera consiste en la tarea principal (0vs1vs2vs3vs4). La segunda tarea consiste en clasificación de 2 clases, la clase "sin artrosis" (0 y 1)  y la clase con artrosis 2,3,4
 
 
 \section{Experimentos realizados}
 
-\subsection{Entrenamiento desde cero}
-Como línea base, se ha entrenado un modelo CNN desde cero utilizando únicamente las imágenes de gatos. El modelo ha mostrado una fuerte tendencia al sobreajuste, lo que confirma la necesidad de recurrir a técnicas de transferencia de conocimiento.
-
-\subsection{Fine-tuning desde modelos preentrenados}
-
-\subsubsection{Modelos preentrenados en OAI}
-Se ha reutilizado el modelo entrenado en humanos y se ha ajustado únicamente la cabeza de clasificación y las capas superiores. Esta estrategia ha resultado especialmente efectiva en tareas con mayor diferencia visual.
-
-\subsubsection{Modelos preentrenados en ImageNet}
-Se ha probado también el fine-tuning desde arquitecturas preentrenadas en ImageNet (por ejemplo, EfficientNetB0). Si bien el rendimiento ha sido aceptable, no ha superado al modelo transferido desde OAI en la mayoría de tareas.
-
-\section{Aplicación de técnicas de aumento de datos}
-Se ha implementado \textit{data augmentation} en tiempo real para mitigar el riesgo de sobreajuste. Las transformaciones incluyen:
-
-\begin{itemize}
-    \item Rotación aleatoria ($\pm 10^\circ$)
-    \item Inversión horizontal
-    \item Ajustes de brillo y contraste
-\end{itemize}
-
-Esta técnica ha demostrado ser crucial para mejorar el rendimiento en tareas multiclase y binarizadas con clases intermedias.
+Los experimentos realizados consiste en estas 2 tareas con dos modelos (EfficientNetB0 y el transformer de google). En cada experimento se han probado 3 tipos de entrenamiento:
+ - Entrenamiento directo sobre el dataset de los gatos utilizando los modelos preentrados de serie
+ - Entrenamiento indirecto, utilizando los modelos previamente entrenados se ha evaluado directamente sobre el dataset sin realizar ningún entrenamiento extra
+ - Finetuning, utilizanod los modelos preentrenados previamente, se ha reentrenado con el dataset de gatos dejando un 35\% de los datos para validación (30 imagenes) y así tener una muestra representativa de las clases teniendo en los casos más críticos 1 imagen de la clase 4 y 3 de la clase 3
 
 \section{Resultados y análisis}
 A continuación, se muestran los principales resultados obtenidos en las tareas más representativas:
 
+\begin{table}[h]
+    \centering
+    \caption{Resultados de la Tarea 0--4 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
+    \label{tab:model_comparison_results}
+    \begin{tabular}{@{} l l c c c @{}} 
+        \toprule
+        \textbf{Modelo} & \textbf{Métrica} & \textbf{Directo} & \textbf{Indirecto} & \textbf{Finetuning} \\
+        \midrule
+        \multirow{2}{*}{ViT (Google)} 
+            & Accuracy & 47\% & 29\% & 50\% \\
+            & F1-score & 44\% & 27\% & 51\% \\
+        \addlinespace
+        \multirow{2}{*}{EfficientNetB0} 
+            & Accuracy & 40\% & 17\% & 30\% \\
+            & F1-score & 39\% &  9\% & 22\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{REGRESSION - Resultados de la Tarea 0--4 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
+    \label{tab:model_comparison_results}
+    \begin{tabular}{@{} l l c c c @{}} 
+        \toprule
+        \textbf{Modelo} & \textbf{Métrica} & \textbf{Directo} & \textbf{Indirecto} & \textbf{Finetuning} \\
+        \midrule
+        \multirow{2}{*}{ViT (Google)} 
+            & Accuracy & 33\%  & 39\%  & 47\% \\
+            & F1-score & 33\%  & 39\%  & 47\% \\
+            & MAE      & 0.831 & 0.842 & 0.669 \\
+        \addlinespace
+        \multirow{2}{*}{EfficientNetB0} 
+            & Accuracy & 30\%  & 33\%  & 40\% \\
+            & F1-score & 30\%  & 13\%  & 40\% \\
+            & MAE      & 1.011 & 0.935 & 0.747 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+
+\begin{table}[h]
+    \centering
+    \caption{Resultados de la Tarea 01vs234 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
+    \label{tab:model_comparison_results}
+    \begin{tabular}{@{} l l c c c @{}} 
+        \toprule
+        \textbf{Modelo} & \textbf{Métrica} & \textbf{Directo} & \textbf{Indirecto} & \textbf{Finetuning} \\
+        \midrule
+        \multirow{2}{*}{ViT (Google)} 
+            & Accuracy & 67\% & 37\% & 80\% \\
+            & F1-score & 68\% & 20\% & 79\% \\
+        \addlinespace
+        \multirow{2}{*}{EfficientNetB0} 
+            & Accuracy & 70\% & 42\% & 73\% \\
+            & F1-score & 69\% & 40\% & 73\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 Se observa que las tareas con mayor contraste (como 0 vs 4) obtienen métricas superiores, mientras que las tareas intermedias presentan un rendimiento más limitado. Esto sugiere que el conocimiento transferido se mantiene robusto ante diferencias notables, pero pierde precisión en clases ambiguas.
 
