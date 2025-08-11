@@ -44,9 +44,15 @@
 %            PALABRAS CLAVE Y RESÚMENES (en tres idiomas)                     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\keywords{Palabras clave en catalán} % catalán
-         {Palabras clave en español} % español
-         {Keywords in English}       % inglés
+\keywords{
+            artrosi de genoll; xarxes neuronals convolucionals; aprenentatge profund; aprenentatge per transferència; Grad-CAM; diagnòstic assistit per ordinador; transferència interdomanial
+         } % catalán
+         {
+            artrosis de rodilla; redes neuronales convolucionales; aprendizaje profundo; aprendizaje por transferencia; Grad-CAM; diagnóstico asistido por ordenador; transferencia interdominio
+         } % español
+         {
+            knee osteoarthritis; convolutional neural networks; deep learning; transfer learning; Grad-CAM; computer-aided diagnosis; cross-domain transfer
+         }       % inglés
 
 % Añade esto en el preámbulo (antes de \begin{document})
 \setcounter{tocdepth}{1} % Muestra solo capítulos y secciones en el índice
@@ -58,79 +64,87 @@
 
 \begin{abstract}
 
-El presente Trabajo de Fin de Grado (TFG) aborda el desarrollo de un sistema de clasificación automática de artrosis en rodillas mediante redes neuronales convolucionales (CNN), una técnica avanzada de aprendizaje profundo (Deep Learning). La artrosis es una de las enfermedades musculoesqueléticas más prevalentes a nivel mundial, caracterizada por la degeneración del cartílago articular y que afecta principalmente a adultos mayores. Sin embargo, su diagnóstico sigue siendo un proceso subjetivo que depende en gran medida de la interpretación visual de imágenes médicas por parte de especialistas.
+Este Trabajo de Fin de Grado presenta el diseño, implementación y evaluación de un sistema de \textbf{clasificación automática de artrosis de rodilla} a partir de radiografías, empleando técnicas de \textit{aprendizaje profundo}. Se aborda la problemática clínica de la \textbf{variabilidad interobservador} y la \textbf{subjetividad} inherentes al diagnóstico radiográfico tradicional, proponiendo modelos capaces de estandarizar y objetivar la estimación de severidad según la \textit{escala Kellgren–Lawrence} (KL, 0--4).
 
-Para enfrentar esta problemática, se ha implementado un modelo basado en redes neuronales convolucionales entrenado con el dataset OAI (Osteoarthritis Initiative), que contiene radiografías de rodillas etiquetadas según la escala Kellgren-Lawrence (KL), un estándar clínico para evaluar la severidad de la enfermedad. El sistema propuesto se ha diseñado utilizando distintas arquitecturas de redes, incluyendo modelos desde cero y redes preentrenadas (Transfer Learning) adaptadas para esta tarea.
+Como base de datos principal se utiliza una versión curada del \textit{Osteoarthritis Initiative} (OAI), con cerca de 9.800 imágenes de rodilla etiquetadas con KL, que presenta un notable \textbf{desbalance de clases}. Se adopta un \textbf{enfoque incremental}: (i) tres \textit{CNN} diseñadas desde cero para establecer líneas base; (ii) \textbf{modelos preentrenados} mediante \textit{transfer learning} (\textit{EfficientNetB0} y \textit{ResNet50}) con variantes de congelación y ajuste fino; y (iii) la evaluación de un \textit{Transformer} de visión (\textit{ViT-base patch16}) como alternativa no convolucional. Todos los modelos comparten un protocolo de entrenamiento unificado (optimizador Adam, \textit{early stopping}, planificador de tasa de aprendizaje), \textbf{aumento de datos} (rotación, volteos, ajuste de brillo/contraste) y evaluación mediante \textit{accuracy}, \textit{F1-score} y \textit{MAE}. Para \textbf{interpretabilidad}, se emplea \textit{Grad-CAM} para verificar la atención sobre regiones anatómicas relevantes.
 
-El desarrollo del sistema ha seguido un enfoque incremental, evaluando el desempeño de modelos simples y progresivamente complejos, comparando métricas de precisión, F1-score y error absoluto medio (MAE) en la clasificación de imágenes. Adicionalmente, se ha explorado la capacidad de generalización del modelo aplicándolo a un conjunto externo de imágenes de radiografías de gatos, simulando una transferencia de conocimiento hacia otro dominio anatómico.
+En OAI, las \textit{CNN} profundas y, especialmente, las arquitecturas \textbf{preentrenadas} muestran una clara ventaja sobre los modelos desde cero. \textit{EfficientNetB0} alcanza $\approx$68,6\% de \textit{accuracy}, $\approx$64,8\% de \textit{F1} y MAE $\approx$0,46 en la versión regresiva; \textit{ViT} obtiene resultados cercanos ($\approx$65,5\%). En comparaciones binarias extremas (KL0 vs KL4), todas las arquitecturas superan el 99\%, confirmando que la dificultad radica en grados intermedios.
 
-Los resultados obtenidos muestran que las redes convolucionales profundas, especialmente aquellas ajustadas mediante aprendizaje por transferencia, ofrecen un rendimiento superior en la clasificación del grado de artrosis, alcanzando niveles de precisión comparables a los de estudios previos en la literatura. No obstante, también se identificaron desafíos relacionados con el desbalance de clases en el dataset y la necesidad de técnicas avanzadas de interpretación de modelos, como Grad-CAM.
+Como \textbf{validación externa}, se estudia la \textit{transferencia interdominio} hacia un conjunto de 83 radiografías de rodilla felinas etiquetadas con KL. Se comparan tres regímenes: inferencia sin ajuste, entrenamiento directo y \textit{fine-tuning} desde pesos entrenados en OAI. El \textit{fine-tuning} logra la mejor generalización, alcanzando $\approx$80\% de \textit{accuracy} (ViT) en clasificación binaria, mientras que la clasificación completa 0--4 sigue siendo un reto ($\approx$50\%).
 
-En conclusión, este TFG demuestra la viabilidad del uso de redes neuronales convolucionales para la clasificación automática de artrosis en rodillas, destacando el potencial de estas técnicas para apoyar la labor diagnóstica de los profesionales médicos y abriendo la posibilidad de extender el sistema a otros dominios, como la artrosis en animales.
-
+Este TFG \textbf{demuestra la viabilidad} de las \textit{CNN} y \textit{Transformers} como herramientas de apoyo al diagnóstico de la artrosis de rodilla, \textbf{valida el \textit{transfer learning}} en contextos clínicos y \textbf{abre la puerta} a su uso en el ámbito veterinario. Persisten retos como el \textbf{desbalance de clases}, la \textbf{ambigüedad en grados leves}, el \textbf{tamaño reducido de muestras} y la \textbf{calibración} de modelos.
+        
 \end{abstract}
 
 
 
 \begin{abstract}[english]
     
-This Final Degree Project (TFG) addresses the development of an automatic classification system for knee osteoarthritis using Convolutional Neural Networks (CNNs), an advanced deep learning technique. Osteoarthritis is one of the most prevalent musculoskeletal diseases worldwide, characterized by the degeneration of articular cartilage, primarily affecting older adults. However, its diagnosis remains a subjective process, heavily dependent on the visual interpretation of medical images by specialists.
+This Final Degree Project presents the design, implementation, and evaluation of a system for \textbf{automatic classification of knee osteoarthritis} from radiographs, using \textit{deep learning} techniques. It addresses the clinical issue of \textbf{inter-observer variability} and \textbf{subjectivity} inherent in traditional radiographic diagnosis, proposing models capable of standardizing and objectifying severity estimation according to the \textit{Kellgre-Lawrence} scale (KL, 0--4).
+
+The main dataset used is a curated version of the \textit{Osteoarthritis Initiative} (OAI), with approximately 9,800 knee images labeled with KL, presenting a notable \textbf{class imbalance}. An \textbf{incremental approach} was adopted: (i) three \textit{CNN} architectures designed from scratch to establish baselines; (ii) \textbf{pretrained models} via \textit{transfer learning} (\textit{EfficientNetB0} and \textit{ResNet50}) with variants of freezing and fine-tuning; and (iii) the evaluation of a vision \textit{Transformer} (\textit{ViT-base patch16}) as a non-convolutional alternative. All models follow a unified training protocol (Adam optimizer, \textit{early stopping}, learning rate scheduler), \textbf{data augmentation} (rotation, flipping, brightness/contrast adjustment), and evaluation using \textit{accuracy}, \textit{F1-score}, and \textit{MAE}. For \textbf{interpretability}, \textit{Grad-CAM} was used to verify attention over relevant anatomical regions.
+
+In OAI, deep \textit{CNNs} and especially \textbf{pretrained} architectures show a clear advantage over models trained from scratch. \textit{EfficientNetB0} reaches $\approx$68.6\% \textit{accuracy}, $\approx$64.8\% \textit{F1}, and MAE $\approx$0.46 in the regression version; \textit{ViT} achieves similar results ($\approx$65.5\%). In extreme binary comparisons (KL0 vs KL4), all architectures surpass 99\%, confirming that the difficulty lies in intermediate grades.
+
+As \textbf{external validation}, a \textit{cross-domain transfer} study was conducted using a set of 83 feline knee radiographs labeled with KL. Three regimes were compared: inference without adjustment, full training, and \textit{fine-tuning} from OAI-trained weights. \textit{Fine-tuning} achieves the best generalization, reaching $\approx$80\% \textit{accuracy} (ViT) in binary classification, while full 0--4 classification remains challenging ($\approx$50\%).
+
+This work \textbf{demonstrates the feasibility} of \textit{CNNs} and \textit{Transformers} as tools to support the diagnosis of knee osteoarthritis, \textbf{validates \textit{transfer learning}} in clinical contexts, and \textbf{opens the door} to its application in the veterinary field. Challenges remain, such as \textbf{class imbalance}, \textbf{ambiguity in mild grades}, \textbf{small sample sizes}, and \textbf{model calibration}.
     
-To tackle this problem, a model based on convolutional neural networks was implemented, trained with the OAI (Osteoarthritis Initiative) dataset, which contains knee radiographs labeled according to the Kellgren-Lawrence (KL) scale, a clinical standard for assessing disease severity. The proposed system was designed using various network architectures, including models built from scratch and pre-trained networks (Transfer Learning) adapted for this task.
-    
-The system development followed an incremental approach, evaluating the performance of simple and progressively complex models, comparing metrics such as accuracy, F1-score, and Mean Absolute Error (MAE) in image classification. Additionally, the model's generalization capability was explored by applying it to an external set of cat knee radiographs, simulating knowledge transfer to another anatomical domain.
-    
-The results obtained show that deep convolutional networks, especially those adjusted through transfer learning, offer superior performance in classifying the severity of osteoarthritis, achieving precision levels comparable to previous studies in the literature. However, challenges related to class imbalance in the dataset and the need for advanced model interpretation techniques, such as Grad-CAM, were also identified.
-    
-In conclusion, this TFG demonstrates the feasibility of using convolutional neural networks for the automatic classification of knee osteoarthritis, highlighting the potential of these techniques to support the diagnostic work of medical professionals and opening the possibility of extending the system to other domains, such as osteoarthritis in animals.
     
 \end{abstract}
 
+
+\begin{abstract}[catalan]
+
+Este Treball de Fi de Grau presenta el disseny, implementació i avaluació d'un sistema de \textbf{classificació automàtica d'artrosi de genoll} a partir de radiografies, emprant tècniques d'\textit{aprenentatge profund}. Aborda la problemàtica clínica de la \textbf{variabilitat interobservador} i la \textbf{subjectivitat} inherent al diagnòstic radiogràfic tradicional, proposant models capaços d'estandarditzar i objectivar l'estimació de la severitat segons l'\textit{escala Kellgren-Lawrence} (KL, 0--4).
+
+La base de dades principal és una versió curada de l'\textit{Osteoarthritis Initiative} (OAI), amb prop de 9.800 imatges de genoll etiquetades amb KL, que presenta un destacat \textbf{desbalanceig de classes}. S'ha adoptat un \textbf{enfocament incremental}: (i) tres arquitectures \textit{CNN} dissenyades des de zero per establir línies de base; (ii) \textbf{models preentrenats} mitjançant \textit{transfer learning} (\textit{EfficientNetB0} i \textit{ResNet50}) amb variants de congelació i ajust fi; i (iii) l'avaluació d'un \textit{Transformer} de visió (\textit{ViT-base patch16}) com a alternativa no convolucional. Tots els models segueixen un protocol d'entrenament unificat (optimitzador Adam, \textit{early stopping}, planificador de taxa d'aprenentatge), \textbf{augment de dades} (rotació, volteig, ajust de brillantor/contrast) i avaluació amb \textit{accuracy}, \textit{F1-score} i \textit{MAE}. Per a la \textbf{interpretabilitat}, s'ha utilitzat \textit{Grad-CAM} per verificar l'atenció sobre regions anatòmiques rellevants.
+
+En OAI, les \textit{CNN} profundes i, especialment, les arquitectures \textbf{preentrenades} mostren un clar avantatge respecte als models des de zero. \textit{EfficientNetB0} aconsegueix $\approx$68,6\% \textit{accuracy}, $\approx$64,8\% \textit{F1} i MAE $\approx$0,46 en la versió regressiva; \textit{ViT} obté resultats similars ($\approx$65,5\%). En comparacions binàries extremes (KL0 vs KL4), totes les arquitectures superen el 99\%, confirmant que la dificultat es troba en graus intermedis.
+
+Com a \textbf{validació externa}, s'ha realitzat un estudi de \textit{transferència interdomanial} amb un conjunt de 83 radiografies de genoll felines etiquetades amb KL. S'han comparat tres règims: inferència sense ajust, entrenament complet i \textit{fine-tuning} a partir de pesos entrenats en OAI. El \textit{fine-tuning} aconsegueix la millor generalització, arribant a $\approx$80\% \textit{accuracy} (ViT) en classificació binària, mentre que la classificació completa 0--4 continua sent un repte ($\approx$50\%).
+
+Aquest treball \textbf{demostra la viabilitat} de les \textit{CNN} i \textit{Transformers} com a eines de suport al diagnòstic de l'artrosi de genoll, \textbf{valida el \textit{transfer learning}} en contextos clínics i \textbf{obre la porta} a la seua aplicació en l'àmbit veterinari. Persistixen reptes com el \textbf{desbalanceig de classes}, l'\textbf{ambigüitat en graus lleus}, la \textbf{mida reduïda de mostres} i la \textbf{calibració} dels models.
+
+    
+\end{abstract}
+    
 \mainmatter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              CAPÍTULO 1                                     %
-%                                    INTRO                                     %
+%                                  CAPÍTULO 1                                 %
+%                                    INTRO                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introducción}
+La artrosis de rodilla es un problema de gran impacto clínico por su prevalencia y por la carga de discapacidad asociada. Su evaluación en radiografías sigue dependiendo, en gran medida, de la experiencia del profesional, lo que introduce variabilidad y dificulta la estandarización. En paralelo, el aprendizaje profundo ha demostrado capacidad para extraer patrones visuales sutiles y apoyar decisiones diagnósticas de forma consistente. Este TFG aborda la \textbf{clasificación automática del grado Kellgren–Lawrence (KL)} en radiografías de rodilla y estudia la \textbf{transferencia} de modelos entrenados en humanos hacia radiografías felinas, un contexto donde los datos son escasos. El trabajo se centra en \textit{clasificación} sobre recortes ya localizados (no se aborda la detección de la articulación) y compara enfoques con \emph{CNN} y \emph{Transformers} bajo un protocolo unificado. A continuación se detallan la motivación, los objetivos y la metodología, y se describe la estructura de la memoria.
 
-\chapter{Introducción}  % ~5 páginas
 
 \section{Motivación}     % 1.1
-La artritis es una de las enfermedades musculoesqueléticas más prevalentes a nivel mundial y una de las principales causas de discapacidad en adultos mayores. Su diagnóstico y seguimiento se basa tradicionalmente en la evaluación clínica y en la interpretación de imágenes médicas, como radiografías, resonancias magnéticas y tomografías computarizadas. Sin embargo, este proceso suele depender en gran medida de la experiencia del profesional médico, lo que puede generar variabilidad en los diagnósticos y retrasos en la detección temprana de la enfermedad.
 
-En los últimos años, los avances en inteligencia artificial, y en particular en el aprendizaje profundo, han demostrado un gran potencial para mejorar la precisión y la eficiencia en el análisis de imágenes médicas. Las redes neuronales convolucionales (CNN) han sido ampliamente utilizadas en el campo de la visión por computadora para tareas como la detección de patologías en radiografías, la segmentación de tejidos en resonancias magnéticas y la clasificación de niveles de severidad en enfermedades degenerativas.
+Desde el inicio de mi formación académica he mostrado un especial interés por la aplicación de herramientas informáticas en el ámbito de la salud. Este interés se ha visto reforzado por mi entorno familiar, que me ha permitido estar en contacto con problemáticas relacionadas con el diagnóstico y tratamiento de enfermedades en animales. Además, la idea de este trabajo surgió a raíz de una compañera de trabajo de mi padre, quien tenía previsto realizar su tesis doctoral sobre la aplicación de IA en el diagnóstico veterinario. Este hecho me inspiró a explorar cómo las técnicas modernas de aprendizaje profundo, ampliamente utilizadas en medicina humana, podrían adaptarse también al ámbito veterinario.
 
-Este Trabajo de Fin de Grado (TFG) se motiva por la necesidad de desarrollar métodos automáticos y robustos para el análisis de la artritis mediante el uso de técnicas de aprendizaje profundo. En particular, se busca explorar el uso de redes neuronales para la clasificación de imágenes médicas, utilizando bases de datos estandarizadas como \textit{Mendeley dataset} \cite{chen2018knee}. La aplicación de estos modelos podría no solo optimizar el proceso de diagnóstico, sino también contribuir al desarrollo de herramientas de soporte a la decisión clínica, facilitando una intervención más temprana y personalizada para los pacientes.
+Desde un principio tenía claro que el tema de mi Trabajo de Fin de Grado estaría relacionado con el aprendizaje automático. La oportunidad de vincularlo con el diagnóstico veterinario, pese a los retos añadidos por la limitación de datos disponibles, me llevó a elegir esta temática como base de mi investigación.
 
-La relevancia de este estudio radica en su potencial impacto en la práctica clínica. Un sistema basado en inteligencia artificial podría reducir la carga de trabajo de los especialistas, mejorar la objetividad del diagnóstico y ofrecer segundas opiniones automáticas que complementen la evaluación médica tradicional. Además, el desarrollo de estas tecnologías en el ámbito de la artritis podría sentar un precedente para su aplicación en otras enfermedades musculoesqueléticas, ampliando el alcance del aprendizaje profundo en el campo de la salud.
+La artrosis (u osteoartritis) es una de las enfermedades musculoesqueléticas más comunes a nivel mundial y una de las principales causas de discapacidad en adultos mayores. Su diagnóstico y seguimiento dependen habitualmente de la evaluación clínica y de la interpretación de imágenes médicas (radiografías, resonancias magnéticas o tomografías), un proceso sujeto a la experiencia del profesional y que puede presentar variabilidad entre observadores. En los últimos años, los avances en IA, y en particular en el aprendizaje profundo (\textit{deep learning}), han demostrado un gran potencial para mejorar la precisión y la eficiencia en el análisis de imágenes médicas. Las redes neuronales convolucionales (CNN) y, más recientemente, los modelos basados en \textit{Transformers}, han mostrado resultados prometedores en este ámbito, como evidencian recientes trabajos que emplean conjuntos de datos biomédicos como MedMNIST.
 
-Además, se plantea la posibilidad de realizar \textit{transfer learning} utilizando modelos preentrenados en artritis humana para aplicarlos en el diagnóstico de artritis en gatos. Esta adaptación podría beneficiar la práctica veterinaria, proporcionando herramientas automatizadas para la evaluación de la enfermedad en animales y mejorando la precisión en su diagnóstico.
+Este TFG se motiva por la necesidad de desarrollar métodos automáticos y robustos para el análisis de la artrosis mediante técnicas de aprendizaje profundo, evaluando tanto arquitecturas convolucionales como modelos \textit{Transformer}. Un aspecto innovador de este trabajo es la exploración del \textit{transfer learning} entre dominios anatómicos distintos, utilizando modelos entrenados en radiografías de rodillas humanas para aplicarlos también al diagnóstico en gatos. Esta línea de investigación podría beneficiar la práctica veterinaria, donde la disponibilidad de datos suele ser más limitada. 
 
-En este contexto, el presente trabajo busca contribuir al avance del uso de inteligencia artificial en la detección y análisis de la artritis, evaluando diferentes enfoques de redes neuronales y analizando su rendimiento en la clasificación de imágenes médicas. La motivación principal es demostrar la viabilidad y efectividad de estos modelos en un problema biomédico concreto, promoviendo la integración de tecnologías emergentes en el ámbito de la salud.
-
+La relevancia de este estudio radica en su potencial impacto en la práctica clínica y veterinaria, al reducir la carga de trabajo de los especialistas, mejorar la objetividad del diagnóstico y ofrecer herramientas de soporte a la decisión clínica. Además, a nivel formativo, este proyecto me permite adquirir experiencia en técnicas avanzadas de visión por computador, gestión de conjuntos de datos biomédicos, entrenamiento de redes neuronales profundas y análisis de resultados, competencias clave para mi futuro profesional en el ámbito de la IA aplicada a la salud.
 
 
 \section{Objetivos del TFG}
+El propósito de este TFG es diseñar, implementar y validar un sistema de clasificación automática de artrosis de rodilla en radiografías, maximizando su utilidad clínica y su capacidad de generalización, incluso en contextos veterinarios con datos limitados. Para ello, se plantean los siguientes objetivos concretos y medibles:
 
-El presente Trabajo de Fin de Grado (TFG) tiene como objetivo desarrollar un sistema de clasificación automática de artrosis en rodillas mediante redes neuronales convolucionales (CNN). Este objetivo se justifica en la necesidad de mejorar la precisión y eficiencia del diagnóstico de la artrosis, una enfermedad que afecta a millones de personas en todo el mundo, y que actualmente depende en gran medida de la interpretación subjetiva de imágenes radiográficas por parte de especialistas.
-
-Para alcanzar este objetivo general, se plantean los siguientes objetivos específicos:
-
-\begin{itemize}
-\item \textbf{Desarrollar un modelo de clasificación automática de artrosis en rodillas} utilizando redes neuronales convolucionales (CNN). Este modelo será entrenado y evaluado sobre el conjunto de datos OAI (Osteoarthritis Initiative), uno de los recursos más utilizados en la literatura para el estudio de la artrosis de rodilla. El desarrollo incluirá una fase de diseño, implementación y ajuste de hiperparámetros para maximizar el rendimiento.
-
-```
-\item \textbf{Evaluar la capacidad de transferencia del modelo a otro dominio anatómico}, aplicando técnicas de aprendizaje por transferencia (Transfer Learning). En concreto, se analizará cómo el modelo, entrenado en imágenes de rodillas humanas, puede adaptarse a la clasificación de artrosis en radiografías de gatos. Esto permitirá estudiar el impacto del cambio de dominio en el rendimiento del modelo y su capacidad de generalización.
-
-\item \textbf{Analizar el rendimiento del modelo propuesto}, evaluando su precisión, sensibilidad, especificidad, F1-score y MAE. Además, se identificarán las limitaciones del modelo y las fuentes de error, proponiendo posibles mejoras mediante técnicas avanzadas de aprendizaje profundo, como la optimización de arquitecturas, ajuste fino (fine-tuning) y visualización interpretativa con Grad-CAM.
-```
-
-\end{itemize}
-
-Con estos objetivos, el presente TFG busca no solo desarrollar un sistema eficiente para la clasificación de artrosis, sino también aportar un análisis crítico de su rendimiento y explorar estrategias para su optimización.
+\begin{enumerate}
+\item \textbf{Desarrollar y comparar modelos de aprendizaje profundo} (CNN desde cero, modelos preentrenados y Transformers de visión) para la clasificación KL 0--4 y tareas binarias en OAI, \textit{evaluando} su rendimiento bajo un protocolo unificado con \textit{accuracy}, macro-\textit{F1} y MAE, y \textit{reportando}.
+\item \textbf{Evaluar la transferencia interdominio humano→felino} comparando inferencia directa, entrenamiento desde cero y \textit{fine-tuning} a partir de pesos en OAI, \textit{cuantificando} diferencias de rendimiento entre los tipos de entrenamiento y los resultados utilizando el dataset OAI.
+\end{enumerate}
 
 
-\section{Estructura del documento}  % 1.3
+\section*{Estructura de la memoria}
+Este Trabajo Fin de Grado estudia la clasificación automática de artrosis de rodilla mediante aprendizaje profundo y su transferencia a radiografías felinas. La memoria se organiza del siguiente modo. En \textbf{Preliminares} se introducen los conceptos esenciales de aprendizaje automático y redes neuronales, así como su evolución reciente en visión por computador con ejemplos de conjuntos públicos biomédicos. El \textbf{Capítulo~\ref{chap:corpus}} describe los datos utilizados —el \emph{dataset} OAI y el conjunto externo de radiografías felinas—, sus particiones y desbalance, y define las tareas de clasificación que se abordarán, situando el trabajo en su contexto. El \textbf{Capítulo~\ref{chap:experiments}} presenta los experimentos con \emph{redes convolucionales}, incluyendo modelos desde cero y modelos preentrenados, bajo una configuración de entrenamiento unificada y con comparación de resultados. El \textbf{Capítulo~\ref{chap:transformers}} incorpora \emph{Transformers} de visión, su adaptación a la tarea y su evaluación con el mismo protocolo. El \textbf{Capítulo~\ref{chap:gatos}} analiza la transferencia interdominio hacia radiografías felinas, comparando inferencia directa, entrenamiento específico y ajuste fino, y discutiendo su utilidad clínica. En \textbf{Conclusiones} se sintetizan los hallazgos, se verifica el grado de cumplimiento de los objetivos y se proponen líneas futuras. La \textbf{Bibliografía} recoge las referencias empleadas. Los \textbf{Apéndices} incluyen la configuración del sistema (entorno, dependencias y parámetros de reproducción), tablas y métricas ampliadas y detalles de preprocesado. Dado que el tribunal puede ser interdisciplinar, al final se incorpora un \textbf{glosario de términos} técnicos para consulta.
+
+
 % Describe la organización de los capítulos y secciones
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -593,7 +607,6 @@ Tabla~\ref{tab:cat_class_distribution} muestra la distribución de clases de tod
     \end{tabular}
 \end{table}
 
-% #TODO Imagenes de gatos :)
 
 Este conjunto de imágenes felinas funcionará como un conjunto de validación externo durante el proceso de entrenamiento de 
 los modelos basados en el dataset OAI. Su propósito es poner a prueba la capacidad de generalización de los clasificadores 
@@ -910,7 +923,6 @@ Los resultados obtenidos muestran que los modelos preentrenados (especialmente E
 \textbf{Comparativa global y análisis.}
 En la Figura~\ref{fig:comparativa_modelos_accuracy} se presenta una comparativa gráfica de la precisión multiclase (KL 0-4) alcanzada por los distintos modelos, permitiendo visualizar de forma directa la evolución del rendimiento conforme aumenta la complejidad de la arquitectura. Del mismo modo, la Tabla~\ref{tab:resumen_global_modelos} recoge de forma sintética las principales métricas (accuracy, F1, MAE) para cada configuración relevante.
 
-% #TODO TABLA MOSTRAR DATOS TABLAS O GRÁFICO
 
 Como puede observarse, la precisión y el F1-score mejoran de forma sostenida con el aumento de complejidad, y los modelos preentrenados presentan una clara ventaja en formulaciones multiclase. En tareas binarias extremas, sin embargo, incluso las CNN más simples alcanzan niveles notables, lo que refuerza la idea de que el grado de separación entre clases influye significativamente en la dificultad del problema.
 

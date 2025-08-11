@@ -7,9 +7,10 @@
 \newif\iflistquadres\listquadresfalse
 \newif\iflistalgorithms\listalgorithmsfalse
 
-\DeclareOption{catalan}{\PassOptionsToPackage{english,spanish,main=catalan}{babel}}
+
 \DeclareOption{spanish}{\PassOptionsToPackage{english,catalan,main=spanish}{babel}}
 \DeclareOption{english}{\PassOptionsToPackage{spanish,catalan,main=english}{babel}}
+\DeclareOption{catalan}{\PassOptionsToPackage{english,spanish,main=catalan}{babel}}
 
 \DeclareOption{listoftables}{\listtablestrue}
 \DeclareOption{listoffigures}{\listfigurestrue}
@@ -104,18 +105,7 @@
 
 \newcommand{\appendicesname}{Ap\`endixs}
 
-\addto\captionscatalan{%
-     \renewcommand{\titulacioname}{Grau en Enginyeria Inform\`atica}
-     \renewcommand{\tfgname}{Treball fi de grau}
-     \renewcommand{\authorname}{Autor}
-     \renewcommand{\tutorname}{Tutor}
-     \renewcommand{\coursename}{Curs}
-     \renewcommand{\keywordsname}{Paraules clau}
-     \renewcommand{\algorithmname}{Algorisme}
-     \renewcommand{\listalgorithmname}{\'Index d'algorismes}
-     \renewcommand{\quadrename}{Quadre}
-     \renewcommand{\listquadrename}{\'Index de quadres}
-     \renewcommand{\appendicesname}{Ap\`endixs}}
+
      
 
 \addto\captionsspanish{%
@@ -143,6 +133,19 @@
      \renewcommand{\algorithmname}{Algorithm}
      \renewcommand{\listalgorithmname}{List of algorithms}
      \renewcommand{\appendicesname}{Appendices}}
+
+\addto\captionscatalan{%
+     \renewcommand{\titulacioname}{Grau en Enginyeria Inform\`atica}
+     \renewcommand{\tfgname}{Treball fi de grau}
+     \renewcommand{\authorname}{Autor}
+     \renewcommand{\tutorname}{Tutor}
+     \renewcommand{\coursename}{Curs}
+     \renewcommand{\keywordsname}{Paraules clau}
+     \renewcommand{\algorithmname}{Algorisme}
+     \renewcommand{\listalgorithmname}{\'Index d'algorismes}
+     \renewcommand{\quadrename}{Quadre}
+     \renewcommand{\listquadrename}{\'Index de quadres}
+     \renewcommand{\appendicesname}{Ap\`endixs}}
      
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Nous tipus d'objectes flotants
@@ -277,17 +280,17 @@
 %%%%%%%%
 
 \newcommand{\keywords}[3]{%
-   \addto\captionscatalan{\def\keywords{#1}}
    \addto\captionsspanish{\def\keywords{#2}}
-   \addto\captionsenglish{\def\keywords{#3}}}
+   \addto\captionsenglish{\def\keywords{#3}}
+   \addto\captionscatalan{\def\keywords{#1}}}
 
 \newenvironment{abstract}[1][spanish]{%
-        \begingroup
-          \selectlanguage{#1}\addvspace{\baselineskip}\par\hfill
-          {\sffamily\bfseries\Huge\abstractname}\smallskip\par}{%
-          \par\nopagebreak\noindent\textbf{\keywordsname:} \keywords\vspace*{3pt}\hrule
-          \iflanguage{english}{\endgroup\makeindexes}{\endgroup\par\vspace{\stretch{1}}}}
-
+     \begingroup
+     \selectlanguage{#1}\addvspace{\baselineskip}\par\hfill
+     {\sffamily\bfseries\Huge\abstractname}\smallskip\par}{%
+     \par\nopagebreak\noindent\textbf{\keywordsname:} \keywords\vspace*{3pt}\hrule
+     \newpage    
+     \iflanguage{catalan}{\endgroup\makeindexes}{\iflanguage{spanish}{\endgroup\par\vspace{\stretch{1}}}{\endgroup\par\vspace{\stretch{1}}}}}
 
 %%%%%%%%%
 % Ãndexs
