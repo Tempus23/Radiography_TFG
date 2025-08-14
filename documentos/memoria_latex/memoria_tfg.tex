@@ -322,79 +322,78 @@ En suma, las redes neuronales (especialmente las convolucionales profundas) cons
 logrando avances sin precedentes en reconocimiento de patrones. En la siguiente sección se explorará cómo estas técnicas de ML y redes neuronales se aplican en el ámbito de la visión por 
 computador biomédica, con énfasis en el caso MedMNIST y la clasificación de artrosis en rodillas.
 
-\section{ML aplicado a VC y tareas biomédicas: caso MedMNIST}\label{sec:ml-medical} 
-La integración de técnicas de aprendizaje profundo y visión por computadora ha revolucionado el análisis de imágenes biomédicas en 
-la última década. Tradicionalmente, la interpretación de imágenes médicas como radiografías, resonancias magnéticas y microscopías 
-dependía exclusivamente de la habilidad humana. Sin embargo, en la actualidad, los algoritmos de \textit{deep learning} han igualado 
-e incluso superado el desempeño de especialistas en diversas tareas diagnósticas.
 
-Un ejemplo destacado es la empresa Quibim, fundada por el exalumno de la UPV, Ángel Alberich-Bayarri. Quibim ha desarrollado modelos 
-basados en inteligencia artificial para la detección del cáncer de próstata en resonancias magnéticas. Su herramienta, QP-Prostate®, 
-utiliza algoritmos avanzados para identificar y clasificar lesiones sospechosas en la glándula prostática, mejorando la precisión 
-diagnóstica y facilitando la planificación de biopsias dirigidas.
+\section{Aprendizaje automático en imágenes médicas}\label{sec:ml-en-imagenes-medicas}
 
-Además, se han entrenado redes neuronales convolucionales para detectar retinopatía diabética en fotografías de retina, cáncer de 
-piel en imágenes dermatoscópicas y neumonía en radiografías de tórax, alcanzando niveles de sensibilidad y especificidad 
-comparables a los de médicos especialistas. Un metaanálisis realizado por Liu et al. (2019) concluyó que los clasificadores 
-basados en aprendizaje profundo presentan, en promedio, un desempeño similar al de profesionales de la salud en la detección de 
-enfermedades a partir de imágenes médicas, resaltando el potencial de estas técnicas para apoyar la labor clínica.
+El \textbf{aprendizaje automático en imágenes médicas} (\emph{medical imaging}) se apoya en los mismos principios que en visión por computador general, pero presenta particularidades técnicas y clínicas que condicionan tanto el pipeline de datos como el diseño, la validación y el despliegue de modelos. A diferencia de las imágenes naturales, las imágenes clínicas se adquieren bajo protocolos estandarizados, se codifican con metadatos (p.,ej., en formato DICOM) y derivan de modalidades con física de adquisición distinta (radiografía, TC, RM, ecografía o microscopía). Además, los objetivos habituales van más allá de la simple \emph{clasificación}: incluyen \textbf{detección}, \textbf{segmentación}, \textbf{estimación ordinal de severidad}, \textbf{calibración de riesgo} o \textbf{pronóstico}. Esta diversidad de tareas, junto con la escasez de datos anotados por expertos y la necesidad de interpretabilidad, explica por qué el área ha adoptado con rapidez las técnicas modernas de \emph{deep learning} \cite{Mitchell1997,Bishop2006,Goodfellow2016}.
 
-En el caso particular de la \textbf{artrosis de rodilla} (u osteoartritis), la radiografía es la técnica más utilizada para evaluar 
-la gravedad de la enfermedad. Los radiólogos emplean un criterio estandarizado, la \textit{escala Kellgren-Lawrence (KL)}, que asigna 
-un grado de 0 a 4 a la rodilla en función de signos radiográficos de degeneración (osteofitos, estrechamiento del espacio articular, 
-esclerosis, deformidad). Sin embargo, la lectura de estas radiografías puede ser subjetiva y presentar variabilidad entre observadores.
-Por ello, existe un gran interés en desarrollar sistemas automáticos que clasifiquen el grado KL a partir de la imagen de rayos X de 
-la rodilla de forma consistente y reproducible. 
+\medskip
+\noindent\textbf{Pipeline típico de trabajo.}; Un flujo estándar comprende: (1) \emph{ingesta y curación} (lectura DICOM/PNG, verificación de metadatos); (2) \emph{preprocesado} específico por modalidad (p.,ej., normalización de intensidades, aumento de contraste...); (3) \emph{homogeneización geométrica} (recortes centrados, reescalado, estandarización de orientación); (4) \emph{aumento de datos} con transformaciones geométricas e intensidad \emph{domain-aware}; (5) entrenamiento con división \emph{train/val/test} estratificada; (6) \emph{validación interna} y, a ser posible,\textbf{validación externa} (en centros distintos o cohortes temporales) para medir la robustez; (7) análisis de \emph{calibración}, \emph{curvas ROC/PR} y \emph{sensibilidad/especificidad}; (8) \textbf{interpretabilidad} (p.,ej., \emph{Grad-CAM}) y chequeo clínico; (9) empaquetado e integración.
 
-Dado el amplio espectro de modalidades y problemas en imágenes médicas, han surgido iniciativas para facilitar la investigación y 
-comparación de algoritmos en múltiples tareas. Un ejemplo es la \textbf{Osteoarthritis Initiative (OAI)}, que ha desarrollado un conjunto 
-de datos de radiografías de rodilla con anotaciones de grado Kellgren-Lawrence (KL) el cual se desarrollará mas adelante. 
-Otro caso notable es \textbf{MedMNIST}, una colección de conjuntos de datos biomédicos de pequeño tamaño inspirada 
-en el famoso MNIST (conjunto de datos de dígitos escritos a mano) pero orientada a imágenes médicas. En su versión más reciente, 
-\textit{MedMNIST v2}, recopila 12 conjuntos de datos 2D (imágenes estáticas de 28$\times$28 píxeles) y 6 conjuntos 3D (volúmenes de 
-28$\times$28$\times$28 vóxeles), abarcando diversas modalidades y tareas de clasificación biomédica. Por ejemplo, incluye láminas 
-histológicas coloreadas (\textit{PathMNIST}, 9 clases de tejidos patológicos), imágenes dermatoscópicas de lunares (\textit{DermaMNIST}, 
-clasificación de lesiones cutáneas) y radiografías de tórax (\textit{ChestMNIST}, etiquetas multilabel de hallazgos torácicos), 
-hasta estudios de retina OCT (\textit{OCTMNIST}, detección de patologías retinales), entre otros. Cada subconjunto viene preprocesado 
-y separado en particiones de entrenamiento, validación y prueba estandarizadas, lo que facilita la aplicación directa de algoritmos 
-y la comparación justa entre ellos.
+\medskip
+\noindent\textbf{Modelos: de CNN a arquitecturas modernas.}; El salto de calidad en visión vino dado por las \textbf{CNN profundas}, introducidas con \emph{AlexNet} en ImageNet \cite{Krizhevsky2012} y consolidadas con \emph{ResNet} y las conexiones residuales \cite{He2016}. En clínica, las CNN resultan adecuadas por su capacidad para extraer \emph{patrones jerárquicos} y por la disponibilidad de pesos preentrenados en dominios masivos (\emph{transfer learning}). En problemas de \textbf{gradación ordinal} (p.,ej., escalas 0-4) se han propuesto pérdidas específicas que penalizan según la distancia del error, mejorando frente a entropía cruzada cuando las clases forman una \emph{ordenación} natural, como ilustra Chen et al. en rodilla \cite{chen2019fully}. Más recientemente, arquitecturas basadas en mecanismos de \emph{atención} (Transformers de visión) han ganado tracción; en entornos clínicos, a menudo se emplean de forma híbrida o mediante técnicas de preentrenamiento y ajuste fino, especialmente cuando los datos anotados son limitados.
 
-MedMNIST  fue diseñado con varios objetivos clave en mente:
+\medskip
+\noindent\textbf{Evidencia de rendimiento y adopción clínica.}; Revisiones sistemáticas y meta-análisis han comparado el rendimiento de DL con profesionales sanitarios en distintas tareas de imagen; por ejemplo, \cite{liu_meta_analysis} reporta que, en varios escenarios, los modelos alcanzan desempeños comparables en
+sensibilidad/especificidad, si bien subraya la \textbf{importancia de la validación externa} y la \textbf{calidad metodológica} de los estudios. La traducción a productos comerciales certificados está en marcha (p.,ej., suites radiológicas con módulos específicos de órgano) \cite{quibim_qp_prostate}, pero exige procesos de aseguramiento, trazabilidad y evaluación continua en \emph{mundo real}.
+
+\medskip
+\noindent\textbf{Caso de estudio frecuente: rodilla y artrosis.}; La articulación de la rodilla es un ejemplo clásico por la prevalencia de la osteoartritis y la existencia de \textbf{cohortes longitudinales} de acceso público. En particular, la \emph{Osteoarthritis Initiative} (OAI) ha recogido imágenes y metadatos durante más de una década \cite{niamsOAI}. Sobre esta base, hay colecciones curadas de las radiografías de rodilla con escalas \emph{Kellgren-Lawrence} (KL) \cite{chen2018knee}, y trabajos que combinan \emph{detección de articulación} con clasificación/graduación (incluyendo pérdidas ordinales) \cite{chen2019fully}. Estos recursos han facilitado la comparación de arquitecturas (VGG/ResNet/EfficientNet) y de formulaciones de tarea (multiclase vs. ordinal) en un entorno reproducible.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{knee_0.png}
+        \caption{KL 0}
+        \label{fig:knee0}
+    \end{subfigure}
+\end{figure}
+
+\medskip
+\noindent\textbf{Particularidades del preprocesado en radiografías.}; En radiografía simple, el contraste depende de factores como kilovoltaje, filtrado y grosor del paciente. Es habitual normalizar intensidades, ajustes de rango dinámico y, para modelos centrados en una articulación concreta, \textbf{recortar la ROI} con detectores o heurísticas anatómicas. Estas operaciones reducen la variación inter-centro y ayudan a que el modelo se centre en \emph{pistas radiográficas} relevantes (osteofitos, esclerosis subcondral, pinzamiento del espacio articular, etc.).
+
+\medskip
+\noindent\textbf{Métricas y análisis estadístico.}; En \emph{clasificación} multiclase se reportan \emph{accuracy}, \emph{F1 macro} y matrices de confusión por clase; en \emph{binaria} es común AUC-ROC/PR junto a sensibilidad/especificidad para umbrales clínicos. En formulaciones \textbf{ordinales/regresivas} se incluye el MAE y estadísticos de calibración (\emph{reliability diagrams}). La \textbf{validación externa} en centros distintos y la evaluación por subgrupos (edad, sexo, dispositivo) son claves para estimar \emph{generalización} y \emph{equidad} \cite{liu_meta_analysis}. También resulta recomendable contrastar el acuerdo con expertos mediante coeficientes tipo \emph{Cohen/Fleiss kappa} cuando proceda.
+
+% [FIGURA SUGERIDA]
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.6\textwidth]{roc_placeholder.pdf}
+%   \caption{Curva ROC y selección de umbral según preferencia clínica (balance sensibilidad/especificidad).}
+%   \label{fig:roc}
+% \end{figure}
+
+\medskip
+\noindent\textbf{Interpretabilidad y verificación clínica.}: La \emph{explicabilidad} busca comprobar que el modelo basa sus decisiones en regiones anatómicas coherentes. Mapas de activación como \emph{Grad-CAM} permiten superponer \emph{heatmaps} sobre la imagen original, ayudando a detectar atajos espurios (p.,ej., artefactos o marcas de la placa) y a construir confianza clínica. Aunque la explicabilidad no sustituye a la validación es una prueba extra que ayuda a determinar la capacidad real del modelo.
+
+% [FIGURA SUGERIDA]
+% \begin{figure}[ht]
+%   \centering
+%   % Imagen original + heatmap Grad-CAM como overlay
+%   \includegraphics[width=0.95\textwidth]{gradcam_placeholder.png}
+%   \caption{Ejemplo esquemático de mapa de activación (Grad-CAM) resaltando la región que apoya la predicción del modelo.}
+%   \label{fig:gradcam}
+% \end{figure}
+
+\medskip
+\noindent\textbf{Retos recurrentes.}; Entre los desafíos más citados se encuentran: (i) \textbf{desbalance de clases} (p.,ej., escasez de grados severos), que requiere \emph{estrategias de muestreo}, ponderación de pérdidas o síntesis \emph{data augmentation}; (ii) \textbf{cambio de dominio} entre centros, equipos y protocolo (\emph{domain shift}); (iii) \textbf{ruido de etiqueta} e \textbf{incertidumbre} interobservador; (iv) \textbf{tamaño muestral} limitado; (v) \textbf{calibración} deficiente pese a buena AUC; (vi) \textbf{reproducibilidad} (documentación de versiones, semillas, splits) y \textbf{privacidad}; (vii) requisitos regulatorios y \emph{monitorización post-despliegue}. La literatura recomienda predefinir protocolos de validación, fijar semillas, conservar \emph{splits} oficiales cuando existan y acompañar resultados de \emph{intervalos de confianza}.
+
+\medskip
+\noindent\textbf{Buenas prácticas resumidas.}; A modo de checklist técnico:
 \begin{itemize}
-    \item \textbf{Diversidad}: Cubre múltiples modalidades de imagen (radiografías, tomografías, resonancias, ecografías, 
-    imágenes microscopias, etc.), distintos tamaños de datos (desde $\sim$100 hasta $>$100,000 imágenes) y tareas de 
-    clasificación variadas (binaria, multiclase, multietiqueta e incluso regresión ordinal). Esto permite evaluar la generalización 
-    de los algoritmos de aprendizaje automático en distintos escenarios con un solo recurso unificado.
-    
-    \item \textbf{Estandarización}: Todos los conjuntos están uniformizados a la misma resolución (imágenes pequeñas de $28\times28$ 
-    pixeles para 2D, o cubos de $28^3$ para 3D) con formato de datos consistente. Asimismo, se proveen divisiones oficiales en 
-    entrenamiento/validación/test para cada dataset. Gracias a esto, los investigadores pueden centrarse en diseñar y probar 
-    modelos de \textit{machine learning} sin preocuparse por el preprocesamiento de datos o posibles sesgos en la separación 
-    de conjuntos, y los resultados son comparables entre diferentes estudios de forma más directa.
-    
-    \item \textbf{Ligereza y accesibilidad}:  El reducido tamaño de las imágenes hace que ejecutar experimentos sea computacionalmente 
-    liviano, incluso sin hardware especializado. Además, la colección es de libre acceso con licencia abierta (CC BY) y cuenta con una 
-    API unificada (disponible vía \texttt{pip install medmnist}) para cargar los datos fácilmente en diversos lenguajes. 
-    Esto democratiza la experimentación en análisis de imágenes médicas, permitiendo a estudiantes y grupos con recursos limitados 
-    explorar algoritmos de clasificación sobre datos reales de medicina.
-
-    \item \textbf{Benchmark}: MedMNIST sirve tanto para introducir a nuevos usuarios en el campo de la visión médica, al 
-    proporcionar casos ya preparados sobre los cuales practicar, como para benchmarking de algoritmos de AutoML y redes 
-    neuronales en múltiples tareas livianas. Al enfocarse en imágenes pequeñas, enfatiza más el aspecto algorítmico 
-    (diseño del modelo, estrategias de aprendizaje) que el meramente computacional. De hecho, trabajos asociados han 
-    evaluado métodos clásicos de deep learning (ResNet, DenseNet, etc.) y herramientas AutoML sobre MedMNIST, generando 
-    un punto de referencia inicial de desempeños.
+    \item Definir claramente tarea, métrica primaria y \emph{endpoints} clínicos; separar \emph{train/val/test} sin contaminación temporal o por paciente.
+    \item Preprocesado específico por modalidad y normalización consistente; documentar resoluciones y escalados.
+    \item Manejo del desbalance (ponderación de pérdidas, \emph{oversampling} minoritario).
+    \item Evaluación con métricas apropiadas (AUC/PR en clases desbalanceadas; MAE en ordinal/regresión) y análisis por subgrupos.
+    \item Validación externa cuando sea posible; análisis de calibración y curvas de decisión.
+    \item Interpretabilidad (p.,ej., \emph{Grad-CAM}) revisada por expertos.
+    \item Fijar semillas, registrar versiones y publicar detalles suficientes para reproducibilidad.
 \end{itemize}
 
-En resumen, iniciativas como MedMNIST complementan a los grandes desafíos clínicos (ej. clasificar artrosis en radiografías 
-completas) ofreciendo un “laboratorio” controlado para probar métodos de aprendizaje automático en imágenes biomédicas. 
-El presente proyecto de TFG se enmarca precisamente en este contexto: la aplicación del aprendizaje automatico 
-a la clasificación de artrosis de rodilla, un problema relevante en el campo de la salud musculoesquelética. 
-Aprovechando conjuntos de datos como el de OAI \cite{chen2018knee} (con imágenes reales de pacientes) y los avances reportados 
-en la literatura, se buscará entrenar un modelo capaz de predecir el estado de la articulación a partir de la radiografía, evaluando su desempeño 
-y utilizando técncias de interpretación como \textit{Grad-CAM}. De este modo, se pretende contribuir tanto a la validación de las 
-técnicas de aprendizaje profundo en una tarea biomédica específica como a la comprensión de sus alcances y limitaciones en 
-un entorno clínico real.
+\medskip
+\noindent\textbf{Síntesis.}; El uso de aprendizaje profundo en imagen médica ha pasado de estudios en laboratorios a validaciones multicéntricas y primeros productos comerciales. Las CNN profundas y las pérdidas adaptadas a ordinalidad han demostrado utilidad en problemas como la
+artrosis de rodilla (cohortes OAI), mientras que la evidencia comparativa con  profesionales sugiere viabilidad siempre que existan pipelines de validación y control de calidad robustos. De cara a su adopción, los aspectos de calibración, generalización y explicabilidad
+son tan relevantes como el valor central de la métrica.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
