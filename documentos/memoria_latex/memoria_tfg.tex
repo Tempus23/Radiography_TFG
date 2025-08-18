@@ -153,110 +153,95 @@ Este Trabajo Fin de Grado estudia la clasificación automática de artrosis de r
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Preliminares}  % ~15 páginas
+
 \section{Aprendizaje automático}
 
-
-El \textbf{aprendizaje automático} (ML) es una rama de la inteligencia artificial que se enfoca en que las máquinas mejoren 
-su desempeño en una tarea determinada a partir de la experiencia. Un sistema \textit{“aprende”} cuando su desempeño en una tarea, 
-medido por una métrica, mejora con la experiencia adquirida. En términos prácticos, esto implica diseñar algoritmos capaces de 
-\textit{generalizar} patrones a partir de datos, de forma que puedan hacer predicciones o tomar decisiones sobre datos no vistos 
-previamente. En aprendizaje automático se suelen representar los datos con un conjunto de \textit{características} (features) relevantes, y el algoritmo 
-construye un modelo matemático que relaciona estas características con las salidas esperadas. Un objetivo central es lograr un buen 
-equilibrio entre \textit{ajuste} a los datos de entrenamiento y \textit{capacidad de generalización} a nuevos datos, evitando problemas 
-como el \textit{sobreajuste} (overfitting). La Figura~\ref{fig:overfitting} ilustra de forma visual las diferencias entre 
-subajuste, buen ajuste y sobreajuste en un modelo supervisado, conceptos fundamentales para entender el rendimiento de los modelos de aprendizaje automático.
+El \textbf{aprendizaje automático} (ML) es una rama de la inteligencia artificial cuyo objetivo es que los sistemas mejoren su desempeño en una tarea a partir de la experiencia, en la línea de la definición clásica de Mitchell: “un programa aprende de la experiencia $E$ con respecto a una clase de tareas $T$ y una medida de rendimiento $P$ si su rendimiento en tareas de $T$, medido por $P$, mejora con la experiencia $E$” \cite{Mitchell1997}. En términos prácticos, esto implica diseñar algoritmos capaces de \textit{generalizar} patrones desde datos observados a datos no vistos, evitando depender de reglas fijas. Habitualmente se representan los datos mediante \textit{características} (features) y se induce un modelo $f_\theta$ que relaciona entradas $x$ con salidas $y$ bajo una función objetivo o \textit{pérdida} $\mathcal{L}$ \cite{Bishop2006,Goodfellow2016}. Un objetivo central es equilibrar el \textit{ajuste} a los datos de entrenamiento con la \textit{capacidad de generalización}, mitigando el \textit{sobreajuste} (overfitting) y el \textit{subajuste} (underfitting). La Figura~\ref{fig:overfitting} ilustra visualmente estas situaciones, fundamentales para entender el rendimiento de los modelos.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{under-overfitting.png}
+    \includegraphics[width=0.85\textwidth]{under-overfitting.png}
     \caption{Ejemplo ilustrativo de subajuste, buen ajuste y sobreajuste en un modelo supervisado. Adaptado de \cite{awsOverfitting}.}
     \label{fig:overfitting}
 \end{figure}
 
-Existen varias categorías principales de aprendizaje automático, diferenciadas por la forma en que el algoritmo recibe la información 
-y el tipo de tarea a resolver:
+\noindent \textbf{Paradigmas de aprendizaje.} Según cómo se proporcionen las señales a aprender, distinguimos tres familias principales \cite{Bishop2006,Goodfellow2016}:
 \begin{itemize}
-    \item \textbf{Aprendizaje supervisado}: El algoritmo recibe ejemplos de entrada y su correspondiente salida deseada (etiquetas). 
-    El objetivo es aprender una función que mapee las entradas a las salidas correctas. Son tareas típicas la \textit{clasificación} 
-    (p. ej., dado un conjunto de características de un paciente, predecir qué enfermedad tiene: salida categórica) y la 
-    \textit{regresión} (p. ej., dada las características de una casa predecir su precio). El rendimiento se evalúa comúnmente con funciones
-    que relacionan la predicción del modelo con el valor real (p. ej. error cuadrático en regresión o entropía cruzada en clasificación).
-
-    \item \textbf{Aprendizaje no supervisado}: El algoritmo recibe datos de entrada sin etiquetas, y debe descubrir estructura oculta en 
-    ellos. Incluye tareas como la \textit{clustering} (agrupamiento de datos por similitud) o la \textit{reducción de dimensionalidad} 
-    (encontrar representaciones más compactas de los datos). Un claro ejemplo de aprendizaje no supervisado consiste en la agrupación de
-    correos en distintos tipos.
-    
-    \item \textbf{Aprendizaje por refuerzo}: El algoritmo (un \textit{agente}) aprende a través de la interacción con un entorno, 
-    recibiendo recompensas o penalizaciones según sus acciones. El agente debe descubrir una política de acciones que maximice la 
-    recompensa acumulada. Este paradigma es común en robótica y juegos, donde no se proporcionan ejemplos de solución directa sino una 
-    señal de calidad de cada acción.
-    
+    \item \textbf{Aprendizaje supervisado.} Se dispone de pares $(x,y)$ con etiqueta “verdadera”. El objetivo es aprender una función $f_\theta:x\mapsto y$. Son tareas típicas la \textit{clasificación} (p. ej., predecir un grado de severidad KL) y la \textit{regresión} (p. ej., predecir una puntuación continua de severidad). En clasificación se usa habitualmente entropía cruzada; en regresión, error cuadrático medio (MSE). En entornos clínicos es frecuente ajustar pesos por clase o emplear pérdidas robustas para combatir el \textit{desbalance} \cite{Bishop2006}.
+    \item \textbf{Aprendizaje no supervisado.} No hay etiquetas: el algoritmo descubre estructura (p. ej., \textit{clustering}, \textit{reducción de dimensionalidad}). Es útil para exploración de datos, detección de outliers o preentrenamiento de representaciones \cite{Bishop2006}.
+    \item \textbf{Aprendizaje por refuerzo.} Un \textit{agente} interactúa con un entorno y aprende una \textit{política} que maximiza la recompensa acumulada. Es más relevante en control y toma de decisiones secuenciales que en esta memoria \cite{Goodfellow2016}.
 \end{itemize}
 
-En el ámbito médico se utiliza comúnmente el \textbf{aprendizaje supervisado}. El proceso típico de esta tarea consiste en entrenar
-un modelo ajustando sus parámetros para minimizar una función de error o \textit{función de pérdida} (loss function) que mide el error 
-de las predicciones del modelo sobre los datos de entrenamiento. El procedimiento de optimización más utilizado es el 
-\textit{descenso de gradiente} y sus variantes, como el descenso de gradiente estocástico, que permite procesar los datos por lotes. 
-En cada iteración, se calcula la gradiente del error respecto a los parámetros del modelo, y se ajustan los parámetros en la dirección 
-opuesta a dicha gradiente para reducir el error. Este ciclo se repite múltiples veces (\textit{épocas}) 
-hasta converger a un mínimo local del error.
-
-La Figura~\ref{fig:gd_flow} muestra esquemáticamente el flujo de este proceso, donde la posición inicial tiene el error máximo y en cada
-iteración se va reduciendo el error (como una pelota que rueda por una pendiente). A continuación, el Algoritmo~\ref{alg:gd-train} detalla 
-los pasos fundamentales que se siguen durante el entrenamiento de un modelo mediante esta técnica.
+\noindent \textbf{Entrenamiento y optimización.} En aprendizaje supervisado se ajustan los parámetros $\theta$ minimizando una pérdida empírica $\frac{1}{N}\sum_{i=1}^N \mathcal{L}(f_\theta(x_i),y_i)$ mediante \textit{descenso de gradiente} y variantes estocásticas/minibatch (SGD), muy eficientes para grandes volúmenes de datos \cite{Goodfellow2016}. En cada iteración se calcula el gradiente $\nabla_\theta\mathcal{L}$ y se actualiza $\theta\leftarrow \theta-\eta \nabla_\theta\mathcal{L}$, donde $\eta$ es la tasa de aprendizaje. Optimizadores basados en momentos (p. ej., Adam) aceleran la convergencia ajustando adaptativamente los pasos \cite{Goodfellow2016}. Además, se emplean \textit{regularizadores} (p. ej., L2), \textit{dropout} y \textit{early stopping} para mejorar la generalización \cite{Goodfellow2016}. La Figura~\ref{fig:gd_flow} resume el flujo de optimización.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{descenso_gradiente.png}
+    \includegraphics[width=0.7\textwidth]{descenso_gradiente.png}
     \caption{Flujo de entrenamiento de un modelo supervisado mediante descenso de gradiente. Adaptado de \cite{logongasBackprop}.}
     \label{fig:gd_flow}
 \end{figure}
 
+\noindent \textbf{Procedimiento típico de entrenamiento.} El siguiente pseudocódigo sintetiza un bucle de entrenamiento con minibatches y early stopping:
 \begin{algorithmic}
-    \label{alg:gd-train}
-    \REQUIRE Conjunto de entrenamiento ${(x_i, y_i)}_{i=1}^N$, tasa de aprendizaje $\eta$ función de error $\mathcal{L}$
-    \STATE Inicializar parámetros del modelo $\theta$ (p. ej. aleatoriamente)
-    \FOR{número de épocas}
-        \FOR{cada $(x_i, y_i)$ en ${(x_i, y_i)}_{i=1}^N$}
-            \STATE calcular predicción $\hat{y}_i = f_\theta(x_i)$
-            \STATE calcular pérdida $L = \mathcal{L}(\hat{y}_i, y_i)$ \COMMENT{ej.: error cuadrático, entropía cruzada, etc.}
-            \STATE calcular gradiente $g = \nabla_{\theta} L$
-            \STATE actualizar parámetros: $\theta := \theta - \eta \cdot g$
+    \REQUIRE Conjunto de entrenamiento $\{(x_i,y_i)\}_{i=1}^N$, validación $\{(x_j^{(v)},y_j^{(v)})\}$, tasa de aprendizaje $\eta$, pérdida $\mathcal{L}$, paciencia $p$
+    \STATE Inicializar $\theta$ y el mejor valor de validación $V^\star \leftarrow +\infty$, contador $c\leftarrow0$
+    \FOR{épocas}
+        \FOR{cada minibatch $B$}
+            \STATE $\hat{y} \leftarrow f_\theta(B)$; \ \ $L \leftarrow \mathcal{L}(\hat{y}, y)$
+            \STATE $g \leftarrow \nabla_\theta L$; \ \ $\theta \leftarrow \theta - \eta \cdot g$
         \ENDFOR
+        \STATE Calcular pérdida/métricas en validación $V$
+        \IF{$V < V^\star$} \STATE $V^\star \leftarrow V$; \ $c\leftarrow 0$; \textbf{guardar} $\theta$
+        \ELSE \STATE $c\leftarrow c+1$; \IF{$c \ge p$} \STATE \textbf{parar} (early stopping) \ENDIF
+        \ENDIF
     \ENDFOR
 \end{algorithmic}
 
-Tras el entrenamiento, es fundamental evaluar el modelo con datos independientes (conjunto de \textit{prueba}) para estimar su capacidad de generalización. 
-Además, suelen emplearse técnicas como \textit{validación cruzada} y conjuntos de \textit{validación} para ajustar hiperparámetros (parámetros del algoritmo 
-que no se aprenden directamente, como la profundidad de un árbol de decisión o la tasa de aprendizaje $\eta$). Un buen enfoque de validación ayuda a prevenir 
-el sobreajuste y a seleccionar modelos más robustos.
+\noindent \textbf{Validación y estimación honesta del desempeño.} Para estimar la generalización es clave separar datos en \textit{entrenamiento}, \textit{validación} (para seleccionar hiperparámetros) y \textit{prueba} (sólo para la evaluación final). Alternativamente, se usa \textit{validación cruzada} (p. ej., $k$-fold) cuando los datos son escasos. Es esencial evitar \textit{fugas de información} (data leakage), aplicar el mismo preprocesado a todas las particiones y no “mirar” el conjunto de prueba durante el desarrollo \cite{Bishop2006}. En problemas clínicos, además de \textit{accuracy}, son relevantes métricas por clase (F1 macro), AUC/ROC, sensibilidad/especificidad y, cuando procede, análisis de \textit{calibración} probabilística \cite{Bishop2006}.
 
-Existen algoritmos clásicos de ML como los \textit{árboles de decisión}, \textit{máquinas de vector soporte} (SVM), \textit{vecinos más cercanos} (k-NN), entre otros,
-cada uno con sus supuestos y ámbitos de aplicación. Por ejemplo, las SVM buscan hiperplanos que separen clases maximizando el margen, mientras que los árboles de 
-decisión realizan particiones recursivas del espacio de características para homogeneizar las etiquetas en los nodos hoja. La elección del algoritmo adecuado depende 
-de la naturaleza de los datos y del problema a resolver, no existiendo un modelo único que sea óptimo para todas las tareas.
 
-En resumen, el aprendizaje automático proporciona las bases para construir modelos que extraen conocimiento de los datos. Estos conceptos preliminares resultan 
-imprescindibles para entender técnicas más avanzadas como las redes neuronales profundas y su aplicación en tareas de visión por computador y medicina, que se 
-abordan en secciones posteriores.
+\noindent \textbf{Sesgos, varianza y desbalance.} El \textit{compromiso sesgo-varianza} explica por qué modelos muy simples subajustan (alto sesgo) y modelos excesivamente complejos sobreajustan (alta varianza). La regularización, el aumento de datos y una adecuada complejidad del modelo ayudan a situarse en el punto intermedio \cite{Bishop2006}. Cuando existe \textit{desbalance de clases}—común en severidades avanzadas (KL3-KL4)—, pueden usarse estrategias como \textit{class weights}, remuestreo estratificado o métricas macro-promediadas para evitar que la clase mayoritaria domine el entrenamiento \cite{Bishop2006}. En entornos biomédicos es especialmente importante reportar resultados por clase y analizar matrices de confusión.
+
+% [IMAGEN - CURVA SESGO-VARIANZA]
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{sesgo-bias.jpg}
+    \caption{Ilustración del compromiso sesgo-varianza: relación entre la complejidad del modelo y el error de entrenamiento y validación. \cite{gonzalez2018sesgo}}
+    \label{fig:sesgoBias}
+\end{figure}
+
+\noindent \textbf{Modelos clásicos y aprendizaje profundo.} Algoritmos como árboles de decisión, SVM o $k$-NN resuelven correctamente múltiples problemas con pocas muestras y \textit{features} diseñadas a mano \cite{Bishop2006}. Sin embargo, en visión por computador las \textbf{redes neuronales profundas} (DNN) —especialmente las \textit{convolucionales} (CNN) y, más recientemente, los \textit{Transformers}— aprenden jerarquías de características directamente de las imágenes, consiguiendo rendimientos superiores cuando hay datos y cómputo suficientes \cite{Goodfellow2016}. Hitos como el perceptrón \cite{Rosenblatt1958}, la \textit{retropropagación} \cite{Rumelhart1986}, \textit{AlexNet} \cite{Krizhevsky2012} y las conexiones residuales en \textit{ResNet} \cite{He2016} marcaron la evolución reciente del campo.
+
+\medskip
+\noindent \textbf{Buenas prácticas aplicadas en este TFG (conexión con el dominio clínico).} En esta memoria se sigue un protocolo que refleja las recomendaciones anteriores: (i) formulación explícita del problema (KL 0--4 multiclase y variantes binarias/ordinales); (ii) particionado estratificado y uso consistente de un \textit{set} de validación para \textit{early stopping} y \textit{schedulers}; (iii) pérdidas acordes a la tarea (entropía cruzada y MSE para formulaciones ordinales); (iv) \textit{data augmentation} realista (rotaciones, volteos, brillo/contraste) para robustez; (v) métricas complementarias (accuracy, F1 macro, MAE) y análisis por clase; y (vi) verificación cualitativa con \textit{Grad-CAM} para inspeccionar que las regiones activadas sean anatómicamente plausibles. Este enfoque busca maximizar la validez clínica del resultado, reduciendo riesgos de sobreajuste y sesgos.
+
+
+% [IMAGEN OPCIONAL - PIPELINE]
+% Recomendación fuerte: añadir un diagrama de pipeline específico de este TFG (entrada radiografía -> preprocesado/recorte -> aumento -> modelo -> métricas + Grad-CAM).
+% Colócalo al final de la sección para cerrar con una visión global.
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.9\textwidth]{pipeline_tfg.png}
+%   \caption{Esquema de pipeline seguido en el TFG: desde la radiografía de entrada hasta la evaluación y la interpretabilidad con Grad-CAM.}
+%   \label{fig:pipeline_tfg}
+% \end{figure}
+
+\medskip
+\noindent \textbf{Resumen.} El aprendizaje automático proporciona el armazón metodológico para extraer conocimiento de datos y construir predictores con capacidad de generalización. La correcta elección de la formulación (clasificación vs. regresión/ordinal), pérdidas, métricas y protocolo de validación, junto con regularización y análisis de interpretabilidad, es crucial en aplicaciones clínicas. Estas ideas se aplican y amplían en las secciones posteriores con redes profundas específicas de visión y con experimentos sobre OAI y validación interdominio.
 
 \section{Redes Neuronales}\label{sec:nn} 
 
-Las \textbf{redes neuronales artificiales} (RNA) constituyen una familia de modelos de aprendizaje automático inspirados vagamente en el cerebro humano. 
-La unidad básica de una RNA es la \textit{neurona artificial}, un elemento que realiza una operación sencilla: calcula una combinación lineal de sus entradas y 
-le aplica una función no lineal llamada \textit{función de activación}. Matemáticamente, si una neurona recibe como entradas $x_1, x_2, \dots, x_n$ con pesos 
-sinápticos $w_1, w_2, \dots, w_n$ y tiene un sesgo $b$, produce una salida $y = \sigma(w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + b)$, donde $\sigma(\cdot)$ podría ser, 
-por ejemplo, una función sigmoide, tangente hiperbólica o ReLU (Unidad Lineal Rectificada). Las primeras RNA, como el \textit{Perceptrón} de Rosenblatt,  tenían una 
-sola capa de neuronas (una capa de entrada proyectada directamente a una capa de salida) y podían aprender a clasificar datos que fueran linealmente separables. 
-Sin embargo, se demostró que una sola neurona (o capa lineal) tiene limitaciones significativas en su capacidad de representación.
+Las \textbf{redes neuronales artificiales} (RNA) constituyen una familia de modelos de aprendizaje automático inspirados —de forma muy abstracta— en el procesamiento de información del cerebro. La unidad básica es la \textit{neurona artificial}, que calcula una combinación lineal de sus entradas seguida de una no linealidad o \textit{función de activación}. Si una neurona recibe $x_1,\dots,x_n$ con pesos $w_1,\dots,w_n$ y sesgo $b$, su salida es
+\[
+y=\sigma\!\left(\sum_{i=1}^n w_i x_i + b\right),
+\]
+donde $\sigma(\cdot)$ puede ser sigmoide, tangente hiperbólica o ReLU. El \textit{Perceptrón} de Rosenblatt \cite{Rosenblatt1958} es el antecedente histórico más conocido: una arquitectura de una sola capa capaz de resolver problemas linealmente separables pero limitada para funciones como XOR (limitación que impulsó la búsqueda de arquitecturas más expresivas).
 
-La potencia de las redes neuronales radica en su capacidad para formar \textbf{arquitecturas multicapa}, también conocidas como \textit{redes neuronales de múltiples capas} 
-o \textit{perceptrones multicapa} (MLP). Estas redes están organizadas en capas: una capa de entrada (los datos originales), una o varias capas \textit{ocultas} que 
-realizan transformaciones intermedias mediante neuronas con sus pesos, y una capa de salida que produce la predicción final. Al agregar capas ocultas con funciones de 
-activación no lineales, las redes adquieren la habilidad de aproximar relaciones no lineales arbitrariamente complejas entre la entrada y la salida. En la imagen
-\ref{fig:neural_network} se observa un ejemplo de una red neuronal profunda, donde cada círculo representa una neurona y las líneas indican las conexiones entre ellas.
+La potencia de las RNA surge al componer neuronas en \textbf{arquitecturas multicapa} o \textit{perceptrones multicapa} (MLP), organizadas en capas de entrada, varias \textit{capas ocultas} y una capa de salida. La presencia de activaciones no lineales permite aproximar funciones altamente no lineales; de hecho, bajo hipótesis suaves, los MLP actúan como \textit{aproximadores universales} \cite{Bishop2006,Goodfellow2016}. En la Figura~\ref{fig:neural_network} se ilustra esquemáticamente una red profunda.
 
+% [FIGURA A RECREAR]
+% Recomendación: reemplazar la imagen genérica por un esquema propio vectorial (capas totalmente conectadas con activaciones)
+% para evitar problemas de licencia y mejorar legibilidad en impresión B/N.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\textwidth]{neural_network.jpg}
@@ -264,40 +249,14 @@ activación no lineales, las redes adquieren la habilidad de aproximar relacione
     \label{fig:neural_network}
 \end{figure}
 
+El entrenamiento efectivo de redes multicapa se basa en la \textit{retropropagación del error} (\textit{backpropagation}), que aplica la regla de la cadena para calcular derivadas parciales de la pérdida respecto a cada parámetro, combinada con descenso de gradiente y sus variantes estocásticas/minibatch \cite{Rumelhart1986,Goodfellow2016}. En cada iteración se realiza una \textit{fase forward} para obtener predicciones y una \textit{fase backward} para propagar gradientes y actualizar pesos. Este marco permitió escalar el aprendizaje a redes con millones de parámetros. La disponibilidad de grandes conjuntos de datos y el cómputo en GPU —popularizado en visión con \textit{AlexNet}— catalizó el auge del \textbf{aprendizaje profundo} \cite{Krizhevsky2012,Goodfellow2016}.
 
-El entrenamiento de una red neuronal multicapa se realiza típicamente mediante el algoritmo de \textit{retropropagación del error} (backpropagation) combinado con 
-descenso de gradiente. En esencia, el procedimiento es: se calculan las salidas de la red para una entrada dada (\textit{fase forward}), se mide el error cometido 
-comparando con la salida deseada mediante una función de coste (por ejemplo, la entropía cruzada para clasificación), y luego se propaga ese error hacia atrás a 
-través de la red (\textit{fase backward}) calculando las derivadas parciales del error con respecto a cada peso utilizando la regla de la cadena. Estas derivadas 
-indican cómo ajustar cada peso para reducir el error, y se aplican las actualizaciones de los pesos en consecuencia. Gracias a la retropropagación, las redes neuronales 
-pueden entrenarse eficientemente incluso con muchas capas, ajustando millones de parámetros para adaptarse a complejos conjuntos de datos. Este avance fue crucial para 
-el renacimiento de las redes neuronales en la década de 1980, tras un período de estancamiento parcial debido a las limitaciones de los perceptrones simples destacadas 
-por Minsky y Papert en 1969 (quienes señalaron, por ejemplo, que un perceptrón no podía aprender la función XOR). El trabajo de Rumelhart, Hinton y Williams (1986) 
-introdujo formalmente la retropropagación, mostrando que las redes de múltiples capas podían aprender características jerárquicas y superar esas limitaciones previas.
+Un hito simbólico fue ImageNet 2012: \textit{AlexNet} introdujo redes convolucionales profundas entrenadas en GPU y regularización con \textit{dropout}, logrando una mejora drástica en clasificación a gran escala \cite{Krizhevsky2012}. A partir de ahí aparecieron arquitecturas más profundas (VGG) y eficientes (Inception), hasta las \textbf{redes residuales} (\textit{ResNet}) que incorporan \textit{skip connections} para mitigar el desvanecimiento del gradiente y permitir el entrenamiento de redes muy profundas con excelente precisión \cite{He2016}. Estos avances —junto con técnicas de normalización, inicialización y optimización modernas— cimentan el estado del arte actual \cite{Goodfellow2016}.
 
-A medida que se dispuso de más datos y mayor potencia de cómputo, especialmente con la llegada de unidades de procesamiento gráfico (GPU) que aceleraron el cálculo 
-matricial masivo, las redes neuronales crecieron en profundidad y capacidad. Surge así el campo del \textbf{aprendizaje profundo} (\textit{deep learning}), que no es 
-más que el uso de redes neuronales con muchas capas (a veces decenas o incluso cientos) entrenadas sobre grandes volúmenes de datos. Un hito simbólico fue la competición 
-ImageNet de 2012, en la cual una red convolucional profunda llamada \textit{AlexNet} obtuvo un rendimiento muy superior al de los métodos tradicionales en la tarea de 
-clasificación de imágenes a gran escala. AlexNet, desarrollada por Krizhevsky et al. (2012), tenía 8 capas entrenables y introdujo técnicas como capas de \textit{dropout} 
-para regularización y entrenamiento en GPU, marcando el inicio de una nueva era en visión por computador impulsada por redes neuronales profundas. Desde entonces, 
-arquitecturas aún más profundas y sofisticadas han emergido, como \textit{VGGNet} (2014, 16-19 capas), \textit{Inception/GoogLeNet} (2015, con módulos de convolución 
-en paralelo) y \textit{ResNet} (2016, más de 50 capas). En particular, las \textbf{redes residuales} (ResNets) de He et al. (2016) introdujeron conexiones de atajo 
-(skip connections) que mitigaron el problema de la degradación del gradiente en redes muy profundas, permitiendo entrenar exitosamente redes de incluso 152 capas con 
-mejoras significativas en la precisión de tareas de visión.
+Una clase clave para datos con estructura espacial/temporal son las \textbf{redes neuronales convolucionales} (CNN). A diferencia de un MLP denso, las CNN emplean \textit{filtros} que se comparten espacialmente y operan sobre \textit{campos receptivos} locales, explotando la \textit{estacionaridad} de las imágenes y reduciendo drásticamente el número de parámetros. Típicamente se intercalan capas de \textit{pooling} (o estrategias equivalentes de reducción espacial) que aportan invarianza traslacional y control de complejidad \cite{Goodfellow2016}. Una arquitectura de clasificación suele apilar varios bloques \texttt{conv} $\rightarrow$ \texttt{no linealidad} $\rightarrow$ \texttt{reducción espacial}, seguidos de un \textit{cabezal} de clasificación. La Figura~\ref{fig:cnn_arch} muestra un esquema simplificado.
 
-Una clase especial y sumamente importante de RNA para datos con estructura espacial o temporal son las \textbf{redes neuronales convolucionales} 
-(CNN, por sus siglas en inglés). Las CNN fueron concebidas originalmente para procesar imágenes, inspiradas en la organización del córtex visual animal. 
-En una CNN, en lugar de conectar todas las neuronas de una capa a todas las de la siguiente (como en un MLP denso tradicional), se emplean \textit{capas convolucionales} 
-donde cada neurona está conectada solo a una región local de la capa anterior (campo receptivo) y todas los neuronas de una capa comparten conjuntos de pesos (filtros)
-que se \textit{desplazan} sobre la entrada. Esta estructura explota las propiedades de \textit{estacionaridad} de las imágenes (patrones locales similares pueden 
-aparecer en cualquier ubicación) y reduce drásticamente el número de parámetros al introducir \textit{pesos compartidos}. Además, se intercalan típicamente 
-\textit{capas de pooling} (submuestreo), que reducen la resolución espacial agrupando activaciones cercanas (por ejemplo, tomando el máximo de cada bloque $2\times2$ 
-de neuronas), confiriendo invarianza a traslaciones pequeñas y reduciendo la dimensionalidad progresivamente. Una arquitectura CNN típica para clasificación de 
-imágenes consiste en varias capas convolucionales+pooling en cascada, que extraen características cada vez más abstractas de la imagen (bordes, texturas, partes, objetos), 
-seguidas de una o más capas totalmente conectadas que actúan como clasificador final sobre esas características extraídas. La Figura \ref{fig:cnn_arch} muestra 
-esquemáticamente un ejemplo de arquitectura CNN simple, con sus etapas de convolución, pooling y capas densas finales.
-
+% [FIGURA CNN]
+% Si ya incluyes una figura CNN en otro capítulo, evita duplicar; en ese caso, referencia cruzada.
 \begin{figure}[ht] \centering \includegraphics[width=0.8\textwidth]{cnn.png} 
     \caption{Ejemplo de arquitectura de una red neuronal convolucional para clasificación de imágenes. Se observan capas convolucionales (conv) que aplican 
     filtros aprendibles sobre la imagen de entrada, seguidas de capas de pooling que reducen la resolución. Al final, capas totalmente conectadas (FC) procesan 
@@ -305,22 +264,31 @@ esquemáticamente un ejemplo de arquitectura CNN simple, con sus etapas de convo
     \label{fig:cnn_arch} 
 \end{figure}
 
-Las CNN han demostrado ser extremadamente efectivas en visión por computador, logrando reconocer objetos en fotos con gran precisión, segmentar imágenes píxel a píxel, 
-detectar rostros, entre muchas otras aplicaciones. En el ámbito de imágenes médicas, han superado enfoques tradicionales al detectar patrones sutiles en radiografías, 
-resonancias o microscopías que serían difíciles de modelar manualmente. No obstante, entrenar redes profundas con éxito requiere una gran cantidad de datos
-clasificadas de manera manual, siendo de mayor dificultad en el ámbito médico donde la anotación de imágenes es costosa y requiere experiencia especializada.
-Cuando el conjunto de datos disponible es limitado, es frecuente recurrir a \textit{aprendizaje por transferencia}, utilizando redes pre-entrenadas en un dominio 
-amplio (p. ej., ImageNet) y refinándolas (fine-tuning) sobre la tarea específica, aprovechando características visuales genéricas aprendidas previamente.
 
-Otro aspecto relevante es la \textit{interpretabilidad} de las predicciones de las redes neuronales. Las RNA profundas han sido criticadas como “cajas negras” 
-difíciles de entender; sin embargo, se han desarrollado técnicas para visualizar y explicar qué han aprendido. Por ejemplo, en imágenes, métodos como \textit{Grad-CAM} 
-(Gradiente-Weighted Class Activation Mapping) permiten resaltar las regiones de la imagen que más contribuyen a una determinada predicción de la red, proporcionando 
-pistas sobre qué está “mirando” la CNN al tomar su decisión, pudiendo determinar si la red se basa en características relevantes o si ha aprendido patrones no generalizables
-(p. ej. clasificando imágenes por el fondo en lugar del objeto de interés). 
+En visión por computador, las CNN han sustituido con éxito a \textit{pipelines} de \textit{features} manuales al aprender representaciones jerárquicas directamente de los datos \cite{Goodfellow2016}. En imagen médica, esta capacidad resulta especialmente valiosa para detectar patrones sutiles en radiografías, resonancias o microscopías que son difíciles de describir manualmente. No obstante, su entrenamiento robusto exige datos anotados y protocolos de validación cuidadosos. Cuando los datos son limitados —situación habitual en el ámbito clínico— es común aplicar \textbf{aprendizaje por transferencia}: inicializar con pesos preentrenados en dominios amplios (p. ej., ImageNet) y afinar (\textit{fine-tuning}) para la tarea específica, aprovechando la transferibilidad de filtros de bajo/medio nivel \cite{Goodfellow2016}.
 
-En suma, las redes neuronales (especialmente las convolucionales profundas) constituyen la columna vertebral de muchos sistemas modernos de inteligencia artificial, 
-logrando avances sin precedentes en reconocimiento de patrones. En la siguiente sección se explorará cómo estas técnicas de ML y redes neuronales se aplican en el ámbito de la visión por 
-computador biomédica, con énfasis en el caso MedMNIST y la clasificación de artrosis en rodillas.
+% --- Párrafo modificado para enlazar con la figura de ViT ---
+\noindent \textbf{Transformers en visión (visión global frente a sesgo local).} Más recientemente, los \textbf{Transformers} han demostrado gran rendimiento en visión por computador al reemplazar los filtros locales por \textit{autoatención} que modela dependencias de largo alcance. \textit{Vision Transformer} (ViT) divide la imagen en parches (p. ej., $16{\times}16$), los proyecta a \textit{embeddings}, añade codificación posicional y procesa la secuencia mediante bloques de atención con un \textit{class token} para la predicción \cite{Dosovitskiy2021}. Este enfoque tiene \textit{menor sesgo inductivo local} que una CNN —no impone de inicio la vecindad espacial— y, a cambio, suele requerir más datos o regularización para generalizar; su ventaja es capturar \textit{contexto global} desde capas tempranas. Para entornos con menos datos, \textbf{DeiT} introduce estrategias de entrenamiento data-efficient y destilación para obtener Transformers competitivos sin preentrenamientos masivos \cite{Touvron2021}. Por su parte, \textbf{Swin Transformer} propone una atención \textit{jerárquica} basada en \textit{ventanas deslizantes} que preserva inductivos locales y escala eficientemente a alta resolución \cite{Liu2021Swin}. En el contexto de este TFG (gradación KL), la capacidad de integrar señales \textit{globales} (p. ej., relación tibiofemoral, distribución del estrechamiento del espacio articular) puede complementar el sesgo local de las CNN; en datasets clínicos moderados, el \textit{preentrenamiento} y un \textit{fine-tuning} cuidadoso son determinantes. Un esquema de este \textit{pipeline} se muestra en la Fig.~\ref{fig:vit_arch}.
+
+% --- Frase de enlace justo antes de la figura ---
+\medskip
+\noindent Para cerrar esta sección, la Fig.~\ref{fig:vit_arch} resume visualmente el flujo de ViT descrito, desde la división en parches hasta la predicción mediante el \textit{class token}.
+
+
+\begin{figure}[ht] \centering \includegraphics[width=1\textwidth]{vit.png} 
+    \caption{Esquema de Vision Transformer (ViT): la imagen se divide en parches que se proyectan a embeddings, se añade codificación posicional 
+    y se procesan mediante bloques de autoatención. Un token especial de clase (\textit{class token}) permite la clasificación final, 
+    aprovechando el mecanismo de atención para capturar relaciones globales entre todas las regiones de la imagen. \cite{Dosovitskiy2020ViT}} 
+    \label{fig:vit_arch} 
+\end{figure}
+
+
+
+\medskip
+\noindent \textbf{Interpretabilidad.} Aunque la atención facilita inspecciones cualitativas, \textit{atención} $\neq$ \textit{explicación} de forma estricta. Existen técnicas específicas para analizar Transformers en visión (p. ej., \textit{attention rollout}, relevancias derivadas de gradientes) que permiten obtener mapas compatibles con los usados en CNN; en este TFG se emplean mapas tipo Grad-CAM/rollout como control cualitativo adicional, sin considerarlos evidencia clínica por sí misma \cite{Chefer2021}. 
+
+\medskip
+\noindent \textbf{Resumen y conexión con los experimentos.} Las redes neuronales —y en particular las \textbf{CNN profundas} y los \textbf{Transformers}— constituyen la base del estado del arte en reconocimiento de patrones e imagen médica: retropropagación \cite{Rumelhart1986}, cómputo en GPU \cite{Krizhevsky2012} y conexiones residuales \cite{He2016} han permitido escalar su profundidad y precisión, mientras que la autoatención aporta alcance \textit{global} \cite{Dosovitskiy2021,Touvron2021,Liu2021Swin}. En los capítulos siguientes se aplican estas familias a la clasificación de artrosis en rodillas, comparando su rendimiento bajo un protocolo unificado y verificando plausibilidad anatómica con mapas de activación.
 
 
 \section{Aprendizaje automático en imágenes médicas}\label{sec:ml-en-imagenes-medicas}
