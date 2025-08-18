@@ -357,14 +357,19 @@ El \textbf{aprendizaje automático en imágenes médicas} (\emph{medical imaging
 \medskip
 \noindent\textbf{Interpretabilidad y verificación clínica.} La \emph{explicabilidad} busca comprobar que el modelo basa sus decisiones en regiones anatómicas coherentes. Mapas de activación como \emph{Grad-CAM} permiten superponer \emph{heatmaps} sobre la imagen original, ayudando a detectar atajos espurios (p.~ej., artefactos o marcas de la placa) y a construir confianza clínica \cite{selvaraju2017grad}. Aunque la explicabilidad no sustituye a una validación externa, sí que es útil como validación adicional.
 
-% [FIGURA SUGERIDA]
-% \begin{figure}[ht]
-%   \centering
-%   % Imagen original + heatmap Grad-CAM como overlay
-%   \includegraphics[width=0.95\textwidth]{gradcam_placeholder.png}
-%   \caption{Ejemplo esquemático de mapa de activación (Grad-CAM) resaltando la región que apoya la predicción del modelo.}
-%   \label{fig:gradcam}
-% \end{figure}
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{knee_0.png}
+        \caption{KL 0}
+        \label{fig:normal-knee0}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{knee_0_gradCam.png}
+        \caption{KL 1}
+        \label{fig:gradcam-knee0}
+    \end{subfigure}
+\end{figure}
 
 \medskip
 \noindent\textbf{Retos recurrentes} Entre los desafíos más citados se encuentran: (i) \textbf{desbalance de clases} (p.~ej., escasez de grados severos), lo que exige atención a la precisión por clase y a contextualizar la métrica global; (ii) \textbf{cambio de dominio} entre centros, equipos y protocolo (\emph{domain shift}); (iii) \textbf{ruido de etiqueta} e \textbf{incertidumbre} interobservador; (iv) \textbf{tamaño de los datos} limitado; (v) \textbf{calibración} deficiente; (vi) \textbf{reproducibilidad} (documentación de versiones, semillas, \emph{splits}) y \textbf{privacidad}; y (vii) \textbf{requisitos regulatorios}. La literatura recomienda predefinir protocolos de validación, fijar semillas, conservar \emph{splits} oficiales cuando existan y acompañar los resultados de \emph{intervalos de confianza} \cite{liu_meta_analysis}.
