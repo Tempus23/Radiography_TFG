@@ -21,6 +21,8 @@
 \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{makecell}
+\usepackage{float}
+
 \usetikzlibrary{positioning, calc}
 
 \addbibresource{bib.bib}  % Enlazar el archivo .bib
@@ -203,7 +205,7 @@ El \textbf{aprendizaje automático} (ML) es una rama de la inteligencia artifici
 \noindent \textbf{Sesgos, varianza y desbalance.} El \textit{compromiso sesgo-varianza} explica por qué modelos muy simples subajustan (alto sesgo) y modelos excesivamente complejos sobreajustan (alta varianza). La regularización, el aumento de datos y una adecuada complejidad del modelo ayudan a situarse en el punto intermedio \cite{Bishop2006}. Cuando existe \textit{desbalance de clases}—común en severidades avanzadas (KL3-KL4)—, pueden usarse estrategias como \textit{class weights}, remuestreo estratificado o métricas macro-promediadas para evitar que la clase mayoritaria domine el entrenamiento \cite{Bishop2006}. En entornos biomédicos es especialmente importante reportar resultados por clase y analizar matrices de confusión.
 
 % [IMAGEN - CURVA SESGO-VARIANZA]
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{sesgo-bias.jpg}
     \caption{Ilustración del compromiso sesgo-varianza: relación entre la complejidad del modelo y el error de entrenamiento y validación. \cite{gonzalez2018sesgo}}
@@ -215,16 +217,6 @@ El \textbf{aprendizaje automático} (ML) es una rama de la inteligencia artifici
 \medskip
 \noindent \textbf{Buenas prácticas aplicadas en este TFG (conexión con el dominio clínico).} En esta memoria se sigue un protocolo que refleja las recomendaciones anteriores: (i) formulación explícita del problema (KL 0--4 multiclase y variantes binarias/ordinales); (ii) particionado estratificado y uso consistente de un \textit{set} de validación para \textit{early stopping} y \textit{schedulers}; (iii) pérdidas acordes a la tarea (entropía cruzada y MSE para formulaciones ordinales); (iv) \textit{data augmentation} realista (rotaciones, volteos, brillo/contraste) para robustez; (v) métricas complementarias (accuracy, F1 macro, MAE) y análisis por clase; y (vi) verificación cualitativa con \textit{Grad-CAM} para inspeccionar que las regiones activadas sean anatómicamente plausibles. Este enfoque busca maximizar la validez clínica del resultado, reduciendo riesgos de sobreajuste y sesgos.
 
-
-% [IMAGEN OPCIONAL - PIPELINE]
-% Recomendación fuerte: añadir un diagrama de pipeline específico de este TFG (entrada radiografía -> preprocesado/recorte -> aumento -> modelo -> métricas + Grad-CAM).
-% Colócalo al final de la sección para cerrar con una visión global.
-% \begin{figure}[ht]
-%   \centering
-%   \includegraphics[width=0.9\textwidth]{pipeline_tfg.png}
-%   \caption{Esquema de pipeline seguido en el TFG: desde la radiografía de entrada hasta la evaluación y la interpretabilidad con Grad-CAM.}
-%   \label{fig:pipeline_tfg}
-% \end{figure}
 
 \medskip
 \noindent \textbf{Resumen.} El aprendizaje automático proporciona el armazón metodológico para extraer conocimiento de datos y construir predictores con capacidad de generalización. La correcta elección de la formulación (clasificación vs. regresión/ordinal), pérdidas, métricas y protocolo de validación, junto con regularización y análisis de interpretabilidad, es crucial en aplicaciones clínicas. Estas ideas se aplican y amplían en las secciones posteriores con redes profundas específicas de visión y con experimentos sobre OAI y validación interdominio.
@@ -239,10 +231,7 @@ donde $\sigma(\cdot)$ puede ser sigmoide, tangente hiperbólica o ReLU. El \text
 
 La potencia de las RNA surge al componer neuronas en \textbf{arquitecturas multicapa} o \textit{perceptrones multicapa} (MLP), organizadas en capas de entrada, varias \textit{capas ocultas} y una capa de salida. La presencia de activaciones no lineales permite aproximar funciones altamente no lineales; de hecho, bajo hipótesis suaves, los MLP actúan como \textit{aproximadores universales} \cite{Bishop2006,Goodfellow2016}. En la Figura~\ref{fig:neural_network} se ilustra esquemáticamente una red profunda.
 
-% [FIGURA A RECREAR]
-% Recomendación: reemplazar la imagen genérica por un esquema propio vectorial (capas totalmente conectadas con activaciones)
-% para evitar problemas de licencia y mejorar legibilidad en impresión B/N.
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{neural_network.jpg}
     \caption{Ejemplo de una red neuronal profunda \cite{neural_network}}
@@ -255,9 +244,7 @@ Un hito simbólico fue ImageNet 2012: \textit{AlexNet} introdujo redes convoluci
 
 Una clase clave para datos con estructura espacial/temporal son las \textbf{redes neuronales convolucionales} (CNN). A diferencia de un MLP denso, las CNN emplean \textit{filtros} que se comparten espacialmente y operan sobre \textit{campos receptivos} locales, explotando la \textit{estacionaridad} de las imágenes y reduciendo drásticamente el número de parámetros. Típicamente se intercalan capas de \textit{pooling} (o estrategias equivalentes de reducción espacial) que aportan invarianza traslacional y control de complejidad \cite{Goodfellow2016}. Una arquitectura de clasificación suele apilar varios bloques \texttt{conv} $\rightarrow$ \texttt{no linealidad} $\rightarrow$ \texttt{reducción espacial}, seguidos de un \textit{cabezal} de clasificación. La Figura~\ref{fig:cnn_arch} muestra un esquema simplificado.
 
-% [FIGURA CNN]
-% Si ya incluyes una figura CNN en otro capítulo, evita duplicar; en ese caso, referencia cruzada.
-\begin{figure}[ht] \centering \includegraphics[width=0.8\textwidth]{cnn.png} 
+\begin{figure}[H] \centering \includegraphics[width=0.8\textwidth]{cnn.png} 
     \caption{Ejemplo de arquitectura de una red neuronal convolucional para clasificación de imágenes. Se observan capas convolucionales (conv) que aplican 
     filtros aprendibles sobre la imagen de entrada, seguidas de capas de pooling que reducen la resolución. Al final, capas totalmente conectadas (FC) procesan 
     las características extraídas para producir la clasificación en alguna de las categorías.} 
@@ -275,7 +262,7 @@ En visión por computador, las CNN han sustituido con éxito a \textit{pipelines
 \noindent Para cerrar esta sección, la Fig.~\ref{fig:vit_arch} resume visualmente el flujo de ViT descrito, desde la división en parches hasta la predicción mediante el \textit{class token}.
 
 
-\begin{figure}[ht] \centering \includegraphics[width=1\textwidth]{vit.png} 
+\begin{figure}[H] \centering \includegraphics[width=1\textwidth]{vit.png} 
     \caption{Esquema de Vision Transformer (ViT): la imagen se divide en parches que se proyectan a embeddings, se añade codificación posicional 
     y se procesan mediante bloques de autoatención. Un token especial de clase (\textit{class token}) permite la clasificación final, 
     aprovechando el mecanismo de atención para capturar relaciones globales entre todas las regiones de la imagen. \cite{Dosovitskiy2020ViT}} 
@@ -307,7 +294,7 @@ El \textbf{aprendizaje automático en imágenes médicas} (\emph{medical imaging
 \medskip
 \noindent\textbf{Caso de estudio frecuente: rodilla y artrosis} La articulación de la rodilla es un ejemplo clásico por la prevalencia de la osteoartritis y la existencia de \textbf{cohortes longitudinales} de acceso público. Sobre esta base, existen colecciones curadas de radiografías anotadas con escalas como \emph{Kellgren--Lawrence} y trabajos que combinan \emph{detección de la articulación} con clasificación o graduación (incluyendo formulaciones ordinales). Estos recursos han facilitado la comparación de arquitecturas (VGG/ResNet/EfficientNet/ViT) y de formulaciones (multiclase vs.\ ordinal) en entornos reproducibles.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.19\textwidth}
         \includegraphics[width=\textwidth]{knee_0.png}
@@ -325,7 +312,7 @@ El \textbf{aprendizaje automático en imágenes médicas} (\emph{medical imaging
 \medskip
 \noindent\textbf{Interpretabilidad y verificación clínica.} La \emph{explicabilidad} busca comprobar que el modelo basa sus decisiones en regiones anatómicas coherentes. Mapas de activación como \emph{Grad-CAM} permiten superponer \emph{heatmaps} sobre la imagen original, ayudando a detectar atajos espurios (p.~ej., artefactos o marcas de la placa) y a construir confianza clínica \cite{selvaraju2017grad}. Aunque la explicabilidad no sustituye a una validación externa, sí que es útil como validación adicional.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{knee_0.png}
@@ -349,121 +336,89 @@ El \textbf{aprendizaje automático en imágenes médicas} (\emph{medical imaging
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 3                                     %
-%                     DESCRIPCIÓN DEL DATASET OAI                             %
+%                     DESCRIPCIÓN Descripción de los datasets                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\chapter{Dataset OAI y tareas comunes}
+\chapter{Descripción de los datasets y tareas comunes}
 \label{chap:corpus}
 
 \section{Introducción}
 \label{sec:3_1_introduccion}
 
-La correcta selección y descripción de los conjuntos de datos es fundamental para el desarrollo riguroso de cualquier proyecto de visión por ordenador. En este capítulo, 
-presentamos en detalle los dos recursos principales que sustentan este Trabajo de Fin de Grado: el \emph{dataset} OAI y el \emph{dataset} de gatos. Ambos provienen de 
-contextos y dominios distintos —medicina radiológica y clasificación zoológica—, lo que nos permite ilustrar la aplicabilidad de las técnicas de aprendizaje profundo en 
-entornos diversos y evaluar la robustez de los modelos propuestos.
+En el contexto del aprendizaje profundo aplicado a la visión por ordenador, la adecuada selección y descripción de los conjuntos de datos constituye un pilar esencial para garantizar la robustez, validez y reproducibilidad de los experimentos. En este capítulo se presentan, con un enfoque exhaustivo y comparativo, los dos principales recursos que sustentan el presente Trabajo de Fin de Grado: el \textit{dataset} OAI, ampliamente reconocido en el ámbito de la medicina humana, y un \textit{dataset} privado de radiografías de gatos, recopilado en un entorno veterinario. Ambos datasets, a pesar de sus diferencias en escala, contexto y especie, convergen en un objetivo común: la clasificación de la artrosis mediante técnicas de inteligencia artificial.
 
-El \emph{dataset} OAI (\emph{Osteoarthritis Initiative}) constituye un estudio observacional multicéntrico de más de una década de duración, diseñado para captar la 
-progresión de la artrosis de rodilla mediante imágenes radiográficas y datos clínicos asociados. Su riqueza en términos de metadatos clínicos, visitas longitudinales 
-y variedad de modalidades de imagen lo convierte en un estándar de referencia en la literatura científica sobre artrosis. La explotación de este recurso permite abordar 
-tareas de diagnóstico automatizado, pronóstico de la enfermedad y evaluación de biomarcadores, ámbitos que requieren una descripción exhaustiva de las características 
-de adquisición, las etiquetas disponibles y los posibles sesgos inherentes al diseño del estudio.
 
-Por su parte, el \emph{dataset} de gatos representa un ejemplo de conjunto de datos de clasificación de imágenes en un dominio completamente distinto. Aunque de menor 
-escala, este conjunto aporta diversidad de condiciones de iluminación, posturas y categorías diagnósticas, lo que lo hace idóneo para evaluar la generalización 
-de modelos entrenados en contextos médicos a tareas de clasificación más convencionales. Su inclusión en este trabajo busca comparar cómo técnicas similares 
-de procesamiento y clasificación responden a datasets con distribuciones y tamaños muy dispares.
+La inclusión de estos dos dominios diferenciados —humano y felino— permite no solo ilustrar la versatilidad de las arquitecturas de aprendizaje profundo, sino también explorar de manera empírica la transferencia de conocimiento entre especies anatómicamente distintas. Este enfoque inter-específico amplía el alcance del estudio, facilitando una evaluación rigurosa de la capacidad de generalización de los modelos propuestos y proporcionando un marco idóneo para examinar el impacto del dominio sobre el rendimiento de los clasificadores.
 
-Para la anotación de las imágenes radiográficas de rodilla, la escala de severidad convencional es la \textbf{Kellgren-Lawrence (KL)}, un sistema ordinal que clasifica 
-la artrosis en cinco grados:
+    
+El \textit{Osteoarthritis Initiative} (OAI) es un estudio longitudinal y multicéntrico iniciado por los NIH, diseñado para capturar la progresión de la artrosis de rodilla a lo largo de más de una década. Este dataset proporciona no solo una gran variedad de imágenes radiográficas etiquetadas mediante la escala \textbf{Kellgren-Lawrence (KL)}, sino también una rica colección de metadatos clínicos, demográficos y de seguimiento longitudinal. A lo largo de los años, su versión procesada ha sido objeto de numerosos estudios científicos, consolidándose como referencia obligada en el campo. Su estructura curada, resoluciones estándar y disponibilidad pública hacen de él una herramienta metodológicamente sólida para el entrenamiento y evaluación de modelos supervisados. Se recomienda al lector consultar la Figura~\ref{fig:knee-examples} para una visualización representativa de los grados KL.
+
+Por otro lado, el \textit{dataset} veterinario, aunque de escala considerablemente menor y de acceso restringido, ofrece una oportunidad única para validar externamente los modelos desarrollados. Este conjunto de imágenes felinas, anotadas también según la escala KL, permite evaluar la capacidad de los clasificadores para adaptarse a cambios morfológicos y de contexto clínico. Su utilidad no radica tanto en la comparación cuantitativa, sino en su valor como escenario de \textit{domain adaptation}, abriendo la puerta a nuevas preguntas sobre la transferibilidad de características aprendidas.
+
+Ambos conjuntos de datos utilizan la escala ordinal de Kellgren-Lawrence, compuesta por cinco grados de severidad (del 0 al 4), que permiten estandarizar la anotación y facilitar la formulación de tareas tanto de clasificación como de regresión. A continuación, se enumeran los grados según su descripción radiográfica, lo cual se refleja visualmente en la Figura~\ref{fig:knee-examples}:
+
 \begin{itemize}
-    \item \textbf{Grado 0:} Ausencia de signos radiográficos de artrosis.  
-    \item \textbf{Grado 1:} Dudoso; posible pinzamiento mínimo del espacio articular o formación muy incipiente de osteofitos marginales.  
-    \item \textbf{Grado 2:} Leve; presencia clara de osteofitos y estrechamiento leve del espacio articular.  
-    \item \textbf{Grado 3:} Moderado; múltiples osteofitos de tamaño medio, pinzamiento definido del espacio articular y esclerosis subcondral leve.  
-    \item \textbf{Grado 4:} Severo; grandes osteofitos, estrechamiento marcado del espacio articular, esclerosis subcondral significativa y deformidad ósea evidente.  
+    \item \textbf{Grado 0:} Ausencia de signos radiográficos de artrosis.
+    \item \textbf{Grado 1:} Muy leve; posible pinzamiento articular mínimo o presencia incipiente de osteofitos marginales.
+    \item \textbf{Grado 2:} Leve; osteofitos evidentes y estrechamiento leve del espacio articular.
+    \item \textbf{Grado 3:} Moderado; múltiples osteofitos medianos, pinzamiento definido y esclerosis subcondral leve.
+    \item \textbf{Grado 4:} Severo; osteofitos grandes, pérdida significativa del espacio articular, esclerosis marcada y deformidad ósea visible.
 \end{itemize}
-Este enfoque ordinal de graduación sirve de modelo conceptual para definir categorías en ambos conjuntos de datos, facilitando la comparación y el diseño de tareas 
-de clasificación tanto en imágenes médicas como en imágenes de gatos.
 
-La sección~\ref{sec:3_2_dataset_oai} describirá con detalle la estructura, particiones y características del \emph{dataset} OAI, enfatizando sus splits, resolución 
-de imágenes y distribuciones de clases. Acto seguido, en la sección~\ref{sec:3_3_dataset_gatos} se presentará el \emph{dataset} de gatos, incluyendo su origen, 
-tiquetas, número de muestras y proporciones de entrenamiento y validación (70/30). En la sección~\ref{sec:3_4_tareas_comunes} se revisarán las tareas de clasificación 
-binaria, multiclase y formulaciones ordinales o de regresión— que se aplican a ambos datasets, junto con consideraciones sobre desbalance de clases, técnicas de 
-preprocesamiento y métricas de evaluación. Finalmente, la sección~\ref{sec:3_5_conclusiones} sintetizará las principales observaciones y sentará las bases metodológicas 
-para los capítulos posteriores.
+Esta categorización ordinal constituye una referencia clínica ampliamente aceptada, aunque no exenta de subjetividad interobservador, lo que refuerza la necesidad de sistemas automáticos de ayuda al diagnóstico. 
 
-Con esta estructura, se busca proporcionar una visión integral de los recursos de datos y de las tareas de clasificación, facilitando la comprensión y reproducibilidad 
-de los experimentos realizados.
+A nivel metodológico, este capítulo se estructura en cinco secciones interconectadas. En la Sección~\ref{sec:3_2_dataset_oai} se detalla la composición y características del \textit{dataset} OAI, incluyendo sus particiones, resoluciones y distribución de clases. La Sección~\ref{sec:3_3_dataset_gatos} presenta el \textit{dataset} veterinario, detallando el proceso de recolección, anotación y sus particularidades. En la Sección~\ref{sec:3_4_tareas_comunes}, se abordan las tareas habituales de clasificación (binaria, multiclase y ordinal), junto con aspectos relevantes como el desbalance de clases, técnicas de preprocesamiento y métricas de evaluación. Finalmente, la Sección~\ref{sec:3_5_conclusiones} resume los principales hallazgos del capítulo, sentando las bases para el diseño experimental que se desarrollará en los capítulos siguientes.
+
+Con este recorrido, se pretende ofrecer una visión integrada y coherente de los recursos de datos utilizados, así como de las tareas computacionales implicadas, garantizando la transparencia, reproducibilidad y rigor científico del presente Trabajo de Fin de Grado.
 
 \section{Dataset OAI}
 \label{sec:3_2_dataset_oai}
 
-El \emph{Osteoarthritis Initiative (OAI)} es un estudio observacional, multicéntrico y longitudinal lanzado en 2004 
-por los NIH de EE.UU., cuyo objetivo principal ha sido identificar y validar biomarcadores asociados tanto a la 
-incidencia como a la progresión de la artrosis de rodilla sintomática. Gracias a su diseño de más de diez años de 
-seguimiento, este recurso se ha consolidado como un estándar en la investigación sobre artrosis, proporcionando no 
-solo imágenes radiográficas, sino también metadatos clínicos, demográficos y de biospecímenes. Aunque solo se utilizarán
-las imágenes radiográficas de rodilla, es importante destacar que el OAI incluye un amplio espectro de datos,
+La \emph{Osteoarthritis Initiative (OAI)} es un estudio observacional, multicéntrico y longitudinal iniciado en 2004 por los \emph{National Institutes of Health (NIH)} de Estados Unidos. Su objetivo principal ha sido identificar y validar biomarcadores asociados a la aparición y progresión de la artrosis de rodilla sintomática. Con más de una década de seguimiento, este recurso se ha consolidado como un estándar en la investigación clínica, al proporcionar no solo radiografías de rodilla, sino también metadatos clínicos, demográficos y muestras biológicas. En este trabajo se emplean exclusivamente las radiografías, si bien resulta relevante destacar la riqueza multimodal del estudio.
 
-Para facilitar su uso en tareas de aprendizaje automático, se emplea una versión curada de la OAI disponible en 
-Mendeley Data y Kaggle. Este recurso procesado consta de 9786 radiografías de rodilla recortadas y preprocesadas, 
-con etiquetas de severidad basadas en la escala Kellgren-Lawrence (KL) de 0 a 4, asignadas por radiólogos expertos. 
-Los usuarios pueden descargar dos resoluciones estándar (224x224 y 299x299 píxeles) en Mendeley Data, mientras que 
-en Kaggle solo se ofrece la versión de 224x224 píxeles, optimizada para arquitecturas CNN como ResNet, VGG, 
-EfficientNet e Inception.
+Para facilitar su aplicación en tareas de aprendizaje automático, se emplea la versión procesada del OAI publicada en Mendeley Data y Kaggle por Chen et al.~\cite{chen2019fully}. Este conjunto consta de \textbf{9\,786 radiografías de rodilla} recortadas y normalizadas, anotadas con grados de severidad según la escala de Kellgren–Lawrence (KL), que varía entre 0 (ausencia de artrosis) y 4 (artrosis severa). En Mendeley Data las imágenes se encuentran disponibles en resoluciones de \textbf{224x224} y \textbf{299x299} píxeles, mientras que en Kaggle solo se ofrece la versión de 224x224, optimizada para arquitecturas convolucionales como ResNet, VGG o EfficientNet.
 
-La Figura \ref{fig:knee-examples} muestra ejemplos visuales de radiografías correspondientes a cada uno de los grados KL. A pesar de su amplio uso, la escala KL presenta 
-limitaciones conocidas, como su subjetividad y variabilidad interobservador, lo que motiva la búsqueda de métodos automáticos y objetivos para la evaluación de la OA 
-\cite{chen2019fully}.
+La Figura~\ref{fig:knee-examples} muestra ejemplos representativos de radiografías para cada grado KL. Aunque esta escala es el estándar más utilizado en la literatura, presenta limitaciones bien documentadas, como la subjetividad en la interpretación y la variabilidad entre observadores, lo que ha motivado la búsqueda de enfoques automáticos más consistentes y reproducibles en la evaluación de la artrosis.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.19\textwidth}
         \includegraphics[width=\textwidth]{knee_0.png}
         \caption{KL 0}
-        \label{fig:knee0}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.19\textwidth}
         \includegraphics[width=\textwidth]{knee_1.png}
         \caption{KL 1}
-        \label{fig:knee1}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.19\textwidth}
         \includegraphics[width=\textwidth]{knee_2.png}
         \caption{KL 2}
-        \label{fig:knee2}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.19\textwidth}
         \includegraphics[width=\textwidth]{knee_3.png}
         \caption{KL 3}
-        \label{fig:knee3}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.19\textwidth}
         \includegraphics[width=\textwidth]{knee_4.png}
         \caption{KL 4}
-        \label{fig:knee4}
     \end{subfigure}
-    \caption{Ejemplos de radiografías de rodilla clasificadas según la escala Kellgren \& Lawrence (KL)}
+    \caption{Ejemplos de radiografías de rodilla correspondientes a los cinco grados de la escala Kellgren–Lawrence (KL).}
     \label{fig:knee-examples}
 \end{figure}
 
-El dataset publicado en Mendeley Data por Chen, estrechamente vinculado a su trabajo posterior sobre clasificación automática de grados KL mediante 
-redes neuronales profundas \cite{chen2019fully}, es un ejemplo prominente y fue específicamente organizado para facilitar tareas de detección de la articulación y clasificación 
-de la severidad. Las características generales de estas versiones procesadas, que constituyen la base de numerosos estudios posteriores (incluido el presente trabajo), suelen ser 
-las siguientes:
+Las características principales de esta versión procesada, ampliamente utilizada en la comunidad científica, se resumen a continuación:
 
 \begin{itemize}
-    \item \textbf{Imágenes:} El conjunto total incluye \textbf{9\,786 imágenes}, distribuidas en cuatro particiones diferenciadas: \textit{train} (5\,778), \textit{validation} (826), \textit{test} (1\,656) y \textit{auto\_test} (1\,526), como se muestra en la Tabla~\ref{tab:splits}.
+    \item \textbf{Número de imágenes y particiones:} El dataset contiene un total de \textbf{9\,786 radiografías}, distribuidas en cuatro subconjuntos: \textit{train} (5\,778), \textit{validation} (826), \textit{test} (1\,656) y \textit{auto\_test} (1\,526), como se detalla en la Tabla~\ref{tab:splits}.
     
-    \begin{table}[h]
+    \begin{table}[H]
         \centering
-        \caption{Distribución de imágenes por partición}
+        \caption{Distribución de imágenes por partición en la versión curada del OAI}
         \label{tab:splits}
         \begin{tabular}{lrr}
             \toprule
@@ -477,50 +432,40 @@ las siguientes:
         \end{tabular}
     \end{table}
 
-    \item \textbf{Etiquetas:} Cada imagen está etiquetada con un grado KL (de 0 a 4), siguiendo el criterio de radiólogos expertos de la OAI. Esta información es clave 
-    para entrenar modelos supervisados de clasificación.
+    \item \textbf{Etiquetas:} Cada radiografía está clasificada con un grado KL (0–4) asignado por radiólogos expertos de la OAI, lo que posibilita la formulación de tareas de clasificación supervisada.
 
-    \item \textbf{Resolución y preprocesamiento:} En la versión de Mendeley, las imágenes se encuentran disponibles en dos resoluciones estándar: \textbf{224x224} y 
-    \textbf{299x299} píxeles, facilitando el uso de arquitecturas preentrenadas como ResNet o EfficientNet. En la versión de Kaggle solo están disponibles en 224x224
-    píxeles, lo que la hace más directa para su uso en modelos CNN comunes.
+    \item \textbf{Resolución y preprocesamiento:} Las imágenes han sido recortadas a la región de la rodilla y normalizadas. Están disponibles en resoluciones de 224x224 y 299x299 píxeles, lo que facilita su integración en arquitecturas CNN preentrenadas.
 
-    \item \textbf{Distribución de clases:} La Tabla~\ref{tab:class_distribution} muestra la distribución de clases en el conjunto de entrenamiento. Se observa un claro 
-    desbalance hacia las clases más leves de artrosis, lo que debe considerarse en el diseño de los modelos de clasificación.
+    \item \textbf{Distribución de clases:} El conjunto presenta un marcado desbalance hacia las categorías más leves de artrosis. La Tabla~\ref{tab:class_distribution} muestra la distribución en el subconjunto de entrenamiento, mientras que la Figura~\ref{fig:class_split_distribution} resume la proporción relativa de cada grado KL en los tres \textit{splits} principales (entrenamiento, validación y prueba).
 
-    \begin{table}[h]
+    \begin{table}[H]
         \centering
-        \caption{Distribución de clases en el conjunto de entrenamiento}
+        \caption{Distribución de clases (KL 0–4) en el conjunto de entrenamiento}
         \label{tab:class_distribution}
-        \begin{tabular}{lrrrr}
+        \begin{tabular}{lrr}
             \toprule
-            \textbf{Clase KL} & \textbf{Índice} & \textbf{Imágenes} & \textbf{Porcentaje} \\
+            \textbf{Clase KL} & \textbf{Número de imágenes} & \textbf{Porcentaje} \\
             \midrule
-            0 (Sin artrosis) & 0 & 2\,286 & 40\% \\
-            1 (Ligera) & 1 & 1\,046 & 18\% \\
-            2 (Leve) & 2 & 1\,516 & 26\% \\
-            3 (Moderada) & 3 & 757 & 13\% \\
-            4 (Severa) & 4 & 173 & 3\% \\
+            0 (Sin artrosis) & 2\,286 & 40\% \\
+            1 (Ligera) & 1\,046 & 18\% \\
+            2 (Leve) & 1\,516 & 26\% \\
+            3 (Moderada) & 757 & 13\% \\
+            4 (Severa) & 173 & 3\% \\
             \bottomrule
         \end{tabular}
     \end{table}
 
-    \begin{figure}[ht]
+    \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\textwidth]{class_distribution_train.png}
-        \caption{Distribución de clases (KL 0 a KL 4) en el conjunto de entrenamiento del dataset OAI. Se observa un desbalance significativo hacia los grados más leves.}
-        \label{fig:class_barplot}
+        \includegraphics[width=0.80\textwidth]{distribucion_split.jpg}
+        \caption{Distribución porcentual de las clases KL (0–4) en las particiones de entrenamiento, validación y prueba del dataset OAI. Se observa un predominio de las categorías más leves en \textit{train} y \textit{val}, y una representación mayor de grados avanzados en \textit{test}.}
+        \label{fig:class_split_distribution}
     \end{figure}
 
-    Como se observa, el conjunto de entrenamiento presenta un notable desbalance de clases, con predominancia de imágenes etiquetadas con 
-    grado 0 (sin artrosis) y grado 2 (leve), y una clara escasez de imágenes con grado 4 (severa). Este desbalance puede inducir a que el modelo 
-    favorezca las clases más frecuentes durante el entrenamiento, afectando negativamente su capacidad para detectar los casos más críticos. 
-
-    \item \textbf{Divisiones (Splits):} La existencia de splits predefinidos facilita la reproducibilidad de experimentos y la comparación entre distintos enfoques. 
-    Considerando únicamente los subconjuntos \textit{train}, \textit{validation} y \textit{test} —que son los habitualmente utilizados para entrenar y evaluar modelos— 
-    se mantiene una proporción aproximada de \textbf{70\,\% entrenamiento}, \textbf{10\,\% validación} y \textbf{20\,\% test}, ampliamente adoptada en la comunidad. 
-    El conjunto \textit{auto\_test}, aunque no se utiliza en todos los trabajos, está disponible como recurso adicional que se utiliza en ocasiones para aumentar la cantidad de 
-    imagenes en el entrenamiento.
+    \item \textbf{Splits y reproducibilidad:} La existencia de particiones predefinidas garantiza la comparabilidad entre estudios y la reproducibilidad de resultados. Considerando únicamente entrenamiento, validación y prueba, se mantiene la proporción estándar de \textbf{70\,\% / 10\,\% / 20\,\%}, ampliamente adoptada en la comunidad. El subconjunto \textit{auto\_test}, aunque no siempre utilizado, puede servir para aumentar la robustez experimental.
 \end{itemize}
+
+En conjunto, el OAI constituye un recurso de referencia tanto por su tamaño como por su relevancia clínica. No obstante, el desbalance de clases y la subjetividad inherente a la escala KL plantean retos adicionales que deben ser abordados en el diseño y la evaluación de los modelos de clasificación.
 
 \section{Dataset de gatos}
 \label{sec:3_3_dataset_gatos}
@@ -548,9 +493,9 @@ Tabla~\ref{tab:cat_class_distribution} muestra la distribución de clases de tod
         \toprule
         \textbf{Clase KL}  & \textbf{Imágenes} & \textbf{Porcentaje} \\
         \midrule
-        0 (Sin artrosis)  & 30 & 36,6\,\% \\
-        1 (Ligera)        & 21 & 25,6\,\% \\
-        2 (Leve)          & 18 & 22,0\,\% \\
+        0 (Sin artrosis)  & 22 & 36,6\,\% \\
+        1 (Ligera)        & 18 & 25,6\,\% \\
+        2 (Leve)          & 30 & 22,0\,\% \\
         3 (Moderada)      & 11 & 13,4\,\% \\
         4 (Severa)        &  2 &  2,4\,\% \\
         \bottomrule
@@ -571,9 +516,8 @@ dataset OAI, aprovechando sus pesos como punto de partida para un nuevo entrenam
 En ambas estrategias se adoptará un enfoque conservador: las capas iniciales del backbone permanecerán congeladas, 
 afinándose únicamente las capas superiores y la cabeza de clasificación. De esta forma, se minimiza el riesgo de 
 sobreajuste y se maximiza la transferencia de características útiles a pesar del tamaño reducido del dataset de gatos.
-
 \section{Tareas comunes}
-\label{sec:common_tasks}
+\label{sec:3_4_tareas_comunes}
 
 El conjunto de datos de la *Osteoarthritis Initiative* (OAI) ha sido ampliamente empleado en la literatura científica como base para el desarrollo de modelos de aprendizaje
 profundo orientados al diagnóstico automatizado de la artrosis de rodilla. Gracias a su riqueza clínica y su volumen de imágenes radiográficas etiquetadas según la escala de
