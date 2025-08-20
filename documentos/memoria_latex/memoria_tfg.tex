@@ -470,52 +470,61 @@ En conjunto, el OAI constituye un recurso de referencia tanto por su tamaño com
 \section{Dataset de gatos}
 \label{sec:3_3_dataset_gatos}
 
-El \emph{dataset} de gatos es un conjunto de imágenes privadas recopiladas en el marco del Trabajo de Fin de Grado de Bea. 
-Aunque de escala reducida en comparación con el \emph{OAI}, aporta un caso de estudio valioso para evaluar la generalización 
-de modelos de clasificación entrenados en un dominio tan distinto.
+El \emph{dataset} de gatos constituye un conjunto de radiografías recopiladas en el marco del proyecto de tesis doctoral de Bea en el \textbf{[Nombre del Laboratorio/Institución]} (TODO: completar referencia en formato APA). A diferencia del \emph{Osteoarthritis Initiative (OAI)}, que es un recurso público de gran escala, este conjunto es de carácter privado y se encuentra restringido a fines de investigación bajo autorización expresa de su autora.
 
-Este conjunto de datos fue obtenido por Bea mediante fotografía controlada de ejemplares felinos, cubriendo diversas 
-posturas y condiciones de iluminación. Las imágenes no están disponibles públicamente y su uso queda restringido a fines 
-de investigación, bajo autorización expresa de la autora.
+Las imágenes fueron adquiridas mediante procedimientos radiográficos controlados de ejemplares felinos, garantizando un mínimo de dos adquisiciones frontales, una por rodilla rodilla. El conjunto incluye proyecciones frontales y laterales; sin embargo, para mantener la coherencia metodológica con el dataset OAI y favorecer la comparabilidad de resultados, en este trabajo se emplean únicamente las proyecciones \textbf{frontales}, recortadas manualmente a la región de interés (ROI).
 
-El conjunto incluye radiografías de rodillas de gato tanto en vista frontal como lateral, todas ellas anotadas según la 
-escala Kellgren-Lawrence (KL). Para mantener la coherencia anatómica y metodológica con el dataset OAI, en este trabajo 
-se utilizarán únicamente las proyecciones frontales.
+En total, se dispone de \textbf{83 radiografías correspondientes a 39 gatos únicos}. Cada imagen fue anotada según la \textbf{escala de Kellgren--Lawrence (KL)} en cinco categorías ordinales (0--4), adaptadas a la evaluación veterinaria. La Tabla~\ref{tab:cat_class_distribution} presenta la distribución de radiografías por clase, mientras que la Tabla~\ref{tab:cat_patient_distribution} recoge la distribución a nivel de pacientes únicos, lo que permite distinguir entre representatividad en número de imágenes y en sujetos.
 
-En total se dispone de 83 radiografias de gatos, distribuidas en 5 clases según la severidad de la artrosis. La 
-Tabla~\ref{tab:cat_class_distribution} muestra la distribución de clases de todo el dataset.
-
-\begin{table}[h]
+\begin{table}[H]
     \centering
-    \caption{Distribución de clases en el conjunto de entrenamiento}
+    \caption{Distribución de clases en el conjunto de radiografías felinas (nivel imagen).}
     \label{tab:cat_class_distribution}
-    \begin{tabular}{lrrr}
+    \begin{tabular}{lrr}
         \toprule
         \textbf{Clase KL}  & \textbf{Imágenes} & \textbf{Porcentaje} \\
         \midrule
-        0 (Sin artrosis)  & 22 & 36,6\,\% \\
-        1 (Ligera)        & 18 & 25,6\,\% \\
-        2 (Leve)          & 30 & 22,0\,\% \\
-        3 (Moderada)      & 11 & 13,4\,\% \\
-        4 (Severa)        &  2 &  2,4\,\% \\
+        KL 0  & 22 & $\sim$27\,\% \\
+        KL 1  & 30 & $\sim$36\,\% \\
+        KL 2  & 18 & $\sim$22\,\% \\
+        KL 3  & 11 & $\sim$13\,\% \\
+        KL 4  &  2 &  $\sim$2\,\% \\
         \bottomrule
     \end{tabular}
 \end{table}
 
+\begin{table}[H]
+    \centering
+    \caption{Distribución de pacientes únicos por clase en el dataset de gatos.}
+    \label{tab:cat_patient_distribution}
+    \begin{tabular}{lrr}
+        \toprule
+        \textbf{Clase KL}  & \textbf{Pacientes únicos} & \textbf{Porcentaje} \\
+        \midrule
+        0 (Sin artrosis)  & 11 & 28\,\% \\
+        1 (Ligera)        & 15 & 38\,\% \\
+        2 (Leve)          &  7 & 18\,\% \\
+        3 (Moderada)      &  5 & 13\,\% \\
+        4 (Severa)        &  1 &  3\,\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Este conjunto de imágenes felinas funcionará como un conjunto de validación externo durante el proceso de entrenamiento de 
-los modelos basados en el dataset OAI. Su propósito es poner a prueba la capacidad de generalización de los clasificadores 
-aprendidos sobre radiografías humanas, aplicándolos a un dominio anatómico distinto pero con la misma tarea de gradación 
-de artrosis. Al enfrentar los modelos a variaciones en la morfología articular y en las condiciones de adquisición, 
-podremos cuantificar de manera objetiva su robustez frente a cambios de dominio.
+Tal como se aprecia, existe un \textbf{desbalance de clases} caracterizado por una mayor presencia de casos en KL~0 y KL~1, y una marcada escasez en la categoría severa (KL~4). Este desbalance reproduce una situación común en datasets médicos y veterinarios, en los que los estadios tempranos de la enfermedad son más prevalentes que los casos avanzados.
 
-El ajuste fino (fine-tuning) se llevará a cabo siguiendo dos vertientes complementarias. En la primera, partiremos de 
-arquitecturas preentrenadas en grandes repositorios genéricos (por ejemplo, ImageNet), tal como se realizó en los
-experimentos con el dataset OAI. En la segunda, utilizaremos directamente los modelos preentrenados sobre el propio 
-dataset OAI, aprovechando sus pesos como punto de partida para un nuevo entrenamiento dirigido al dominio de gatos. 
-En ambas estrategias se adoptará un enfoque conservador: las capas iniciales del backbone permanecerán congeladas, 
-afinándose únicamente las capas superiores y la cabeza de clasificación. De esta forma, se minimiza el riesgo de 
-sobreajuste y se maximiza la transferencia de características útiles a pesar del tamaño reducido del dataset de gatos.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{cat_class_distribution.jpg}
+    \caption{Distribución porcentual de radiografías felinas según la escala KL. Se observa una clara predominancia de casos sin artrosis o con artrosis ligera.}
+    \label{fig:cat_barplot}
+\end{figure}
+
+El conjunto de gatos se empleará en este trabajo como \textbf{validación externa} para evaluar la \textbf{robustez y capacidad de generalización} de los modelos entrenados sobre OAI (radiografías humanas). De esta forma, se explora cómo responden los clasificadores frente a variaciones anatómicas relevantes y a un \emph{cambio de dominio} real (humano $\rightarrow$ felino) manteniendo la misma tarea ordinal de clasificación.
+
+Adicionalmente, se plantea su uso en experimentos de \emph{fine-tuning}, con dos estrategias complementarias: (i) partir de arquitecturas preentrenadas en repositorios genéricos como ImageNet, y (ii) aprovechar directamente los pesos de modelos entrenados previamente con OAI. En ambos casos, se seguirá un enfoque conservador, congelando las capas iniciales del \emph{backbone} y ajustando únicamente las capas superiores, a fin de mitigar el riesgo de sobreajuste en un dataset de tamaño limitado.
+
+En resumen, aunque reducido y con ciertas limitaciones inherentes (privacidad, desbalance de clases y escasez de ejemplos severos), este dataset representa un recurso relevante para estudiar la \textbf{transferencia de conocimiento entre dominios heterogéneos} y evaluar la aplicabilidad práctica de los modelos de visión por computador en contextos más allá del ámbito humano.
+
 \section{Tareas comunes}
 \label{sec:3_4_tareas_comunes}
 
