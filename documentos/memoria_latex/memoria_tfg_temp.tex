@@ -528,59 +528,113 @@ En resumen, aunque reducido y con ciertas limitaciones inherentes (privacidad, d
 \section{Tareas comunes}
 \label{sec:3_4_tareas_comunes}
 
-El conjunto \emph{Osteoarthritis Initiative} (OAI) se ha convertido en un estándar de facto para entrenar y validar modelos de aprendizaje profundo destinados a estimar la severidad de la artrosis de rodilla. Su valor reside en la combinación de imagen radiográfica homogénea, anotaciones expertas con la escala \emph{Kellgren--Lawrence} (KL) y un tamaño muestral suficiente para comparar arquitecturas y protocolos bajo condiciones reproducibles. En este contexto, la investigación reciente converge hacia un mismo objetivo clínico—caracterizar el estadio de la enfermedad—que, sin embargo, se formula computacionalmente de maneras sutilmente distintas según el propósito del estudio y las restricciones de datos.
+El \emph{Osteoarthritis Initiative} (OAI) se ha consolidado como uno de los recursos de referencia para el desarrollo y la validación de modelos de aprendizaje profundo orientados a la \textbf{clasificación de la severidad de la artrosis de rodilla}. Su combinación de \emph{volumen}, \emph{calidad de anotaciones} (escala \textit{Kellgren--Lawrence}, KL) y \emph{estandarización de preprocesado} lo han convertido en un banco de pruebas recurrente para comparar arquitecturas, funciones de pérdida y protocolos de entrenamiento. Sobre esta base, la literatura converge en un conjunto de \textbf{tareas recurrentes} que, con variaciones, buscan estimar el estadio de severidad articular.
 
-De manera narrativa, pueden distinguirse tres ejes que organizan el trabajo sobre OAI sin necesidad de recurrir a listados. Primero, el \textbf{objetivo predictivo} oscila entre una separación binaria (presencia de artrosis frente a ausencia) y una clasificación multiclase que cubre todos los grados KL (0--4), con variantes que fusionan categorías contiguas para mitigar la ambigüedad en los estadios leves. Cuando el interés está en reflejar la progresión clínica continua, la predicción se plantea como variable numérica, aproximando KL con una puntuación real en el intervalo $[0,4]$. Segundo, el \textbf{régimen de entrenamiento} suele partir de pesos preentrenados en dominios generales (p.\,ej., ImageNet) y aplicar \emph{fine-tuning} selectivo, práctica que acostumbra a superar a los modelos entrenados desde cero en imagen médica por la limitada disponibilidad de datos etiquetados. Tercero, la \textbf{función de pérdida} deja de ser neutral respecto a la distancia entre clases: además de la entropía cruzada canónica en escenarios categóricos, se emplean pérdidas ordinales o regresivas (MSE/MAE) que penalizan más los errores cuanto mayor es el salto entre grados, alineando el aprendizaje con la naturaleza escalonada de KL. A estos pilares se suman estrategias de apoyo—\emph{data augmentation} realista, ponderación por clase ante desbalance, \emph{ensembling}—y, cada vez con mayor peso, la interpretabilidad con \emph{Grad-CAM} para verificar atención en regiones anatómicas plausibles.
 
-En el marco de este Trabajo de Fin de Grado, se delimita el problema a la \textbf{clasificación del grado KL} empleando recortes de rodilla ya localizados y centrados como los que proporcionan las versiones procesadas difundidas en Mendeley y Kaggle. Se excluye deliberadamente la detección de la articulación y se prioriza la comparabilidad con la literatura mediante particiones predefinidas, protocolos de entrenamiento unificados y métricas complementarias (accuracy, F1 macro en multiclase, AUC en binaria y MAE cuando la formulación adopta una escala continua). Para reforzar la lectura clínica, se contemplan mapas \emph{Grad-CAM} sobre ejemplos representativos, con especial atención a los casos limítrofes entre KL~1 y KL~2, donde la discrepancia interobservador es mayor.
+El conjunto de datos de la *Osteoarthritis Initiative* (OAI) ha sido ampliamente empleado en la literatura científica como base para el desarrollo de modelos de aprendizaje
+profundo orientados al diagnóstico automatizado de la artrosis de rodilla. Gracias a su riqueza clínica y su volumen de imágenes radiográficas etiquetadas según la escala de
+Kellgren-Lawrence (KL), este dataset se ha convertido en una referencia para la validación de nuevas arquitecturas y metodologías dentro del ámbito de la inteligencia 
+artificial aplicada a la medicina.
 
-La bibliografía reciente ilustra bien estas decisiones de diseño. \textbf{Chen et al. (2019)} \cite{chen2019fully} proponen un sistema completo con detección (YOLOv2) y, en lo que aquí resulta más relevante, clasificación de la severidad con CNN preentrenadas (VGG, ResNet, InceptionV3, DenseNet). Su contribución central es una \emph{adjustable ordinal loss} que incrementa la penalización con la distancia entre etiquetas, superando a la entropía cruzada y alcanzando un 70{.}4\,\% de \emph{accuracy} con VGG-19 como mejor configuración. \textbf{Rafique et al. (2024)} \cite{rafique2024knee} comparan VGG-16/19, ResNet-50/101 y EfficientNetB7 tanto en multiclase como en binaria por pares, mostrando la dificultad sistemática en KL1 y reportando, en el escenario extremo 0 vs.\ 4, una precisión del 99{.}13\,\% con EfficientNetB7; además, integran \emph{Grad-CAM} para alinear las regiones activadas con zonas anatómicas de interés clínico. \textbf{Nabil et al. (2024)} \cite{nabil2024automatic} optan por reetiquetar KL~0/1/2 como ``sano'' para estabilizar la frontera de decisión y plantean una clasificación en tres niveles (sano, moderado, severo) donde EfficientNetB7 se impone con un 93{.}90\,\% de \emph{accuracy}, apoyado en un preprocesado cuidadoso y aumentos extensivos. Por último, \textbf{Fei et al. (2024)} \cite{fei2024diagnosing} formulan explícitamente la tarea como \textbf{regresión continua}, evaluando VGG16, ResNet34, DenseNet169 y EfficientNetV2 (versión pequeña) sobre 8\,260 imágenes de OAI; EfficientNetV2 destaca con un 71\,\% de \emph{accuracy}, AUC 0{.}83 y MAE 0{.}42, evidenciando que una escala numérica capta con mayor finura la progresión y favorece aplicaciones de seguimiento longitudinal.
+A lo largo del tiempo, diferentes líneas de investigación han coincidido en una serie de tareas recurrentes que abordan distintos enfoques sobre la severidad de la artrosis. 
+Estas tareas pueden clasificarse, principalmente, en función de tres criterios:
 
-La Tabla~\ref{tab:comparative_oai} resume cuantitativamente estos trabajos, manteniendo la notación de clases y los escenarios de comparación tal y como se reportan en los artículos originales. Esta visión conjunta permite apreciar de un vistazo cómo la incorporación de la ordinalidad—ya sea mediante pérdidas específicas o mediante una formulación regresiva—tiende a mejorar la coherencia clínica, y cómo los \emph{backbones} preentrenados dominan con claridad cuando el tamaño del conjunto no permite entrenamientos \emph{from scratch} robustos.
+\begin{itemize}
+    \item El tipo de clasificación: binaria (presencia o ausencia de artrosis) o multiclase (grados de KL de 0 a 4).
+    \item La metodología de entrenamiento: desde cero (*from scratch*) o mediante *transfer learning* con redes preentrenadas.
+    \item La formulación del problema: como clasificación ordinaria o regresión ordinal.
+\end{itemize}
+
+Cabe destacar que estas tareas no son excluyentes, y muchas publicaciones recientes exploran combinaciones de estos enfoques. Además, se ha popularizado el uso de técnicas complementarias 
+como el ensamblado de modelos (ensembling), el ajuste fino de pesos (fine-tuning) o el uso de funciones de pérdida adaptadas a la naturaleza ordinal del problema.
+
+En el contexto de este Trabajo de Fin de Grado, el foco se centrará exclusivamente en la tarea de clasificación del grado de artrosis, descartando explícitamente la tarea de detección automática de 
+la articulación de la rodilla. Se parte de imágenes radiográficas previamente recortadas como se encuentran en los datasets disponibles en Mendeley y Kaggle, donde la articulación ya ha sido
+detectada y centrada, pudiendo replicar los experimentos de otros autores y comparar los resultados obtenidos de una manera más directa. 
+
+A modo de ejemplo representativo de las tareas descritas, se presentan a continuación varios estudios recientes que han abordado el problema de clasificación de la artrosis de 
+rodilla utilizando el dataset OAI, cada uno desde una perspectiva metodológica distinta. Estos trabajos ilustran bien la diversidad de aproximaciones y motivaciones que existen 
+en la literatura científica actual, y permiten contextualizar el enfoque adoptado en este Trabajo de Fin de Grado.
+
+\textbf{Chen et al. (2019)} \cite{chen2019fully} desarrollan un sistema completamente automatizado para la clasificación de la severidad de la 
+artrosis de rodilla, combinando detección de la articulación con YOLOv2 y posterior clasificación mediante redes neuronales profundas. 
+En el contexto de este TFG, el interés se centra en la segunda fase del pipeline: la predicción del grado de artrosis según la escala de 
+Kellgren-Lawrence (KL). Los autores emplean arquitecturas CNN preentrenadas como VGG, ResNet, InceptionV3 y DenseNet, afinadas con una función de 
+pérdida personalizada denominada adjustable ordinal loss, diseñada para penalizar más severamente los errores a mayor distancia ordinal. 
+Los resultados muestran que esta función mejora el rendimiento frente a la entropía cruzada tradicional, alcanzando una precisión del 70.4\% con 
+VGG-19 como mejor modelo. Esta propuesta es destacable por introducir de manera explícita la naturaleza ordinal de las etiquetas KL en el proceso 
+de entrenamiento, aspecto esencial para tareas clínicas con niveles de severidad escalonados.
+
+\textbf{Rafique et al. (2024)} \cite{rafique2024knee} proponen un enfoque comprensivo para la clasificación automática de la artrosis 
+de rodilla basado en modelos CNN preentrenados y técnicas de inteligencia artificial explicable (XAI). Su metodología evalúa cinco 
+arquitecturas (VGG-16, VGG-19, ResNet-50, ResNet-101 y EfficientNetB7) tanto en tareas multiclase (grados KL 0 a 4) como binarias, 
+mediante un análisis sistemático de subgrupos (e.g., 0 vs. 1, 0 vs. 2, etc.). Además, aplican Grad-CAM para interpretar las regiones 
+de interés utilizadas por los modelos en la toma de decisiones, comparándolas con las zonas anatómicas de evaluación clínica. Sus 
+resultados destacan la dificultad de distinguir casos leves (KL1), coincidiendo con otros estudios, mientras que en escenarios binarios 
+extremos (e.g., 0 vs. 4), EfficientNetB7 alcanza una precisión del 99.13\%. Esta propuesta resulta especialmente interesante para 
+este TFG por su énfasis en interpretabilidad y comparación directa entre estrategias multiclase y binarias, lo cual aporta 
+información clave sobre la viabilidad de cada enfoque diagnóstico en entornos reales.
+
+\textbf{Nabil et al. (2024)} \cite{nabil2024automatic} optan por una estrategia simplificada que agrupa las clases KL 0, 1 y 2 bajo la categoría 
+“sano”, lo cual responde a la dificultad recurrente en la clasificación precisa del grado KL1. Comparan tres arquitecturas profundas 
+—EfficientNetB7, DenseNet169 e InceptionResNetV2— y reportan un rendimiento superior de EfficientNetB7, con una precisión del 93.90\%. 
+Su propuesta destaca por una cuidadosa fase de preprocesamiento, uso extensivo de técnicas de aumento de datos y regularización, así 
+como una formulación del problema como clasificación en tres niveles (sano, moderado, severo). Pese a su elevado coste computacional, 
+EfficientNetB7 se presenta como una solución idónea para entornos clínicos donde la precisión diagnóstica es prioritaria.
+
+\textbf{Fei et al. (2024)} \cite{fei2024diagnosing} plantean un cambio conceptual al abordar la clasificación de la artrosis como un problema 
+de regresión continua, en lugar de una clasificación discreta. Utilizando redes neuronales convolucionales, sus modelos generan puntuaciones 
+decimales entre 0 y 4 que reflejan con mayor precisión la progresión de la enfermedad. Evalúan cuatro arquitecturas —VGG16, ResNet34, 
+DenseNet169 y EfficientNetV2 small— sobre 8260 imágenes del dataset OAI, siendo EfficientNetV2 la más destacada, con una precisión del 71\%, 
+AUC de 0.83 y un error absoluto medio (MAE) de 0.42. Este enfoque permite un análisis más granular y continuo del estado articular, abriendo 
+la puerta a aplicaciones como el seguimiento longitudinal, la predicción de progresión y el soporte a la decisión clínica.
+
+Cabe destacar que, al igual que la función de pérdida adjustable ordinal loss utilizada por Chen et al. (2019), el uso de una pérdida de tipo 
+error cuadrático medio en este estudio refleja la intención de penalizar proporcionalmente según la distancia ordinal entre la predicción y 
+la etiqueta real. Aunque desde una perspectiva técnica se trata de una formulación regresiva en lugar de categórica, ambas propuestas comparten 
+el objetivo de capturar la estructura ordinal inherente al sistema de gradación de Kellgren-Lawrence, superando así las limitaciones de la entropía 
+cruzada convencional.
+
+En la Tabla~\ref{tab:comparative_oai} se presenta una síntesis comparativa de los principales trabajos analizados que han utilizado el dataset OAI. 
+Se resumen los modelos empleados, el tipo de tarea formulada y la precisión obtenida en cada caso. Esta 
+comparativa permite tener una visión global del panorama actual, así como identificar tendencias metodológicas relevantes para este TFG.
 
 \begin{table}[h]
-\centering
-\caption{Comparativa de tareas y resultados en el dataset OAI}
-\label{tab:comparative_oai}
-\begin{tabular}{lcccccc}
-\toprule
-\textbf{Estudio} & \textbf{KL 0--4} & \textbf{KL 0\raisebox{0.5ex}{*}-3-4} & \textbf{0 vs 1} & \textbf{0 vs 2} & \textbf{0 vs 3} & \textbf{0 vs 4} \\
-\midrule
-Chen et al. (2019) & 70.4\% & -- & -- & -- & -- & -- \\
-Rafique et al. (2024) & 58\% & -- & 78.11\% & 82.33\% & 91.53\% & 99.13\% \\
-Nabil et al. (2024) & -- & 94.09\% & -- & -- & -- & -- \\
-Fei et al. (2024) & 71\% & -- & -- & -- & -- & -- \\
-\bottomrule
-\end{tabular}
+    \centering
+    \caption{Comparativa de tareas y resultados en el dataset OAI}
+    \label{tab:comparative_oai}
+    \begin{tabular}{lcccccc}
+        \toprule
+        \textbf{Estudio} & \textbf{KL 0--4} & \textbf{KL 0\raisebox{0.5ex}{*}-3-4} & \textbf{0 vs 1} & \textbf{0 vs 2} & \textbf{0 vs 3} & \textbf{0 vs 4} \\
+        \midrule
+        Chen et al. (2019)     & 70.4\% & --        & --        & --        & --        & --        \\
+        Rafique et al. (2024)  & 58\%   & --        & 78.11\%   & 82.33\%   & 91.53\%   & 99.13\%   \\
+        Nabil et al. (2024)    & --     & 94.09\%   & --        & --        & --        & --        \\
+        Fei et al. (2024)      & 71\%   & --        & --        & --        & --        & --        \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
 \vspace{-1ex}
 \begin{flushleft}
-\footnotesize\raisebox{0.5ex}{*} 0 agrupa las clases KL 0, 1 y 2 como ``sano'', frente a los grados 3 y 4 (``avanzado'').
+    \footnotesize\raisebox{0.5ex}{*} 0 agrupa las clases KL 0, 1 y 2 como “sano”, frente a los grados 3 y 4 (“avanzado”).
 \end{flushleft}
 
-En continuidad con la Tabla~\ref{tab:comparative_oai}, la Fig.~\ref{fig:confusion_kl} resume el desempeño del mejor modelo en la clasificación KL 0--4. Con una \emph{accuracy} global en torno al 71\,\%, los errores se producen casi siempre entre clases contiguas; destaca la frontera KL1-KL2 como la más conflictiva, mientras que los extremos (KL0 y KL4) muestran mayor separabilidad y apenas aparecen errores de largo alcance.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{confusion_matrix_fei.png}
-    \caption{Matriz de confusión agregada en la clasificación multiclase KL 0--4 con el mejor modelo del TFG. Predominan los aciertos en la diagonal y las confusiones entre clases vecinas, especialmente KL1–KL2.}
-    \label{fig:confusion_kl}
-\end{figure}
-
-Este patrón refuerza el uso de formulaciones que internalizan la distancia entre clases (pérdidas ordinales o regresión) y aconseja complementar la métrica global con análisis por clase y verificaciones cualitativas (p.\,ej., mapas Grad-CAM) en los casos limítrofes.
-
-En síntesis, la evidencia acumulada apunta a una tendencia clara: los modelos que internalizan la \textbf{estructura ordinal} del problema y se entrenan mediante \textbf{transferencia} con ajustes cuidadosos logran resultados más consistentes y clínicamente plausibles. Esta lectura guía el diseño experimental del presente trabajo, donde se comparan formulaciones categóricas y continuas sobre OAI, se acompaña cada resultado de un análisis cualitativo con \emph{Grad-CAM} y se prioriza la reproducibilidad mediante particiones oficiales y protocolos unificados.
+El análisis de estos trabajos evidencia una creciente tendencia a incorporar la naturaleza ordinal del problema, así como a experimentar 
+con formulaciones alternativas como la regresión o el uso de modelos ensamblados. Esta revisión proporciona una base sólida para el diseño 
+experimental planteado en los capítulos siguientes, donde se compararán distintos enfoques de clasificación aplicados sobre el dataset OAI, 
+considerando también la interpretación de resultados mediante técnicas como Grad-CAM.
 
 \section{Conclusiones}
 \label{sec:3_5_conclusiones}
 
-Este capítulo ha asentado la base empírica y metodológica del proyecto. Por un lado, el \emph{dataset} OAI proporciona el terreno de prueba adecuado para estudiar la clasificación de artrosis con anotaciones KL, a la vez que expone dos desafíos que condicionan toda la cadena experimental: el \textbf{desbalance de clases}, especialmente acusado en los grados severos, y la \textbf{subjetividad} de las etiquetas en estadios leves. Por otro, el conjunto veterinario de radiografías felinas introduce un cambio de dominio real con el que evaluar \textbf{generalización} y \textbf{transferencia}, aspectos cruciales si se pretende que los modelos trasciendan el laboratorio y se aproximen a escenarios clínicos diversos.
+En este capítulo se ha presentado una visión integral de los recursos de datos utilizados en este Trabajo de Fin de Grado, destacando tanto el \emph{dataset} OAI, ampliamente reconocido en la investigación médica para la artrosis de rodilla, como el \emph{dataset} de gatos, que permite evaluar la generalización de los modelos desarrollados a un dominio anatómico distinto. La inclusión de estos dos conjuntos de datos, provenientes de contextos tan diversos, ha permitido establecer una base sólida para el desarrollo y la validación de modelos de clasificación profunda.
 
-El repaso de tareas comunes sobre OAI muestra que la precisión global no basta para juzgar la utilidad clínica: es necesario complementar con métricas por clase, analizar los patrones de error (matrices de confusión) y, cuando la formulación lo permite, cuantificar el \textbf{error absoluto medio} para valorar la distancia entre la predicción y el grado real. El recurso a pérdidas ordinales o a la regresión continua emerge como una respuesta coherente a la escala KL, mientras que la \textbf{interpretabilidad}—materializada en mapas \emph{Grad-CAM}—sirve como control de plausibilidad sobre las regiones anatómicas usadas por el modelo.
+El \emph{dataset} OAI se ha caracterizado en profundidad, especificando su estructura, distribución de clases y las particularidades de sus particiones. Esto ha puesto de manifiesto tanto su riqueza en términos de metadatos clínicos como el desafío del desbalance de clases inherente a la escala de severidad Kellgren-Lawrence (KL). Se ha evidenciado que este desbalance constituye un reto metodológico que debe abordarse adecuadamente durante el diseño de los modelos de clasificación.
 
-Con estas ideas, los capítulos siguientes desarrollan un \textbf{diseño experimental} alineado con la literatura: comparación de \emph{backbones} (CNN y Transformers) bajo formulaciones multiclase y continuas en OAI; evaluación con un conjunto estable de métricas y énfasis en la calibración; y validación externa en el dominio felino bajo tres regímenes (inferencia directa, entrenamiento específico y \emph{fine-tuning} desde OAI). El objetivo es doble: medir el rendimiento de forma honesta y, al mismo tiempo, respaldar cada cifra con evidencias cualitativas y decisiones metodológicas que favorezcan su interpretación clínica.
+Por su parte, el \emph{dataset} de gatos ha sido introducido como un conjunto adicional que facilita la evaluación de las capacidades de transferencia de los modelos desarrollados. Su menor tamaño y variabilidad en las condiciones de imagen plantean un escenario complementario y desafiante, idóneo para probar la robustez de las técnicas implementadas.
 
+Finalmente, las tareas comunes definidas para ambos conjuntos de datos, desde la clasificación binaria hasta la clasificación ordinal, proporcionan un marco metodológico claro para el desarrollo de los modelos en los capítulos siguientes. La comprensión de estas tareas y sus variantes asegura una base conceptual sólida para el diseño experimental que se llevará a cabo, y permite contextualizar los resultados que se obtendrán.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 4                                     %
 %                        REDES CONVOLUCIONALES                                %
