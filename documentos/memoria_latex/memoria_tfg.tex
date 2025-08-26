@@ -1262,12 +1262,12 @@ En esta sección presentamos la evaluación empírica de cinco arquitecturas de 
 		\toprule
 		\textbf{ID} & \textbf{Tarea}                         & \textbf{Acc.\ ingenua} \\
 		\midrule
-		T0          & KL 0--4 (multiclase)                   & $38.6\%$                                \\
-		T1          & 0-3-4 (ternaria; $0^\ast{=}\{0,1,2\}$) & $83.5\%$                                \\
-		T2          & 0 vs 1                                 & $68.3\%$                                \\
-		T3          & 0 vs 2                                 & $58.9\%$                                \\
-		T4          & 0 vs 3                                 & $74.1\%$                                \\
-		T5          & 0 vs 4                                 & $92.6\%$                                \\
+		T0          & KL 0--4 (multiclase)                   & $38.6\%$               \\
+		T1          & 0-3-4 (ternaria; $0^\ast{=}\{0,1,2\}$) & $83.5\%$               \\
+		T2          & 0 vs 1                                 & $68.3\%$               \\
+		T3          & 0 vs 2                                 & $58.9\%$               \\
+		T4          & 0 vs 3                                 & $74.1\%$               \\
+		T5          & 0 vs 4                                 & $92.6\%$               \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -1393,7 +1393,7 @@ En esta sección presentamos la evaluación empírica de cinco arquitecturas de 
 	\end{tabular}
 \end{table}
 
-\noindent\textbf{Reporte de resultados de ResNet-152 (transfer learning).} Con un \emph{backbone} más profundo, ofrece un rendimiento muy alto: 67.07\% en 0-4 y 95.16\% en 0-3-4. En binarias destaca con 0 vs.\ 4 (100\%) y cifras muy altas en 0 vs.\ 3 (96.31\%) y 0 vs.\ 2 (86.67\%), mientras que 0 vs.\ 1 se mantiene más discreto (68.61\%). En regresión mejora menos que EfficientNet (MAE 0.515 y 0.342) y, tras discretizar, las \textit{accuracies} (59.56\% y 82.93\%) quedan por debajo de las de clasificación. 
+\noindent\textbf{Reporte de resultados de ResNet-152 (transfer learning).} Con un \emph{backbone} más profundo, ofrece un rendimiento muy alto: 67.07\% en 0-4 y 95.16\% en 0-3-4. En binarias destaca con 0 vs.\ 4 (100\%) y cifras muy altas en 0 vs.\ 3 (96.31\%) y 0 vs.\ 2 (86.67\%), mientras que 0 vs.\ 1 se mantiene más discreto (68.61\%). En regresión mejora menos que EfficientNet (MAE 0.515 y 0.342) y, tras discretizar, las \textit{accuracies} (59.56\% y 82.93\%) quedan por debajo de las de clasificación.
 
 
 \begin{table}[h]
@@ -1447,61 +1447,61 @@ En esta sección presentamos la evaluación empírica de cinco arquitecturas de 
 Como complemento a los indicadores globales (Accuracy y F1 macro), en la Fig.~\ref{fig:cm_t0} mostramos las matrices de confusión normalizadas por filas (\%) en \texttt{test} para cada arquitectura. Estas visualizaciones permiten identificar patrones de error sistemáticos más allá de la métrica agregada: en todos los modelos se concentra la confusión entre grados contiguos (KL1$\leftrightarrow$KL2 y KL2$\leftrightarrow$KL3), mientras que los extremos (KL0 y KL4) presentan mayor fidelidad. A medida que aumenta la capacidad y/o se incorpora transferencia de aprendizaje, la masa de probabilidades se desplaza hacia la diagonal (menos dispersión fuera de ella), con diagonales más nítidas en EfficientNetB0 y ResNet-152. Este comportamiento es coherente con la mejora de F1 macro observada en las Tablas de resultados y con los porcentajes concretos de la Tabla~\ref{tab:cm_kl04_effb0_plain} para EfficientNetB0 (p.\,ej., 82\% de aciertos en KL0 y 91\% en KL4, con errores residuales hacia clases vecinas). En términos prácticos, estos patrones justifican el análisis posterior de umbrales para cribado “sano vs.\ avanzado” (0/1/2 frente a 3/4), dado que la mayor parte de las equivocaciones se produce en fronteras semánticamente próximas.
 
 \begin{figure}[H]
-    \centering
-    \captionsetup{font=small}
-    % ====== FILA 1 ======
-    \begin{subfigure}[t]{0.48\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{confusion_matrix_simple_cnn_t0.png}
-      \caption{CNN simple}
-      \label{fig:cm_t0_simple}
-    \end{subfigure}\hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{confusion_matrix_mid_cnn_t0.png}
-      \caption{CNN intermedia}
-      \label{fig:cm_t0_intermedia}
-    \end{subfigure}
+	\centering
+	\captionsetup{font=small}
+	% ====== FILA 1 ======
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_simple_cnn_t0.png}
+		\caption{CNN simple}
+		\label{fig:cm_t0_simple}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_mid_cnn_t0.png}
+		\caption{CNN intermedia}
+		\label{fig:cm_t0_intermedia}
+	\end{subfigure}
 
-    \vspace{0.8em}
-    % ====== FILA 2 ======
-    \begin{subfigure}[t]{0.48\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{confusion_matrix_big_cnn_t0.png}
-      \caption{CNN profunda}
-      \label{fig:cm_t0_profunda}
-    \end{subfigure}\hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{confusion_matrix_effb0_t0.png}
-      \caption{EfficientNetB0 (TL)}
-      \label{fig:cm_t0_effb0}
-    \end{subfigure}
+	\vspace{0.8em}
+	% ====== FILA 2 ======
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_big_cnn_t0.png}
+		\caption{CNN profunda}
+		\label{fig:cm_t0_profunda}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_effb0_t0.png}
+		\caption{EfficientNetB0 (TL)}
+		\label{fig:cm_t0_effb0}
+	\end{subfigure}
 
-    \vspace{0.8em}
-    % ====== FILA 3 ======
-    \begin{subfigure}[t]{0.6\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{confusion_matrix_resnet152_t0.png}
-      \caption{ResNet-152 (TL)}
-      \label{fig:cm_t0_resnet152}
-    \end{subfigure}
+	\vspace{0.8em}
+	% ====== FILA 3 ======
+	\begin{subfigure}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_resnet152_t0.png}
+		\caption{ResNet-152 (TL)}
+		\label{fig:cm_t0_resnet152}
+	\end{subfigure}
 
-    \caption{Matrices de confusión normalizadas (\%) en \texttt{test} para la tarea T0 (KL 0--4). Las filas están normalizadas (suman 100\%). Se observa el patrón común de confusión entre grados contiguos (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3) y una identificación más fiable de los extremos (KL0 y KL4), que mejora con la capacidad del modelo y con la transferencia.}
-    \label{fig:cm_t0}
+	\caption{Matrices de confusión normalizadas (\%) en \texttt{test} para la tarea T0 (KL 0--4). Las filas están normalizadas (suman 100\%). Se observa el patrón común de confusión entre grados contiguos (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3) y una identificación más fiable de los extremos (KL0 y KL4), que mejora con la capacidad del modelo y con la transferencia.}
+	\label{fig:cm_t0}
 \end{figure}
 
 \section{Conclusiones}
 
-Los experimentos sobre OAI confirman tres mensajes centrales. Primero, la \textbf{transferencia de aprendizaje} marca la diferencia: las arquitecturas preentrenadas superan de forma consistente a los modelos entrenados desde cero en todas las formulaciones. En particular, \textit{EfficientNetB0} ofrece el mejor equilibrio entre coste computacional y rendimiento, liderando la clasificación KL 0--4 y el error en regresión, mientras que \textit{ResNet-152} alcanza el techo en la tarea 0-3-4 y en el caso extremo 0 vs.\ 4. Segundo, la \textbf{dificultad no es uniforme entre tareas}: 0 vs.\ 1 es sistemáticamente el caso más complejo, coherente con la cercanía semántica entre clases, mientras que 0 vs.\ 4 está prácticamente saturado para las arquitecturas profundas. 
+Los experimentos sobre OAI confirman tres mensajes centrales. Primero, la \textbf{transferencia de aprendizaje} marca la diferencia: las arquitecturas preentrenadas superan de forma consistente a los modelos entrenados desde cero en todas las formulaciones. En particular, \textit{EfficientNetB0} ofrece el mejor equilibrio entre coste computacional y rendimiento, liderando la clasificación KL 0--4 y el error en regresión, mientras que \textit{ResNet-152} alcanza el techo en la tarea 0-3-4 y en el caso extremo 0 vs.\ 4. Segundo, la \textbf{dificultad no es uniforme entre tareas}: 0 vs.\ 1 es sistemáticamente el caso más complejo, coherente con la cercanía semántica entre clases, mientras que 0 vs.\ 4 está prácticamente saturado para las arquitecturas profundas.
 
 El análisis cualitativo de las matrices de confusión refuerza estas conclusiones: los errores se concentran en \emph{fronteras adyacentes} (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3), con mayor fidelidad en los extremos (KL0 y KL4). Al aumentar capacidad y/o incorporar transferencia, la masa se desplaza hacia la diagonal, reduciendo la dispersión fuera de ella. Este patrón sugiere que parte del techo actual viene determinado por la ambigüedad intrínseca de las clases contiguas más que por una falta de capacidad global del modelo.
 
-Desde el punto de vista práctico, los resultados recomiendan \textbf{separar objetivos de desarrollo por caso de uso}: (i) para \emph{cribado “sano vs.\ avanzado”} (0/1/2 frente 3/4) es suficiente un modelo con transferencia (p.,ej., EfficientNetB0) operando a alta sensibilidad, con umbrales ajustados sobre validación; (ii) para \emph{estratificación fina} 0--4, la ganancia viene de \emph{backbones} más profundos y de pérdidas que respeten la ordinalidad; (iii) para \emph{pares binarios}, el beneficio de la capacidad aumenta con la distancia semántica (mejoras claras en 0 vs.\ 2/3, marginales en 0 vs.\ 1). En todos los escenarios, la mera \textit{accuracy} debe interpretarse con cautela debido al desbalance; métricas por clase (F1 macro) y análisis \emph{precision–recall} son más informativos, especialmente en pares muy desbalanceados.
+Desde el punto de vista práctico, los resultados recomiendan \textbf{separar objetivos de desarrollo por caso de uso}: (i) para \emph{cribado “sano vs.\ avanzado”} (0/1/2 frente 3/4) es suficiente un modelo con transferencia (p.,ej., EfficientNetB0) operando a alta sensibilidad, con umbrales ajustados sobre validación; (ii) para \emph{estratificación fina} 0--4, la ganancia viene de \emph{backbones} más profundos y de pérdidas que respeten la ordinalidad; (iii) para \emph{pares binarios}, el beneficio de la capacidad aumenta con la distancia semántica (mejoras claras en 0 vs.\ 2/3, marginales en 0 vs.\ 1). En todos los escenarios, la mera \textit{accuracy} debe interpretarse con cautela debido al desbalance; métricas por clase (F1 macro) y análisis \emph{precision-recall} son más informativos, especialmente en pares muy desbalanceados.
 
 En cuanto a \textbf{calibración y toma de decisiones}, los modelos muestran fiabilidad mejorable. Antes de fijar umbrales clínicos debería incorporarse una etapa de calibración (p.,ej., \emph{temperature scaling} o isotónica) y validarse la estabilidad de los puntos de operación (sensibilidad/especificidad) para evitar sobreajuste a la partición de validación. Este paso es especialmente relevante si el despliegue pretende apoyar decisiones con coste asimétrico de error (falsos negativos en KL~3/4).
 
-Las \textbf{limitaciones} del estudio acotan la interpretación de estos resultados: (i) todo el desarrollo y evaluación se realiza sobre OAI; es necesaria validación externa para estimar la generalización a otros centros y protocolos de adquisición; (ii) se utiliza una única resolución de entrada y un preprocesado homogéneo, sin explotar recortes anatómicos ni información multivista; (iii) el etiquetado KL puede contener ruido interobservador, lo que penaliza especialmente los límites entre clases contiguas; (iv) no se exploraron de forma exhaustiva estrategias de reponderación por clase ni \emph{schedulers} y \emph{augments} avanzados.
+Las \textbf{limitaciones} de este estudio condicionan la interpretación de los resultados: (i) todo el desarrollo y la evaluación se realizan sobre OAI; es necesaria validación externa para estimar la generalización a otros centros y protocolos de adquisición; (ii) se emplea una única resolución de entrada y un preprocesado uniforme, sin explotar recortes anatómicos ni información multivista; (iii) el etiquetado KL presenta variabilidad interobservador, lo que afecta especialmente a las fronteras entre clases adyacentes —el caso más problemático es 0 vs.\ 1—, donde, pese a no ser de las clases más minoritarias, el modelo muestra escasa discriminación; y (iv) no se exploraron de forma sistemática estrategias de balanceo por clase (p.\,ej., reponderación) ni \emph{schedulers} y técnicas de \emph{data augmentation} más avanzadas.
 
 Como \textbf{líneas futuras}, proponemos: (a) pérdidas ordinales y \emph{cost-sensitive} (p.,ej., CORAL/ordinal regression, focal reweighting) para alinear la función objetivo con la estructura KL; (b) preentrenamiento auto-supervisado específico en radiografías para mejorar la transferencia (\emph{contrastive/self-distillation}); (c) integración de señales clínicas y segmentación/atención sobre regiones relevantes (espacio articular, osteofitos); (d) estimación explícita de incertidumbre (ensembles, MC-Dropout) combinada con derivación a experto en casos dudosos; y (e) validación externa y evaluación prospectiva con \emph{calibration-in-the-large} y métricas de utilidad clínica (PPV/NPV a distintos \emph{prevalences}).
 
@@ -1516,86 +1516,138 @@ En síntesis, la transferencia de aprendizaje es el factor más determinante par
 \label{chap:transformers}
 
 \section{Introducción}
-En este capítulo se presenta el uso de modelos Transformers en la clasificación
-automática del grado de artrosis de rodilla a partir de imágenes radiográficas.
-Los Transformers, introducidos inicialmente para tareas de procesamiento de
-lenguaje natural, han demostrado un rendimiento sobresaliente en visión por
-computadora gracias a su capacidad para capturar relaciones globales en las
-imágenes mediante mecanismos de atención.
+Este capítulo estudia el uso de \emph{Transformers} para la clasificación automática del grado de artrosis de rodilla en radiografías, manteniendo el mismo marco experimental del capítulo de CNN. El interés principal radica en su capacidad para modelar dependencias \emph{globales} mediante mecanismos de atención, a la vez que preserva señales locales gracias al particionado en parches. A diferencia de las CNN, que se basan en convoluciones jerárquicas, los Transformers procesan la imagen como una secuencia de \emph{tokens}, permitiendo que cada región “vea” al resto de la imagen desde las primeras capas.
 
-El planteamiento experimental sigue una estrategia progresiva, comenzando con
-modelos Transformer básicos como Vision Transformer (ViT) y avanzando hacia
-arquitecturas más sofisticadas como Swin Transformer y variantes híbridas que
-combinan bloques convolucionales y transformadores. Este enfoque permite
-analizar cómo el uso de atención global y local impacta en el rendimiento de la
-clasificación.
+En el contexto de la escala de Kellgren-Lawrence (KL), los errores suelen concentrarse en fronteras adyacentes (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3). Aquí la atención global puede resultar ventajosa al integrar información contextual sobre la articulación completa, más allá de detalles locales. De igual modo, en escenarios de cribado simplificado (sano vs.\ avanzado, i.e. 0/1/2 frente a 3/4), se espera que la sensibilidad aumente gracias a la capacidad de los Transformers de capturar patrones estructurales a gran escala (p.\,ej., el estrechamiento articular o la morfología del fémur y la tibia en conjunto). 
+
+El objetivo es valorar, con un protocolo homogéneo, hasta dónde llega un Transformer “puro” sin componentes convolucionales cuando se optimiza sobre OAI, y qué diferencias emergen entre variantes de distinta escala (base vs.\ large).
 
 \section{Modelos}
-Para evaluar el desempeño de los Transformers en esta tarea, se han
-seleccionado tres arquitecturas representativas:
+Se exploran dos arquitecturas de Vision Transformer con diferente capacidad y huella computacional:
 
-\textbf{Vision Transformer (ViT).}
-Un modelo Transformer puro que divide las imágenes en parches y aplica atención auto-regresiva para capturar relaciones globales entre estos. Su simplicidad y
-capacidad de escalabilidad lo convierten en un buen punto de partida.
+\medskip
+\noindent\textbf{ViT-Base/16 (\texttt{google/vit-base-patch16-224}).}
+La imagen de entrada ($224{\times}224$ píxeles) se divide en parches de $16{\times}16$ (196 parches). Cada parche se proyecta linealmente a un espacio latente de dimensión 768 y se forma una secuencia de tokens a la que se añade un \emph{class token} y embeddings posicionales. La secuencia pasa por 12 bloques Transformer con auto-atención multi-cabeza (12 cabezas) y capas MLP residuales. La cabeza de salida es intercambiable: \emph{softmax} para clasificación multiclase (KL 0--4) o regresión escalar $\hat{y}\in[0,4]$.  
+Para compatibilidad con pesos preentrenados en ImageNet, la entrada en escala de grises se replica a RGB y se normaliza con las estadísticas estándar.
 
-\section{Experimentos}
-Los experimentos se han diseñado para evaluar el rendimiento de los modelos
-Transformer bajo condiciones homogéneas, utilizando las mismas configuraciones
-de entrenamiento que en el capítulo anterior:
+\medskip
+\noindent\textbf{ViT-Large/16 (\texttt{google/vit-large-patch16-224}).}
+Aumenta significativamente la expresividad gracias a \textbf{24} bloques y \textbf{16} cabezas de atención, con un embedding de dimensión 1024 y aproximadamente 300 millones de parámetros. Mantiene el mismo esquema de parches y \emph{tokens}, pero su mayor capacidad permite capturar señales ordinales sutiles propias de KL, a costa de una huella computacional mucho mayor (VRAM y tiempo de entrenamiento). Para estabilizar su ajuste en conjuntos médicos moderados se emplearon técnicas como: (i) \emph{layer-wise learning rate decay}, (ii) \emph{stochastic depth}, (iii) \emph{warmup} breve y (iv) regularización adicional con \emph{dropout}.
 
-\begin{itemize}
-	\item Optimizer: Adam
-	\item Learning Rate: $10^{-4}$
-	\item Loss Function: CrossEntropyLoss
-	\item Batch Size: 32
-	\item Early Stopping: 10 epochs
-	\item Learning Rate Scheduler: Factor 0.5 after 5 epochs
-\end{itemize}
-
-Se han entrenado los modelos en el conjunto de datos OAI, y se ha realizado una
-evaluación cruzada utilizando un conjunto externo de imágenes de radiografías
-de gatos, para analizar su capacidad de generalización.
-
-\textbf{Métricas de evaluación.}
-Las métricas utilizadas para comparar el rendimiento de los modelos son:
-
-\begin{itemize}
-	\item Precisión global (Accuracy)
-	\item F1-Score macro
-	\item Matriz de confusión
-	\item MAE (Mean Absolute Error)
-\end{itemize}
-
-\textbf{Aumento de datos y regularización.}
-Se ha aplicado aumento de datos en tiempo real, incluyendo rotaciones aleatorias, reflejos y variaciones de brillo y contraste. Además, se ha utilizado Dropout y
-Normalización por Lotes para mejorar la generalización.
-
-\begin{table}[h]
+\begin{table}[H]
 	\centering
-	\caption{Resultados de google/vit-base-patch16-224}
-	\label{tab:cnn_grande_results}
-	\begin{tabular}{@{} l l l c c c c c c @{}}
+	\caption{Especificaciones estructurales (224$\times$224, parche 16). Parámetros aproximados para referencia.}
+	\label{tab:vit_specs}
+	\begin{tabular}{lcccccc}
 		\toprule
-		\textbf{Dataset} & \textbf{Tarea}                           & \textbf{Métrica}
-		                 & \multicolumn{6}{c}{\textbf{Particiones}}                                                                                \\
-		\cmidrule(lr){4-9}
-		                 &                                          &                  & 0--4    & 0-3-4   & 0 vs 1  & 0 vs 2  & 0 vs 3  & 0 vs 4  \\
+		\textbf{Modelo} & \textbf{Parches} & \textbf{Tokens} & \textbf{Bloques} & \textbf{Cabezas} & \textbf{Dim.\ embed} & \textbf{Parámetros} \\
 		\midrule
-		\multirow{2}{*}{OAI}
-		                 & Clasif.                                  & Accuracy         & 65.45\% & 92.37\% & 69.64\% & 80.74\% & 96.54\% & 99.44\% \\
-		                 &                                          & F1-score         & 63.48\% & 82.38\% & 48.31\% & 80.00\% & 95.24\% & 98.00\% \\
-		\addlinespace
-		\multirow{3}{*}{OAI}
-		                 & Regr.                                    & Accuracy         & 68.70\% & 91.71\% &         &         &         &         \\
-		                 &                                          & F1-score         & 64.70\% & 90.20\% &         &         &         &         \\
-		                 &                                          & MAE              & 0.4617  & 0.0603  &         &         &         &         \\
-		\addlinespace
+		ViT-B/16        & $16{\times}16$   & $196{+}1$       & 12               & 12               & 768                  & $\sim$86\,M         \\
+		ViT-L/16        & $16{\times}16$   & $196{+}1$       & 24               & 16               & 1024                 & $\sim$300\,M        \\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
-\textbf{Evaluación en dominio externo.}
-Se ha evaluado el rendimiento de los modelos en un conjunto adicional de imágenes de radiografías de gatos, replicando las condiciones de evaluación establecidas
-para los modelos convolucionales.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.78\linewidth]{vit.png}
+	\caption{Esquema genérico de ViT: particionado en parches $16{\times}16$, proyección a \emph{tokens}, embeddings posicionales y bloques Transformer con autoatención. La cabeza se ajusta a clasificación KL 0--4 o a regresión en $[0,4]$.}
+	\label{fig:vit_b16_diagrama}
+\end{figure}
+
+\section{Experimentos}
+Se siguen las mismas particiones oficiales \texttt{train/val/test} de OAI y el mismo \emph{pipeline} que en CNN para asegurar comparabilidad: optimizador Adam, \texttt{lr} $10^{-4}$, \emph{batch} 32, hasta 50 épocas con \emph{early stopping} (paciencia 10) y \emph{ReduceLROnPlateau} (factor 0.5, paciencia 5). Aumentos: rotaciones leves, \emph{flip} horizontal y ajustes de brillo/contraste. La selección de modelo se realiza por F1 macro (clasificación) y MAE (regresión) en validación; el punto óptimo se evalúa una única vez en \texttt{test}. Como lectura cualitativa, se generan mapas de atención por \emph{attention rollout} y matrices de confusión normalizadas por fila.
+
+\begin{table}[H]
+	\centering
+	\caption{Resultados de \textbf{ViT-B/16} (\texttt{google/vit-base-patch16-224}) en \texttt{test}.}
+	\label{tab:vit_base_results}
+	\begin{tabular}{@{} l l l c c c c c c @{}}
+		\toprule
+		\textbf{Dataset} & \textbf{Tarea}                                   & \textbf{Métrica}
+		                 & \multicolumn{6}{c}{\textbf{Particiones / Pares}}                                                                                \\
+		\cmidrule(lr){4-9}
+		                 &                                                  &                  & 0--4    & 0-3-4   & 0 vs 1  & 0 vs 2  & 0 vs 3  & 0 vs 4  \\
+		\midrule
+		\multirow{2}{*}{OAI}
+		                 & Clasif.                                          & Accuracy         & 65.45\% & 92.37\% & 69.64\% & 80.74\% & 96.54\% & 99.44\% \\
+		                 &                                                  & F1-score         & 63.48\% & 82.38\% & 48.31\% & 80.00\% & 95.24\% & 98.00\% \\
+		\addlinespace
+		\multirow{3}{*}{OAI}
+		                 & Regresión                                        & Accuracy         & 68.70\% & 91.71\% & --      & --      & --      & --      \\
+		                 &                                                  & F1-score         & 64.70\% & 90.20\% & --      & --      & --      & --      \\
+		                 &                                                  & MAE              & 0.4617  & 0.0603  & --      & --      & --      & --      \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\emph{Lectura rápida.} ViT-B/16 supera claramente a las CNN entrenadas desde cero y se acerca al rendimiento de los \emph{backbones} con transferencia: fuerte en 0--4 (65.45\%) y 0-3-4 (92.37\%), muy sólido en 0 vs.\ 3/4, MAE competitivo en regresión, y la mayor dificultad en 0 vs.\ 1 (F1 48.31\%), coherente con la frontera más difusa.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_t0.png}
+		\caption{ViT-B/16 (google/vit-base-patch16-224)}
+		\label{fig:cm_t0_vit}
+	\end{subfigure}
+	\caption{Matriz de confusión normalizada (\%) en \texttt{test} para la tarea T0 (KL 0--4) con ViT-B/16 (\texttt{google/vit-base-patch16-224}).}
+	\label{fig:cm_t0_vit}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Resultados de \textbf{ViT-B/16} (\texttt{google/vit-base-patch16-224}) en \texttt{test}.}
+	\label{tab:vit_base_results}
+	\begin{tabular}{@{} l l l c c c c c c @{}}
+		\toprule
+		\textbf{Dataset} & \textbf{Tarea}                                   & \textbf{Métrica}
+		                 & \multicolumn{6}{c}{\textbf{Particiones / Pares}}                                                                                \\
+		\cmidrule(lr){4-9}
+		                 &                                                  &                  & 0--4    & 0-3-4   & 0 vs 1  & 0 vs 2  & 0 vs 3  & 0 vs 4  \\
+		\midrule
+		\multirow{2}{*}{OAI}
+		                 & Clasif.                                          & Accuracy         & 64.91\% & 92.37\% & 67.98\% & 79.83\% & 94.19\% & 99.27\% \\
+		                 &                                                  & F1-score         & 64.92\% & 72.31\& & 40.47\% & 79.36\% & 92.72\% & 97.37\% \\
+		\addlinespace
+		\multirow{3}{*}{OAI}
+		                 & Regresión                                        & Accuracy         & 70.60\% & 93.10\% & --      & --      & --      & --      \\
+		                 &                                                  & F1-score         & 68.60\% & 89.90\% & --      & --      & --      & --      \\
+		                 &                                                  & MAE              & 0.4609  & 0.0736  & --      & --      & --      & --      \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+
+
+\begin{table}[H]
+	\centering
+	\caption{Comparativa resumida en \texttt{test}: Transformers vs.\ mejores CNN (valores de CNN tomados del capítulo anterior). El resultado de ViT-L/16 en 0--4 corresponde a la formulación de regresión.}
+	\label{tab:vit_vs_cnns}
+	\begin{tabular}{lccc}
+		\toprule
+		\textbf{Modelo}   & \textbf{Acc 0--4} & \textbf{Acc 0-3-4} & \textbf{MAE (0--4)} \\
+		\midrule
+		CNN profunda      & 58.47\%           & 89.35\%            & 0.651               \\
+		EfficientNetB0    & 68.64\%           & 94.07\%            & 0.463               \\
+		ResNet-152        & 67.07\%           & \textbf{95.16\%}   & 0.515               \\
+		\textbf{ViT-B/16} & 65.45\%           & 92.37\%            & \textit{0.4617}     \\
+		\textit{ViT-L/16} & \textit{70\%*}    & \textit{93.10\%}   & \textit{0.4609}     \\
+		\bottomrule
+	\end{tabular}
+	\begin{flushleft}
+		\footnotesize\textit{* El valor de ViT-L/16 en 0--4 corresponde a la formulación de regresión.}
+	\end{flushleft}
+\end{table}
+
+\section{Conclusiones}.
+Los Transformers “puros” resultan una alternativa competitiva para OAI. Tanto \textbf{ViT-B/16} como \textbf{ViT-L/16} ofrecen resultados comparables e incluso superiores a CNN profundas, especialmente en regresión. El \textbf{punto débil común} sigue siendo la distinción entre KL0 y KL1, donde las fronteras clínicas son difusas y el ruido de etiquetado impacta con fuerza. Aun así, los ViT destacan en pares de mayor severidad (0 vs.\ 3/4) y en regresión, donde logran un MAE cercano a 0.46, mejorando las CNN.  
+
+En términos prácticos, ViT-L/16 parece ser la mejor opción en precisión global, pero a un coste computacional elevado; ViT-B/16 ofrece un mejor balance entre coste y rendimiento.  
+
+En conjunto, los Transformers aportan una visión complementaria a la inductiva de las CNN. Su integración o hibridación abre una vía prometedora para mejorar la fiabilidad de sistemas de ayuda al diagnóstico en artrosis de rodilla.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 6                                     %
@@ -1606,37 +1658,30 @@ para los modelos convolucionales.
 \label{chap:gatos}
 
 \section{Introducción}
-La aplicación directa de modelos entrenados sobre radiografías humanas al
-dominio veterinario supone un reto interesante desde el punto de vista del
-aprendizaje por transferencia. En este capítulo se evalúa la viabilidad de
-adaptar modelos entrenados en el conjunto OAI a radiografías de rodillas de
-gatos, analizando su rendimiento y capacidad de generalización ante un cambio
-anatómico y de dominio visual.
+La aplicación directa de modelos entrenados sobre radiografías humanas al dominio veterinario plantea un caso de transferencia con \emph{shift} anatómico, estadístico y de adquisición. En este capítulo se evalúa la viabilidad de adaptar modelos optimizados previamente en OAI (rodilla humana) a radiografías de rodilla de gatos, analizando su rendimiento y su capacidad de generalización ante un cambio de morfología ósea, texturas de tejidos y distribución de severidades. Nuestro objetivo no es únicamente reportar métricas agregadas, sino entender \emph{cómo} y \emph{por qué} fallan (o aciertan) los modelos cuando cruzan de especie.
+
+Para ello, ampliamos el análisis clásico de \emph{accuracy}/\emph{F1} con tres piezas clave: (i) \textbf{matrices de confusión} normalizadas por clase, que muestran dónde se concentran los errores (especialmente en fronteras adyacentes 1$\leftrightarrow$2$\leftrightarrow$3) y el efecto del desbalanceo; (ii) \textbf{formulación de regresión} sobre la escala $[0,4]$ con dispersogramas predicción,vs,verdadero y \emph{MAE}, que permiten evaluar si el modelo aprende una noción continua de severidad más allá del acierto exacto; y (iii) \textbf{mapas Grad-CAM}, que aportan interpretabilidad visual al revelar si, tras la transferencia o el \emph{finetuning}, el foco del modelo recae en estructuras anatómicas plausibles (espacio articular tibiofemoral, osteofitos marginales, esclerosis subcondral) o en artefactos espurios.
+
+Comparamos tres regímenes de evaluación: \emph{directo} (uso de pesos ImageNet sin adaptación específica), \emph{indirecto} (modelos ajustados en OAI aplicados en modo \emph{zero-shot} a gatos) y \emph{finetuning} (reentrenamiento de los mejores modelos conseguidos en secciones anteriores). Esta triangulación permite medir qué conocimiento visual se transfiere de forma robusta y qué parte requiere reanclaje al nuevo dominio. Dado el tamaño limitado del conjunto felino, todos los resultados se contextualizan frente a la línea base de clase mayoritaria y se reportan métricas por clase para mitigar interpretaciones optimistas debidas al desbalanceo.
 
 \section{Selección de tareas y análisis de sentido clínico}
-Dado el reducido tamaño del conjunto felino y la subjetividad de las clases más
-leves, se ha llevado a cabo una selección de 2 tareas, la primera consiste en
-la tarea principal (0vs1vs2vs3vs4). La segunda tarea consiste en clasificación
-de 2 clases, la clase "sin artrosis" (0 y 1) y la clase con artrosis 2,3,4
+
+El conjunto felino disponible es reducido y presenta un reparto de clases sesgado hacia los grados bajos, lo que recomienda diseños de tarea que equilibren utilidad clínica y viabilidad estadística. En consecuencia, se analizan dos formulaciones complementarias: (1) \textbf{clasificación multiclase 0--4}, que preserva la granularidad de la escala y permite estudiar el patrón de confusiones entre grados contiguos; y (2) \textbf{clasificación binaria 01vs234}, donde la clase sin artrosis'' (0 y 1) se enfrenta a artrosis establecida'' (2, 3 y 4). Esta segunda tarea refleja un escenario de cribado pragmático: prioriza la \emph{sensibilidad} para detectar casos moderados/avanzados a costa de aceptar cierta imprecisión en la distinción fina entre 0 y 1.
+
+Para ambas tareas, todas las métricas se interpretan a la luz de la \emph{baseline} de predicción mayoritaria, con especial atención al \emph{recall} por clase y al \emph{F1} macro (robusto al desbalanceo). En la formulación continua, las salidas se calibran en $[0,4]$ y se cuantifica el \emph{MAE}; cuando se requiere una métrica discreta, las predicciones continuas se redondean (clip + round) a la clase más cercana, lo que permite comparar directamente con 0--4 y estudiar coherencia ordinal.
+
+Con el fin de garantizar una lectura clínica y metodológica alineada, las matrices de confusión se normalizan por filas (verdaderos) y muestran soporte por clase; los dispersogramas de regresión incluyen la línea identidad y resumen de errores (\emph{MAE}); y las Grad-CAM se ilustran sobre tres arquetipos (sano/leve, moderado, avanzado), comparando el foco atencional entre \emph{directo}, \emph{indirecto} y \emph{finetuning}. Este diseño permite valorar, de forma integrada, la transferencia inter-especie tanto en rendimiento como en explicabilidad.
 
 \section{Experimentos realizados}
 
-Los experimentos realizados consiste en estas 2 tareas con dos modelos
-(EfficientNetB0 y el transformer de google). En cada experimento se han probado
-3 tipos de entrenamiento: - Entrenamiento directo sobre el dataset de los gatos
-utilizando los modelos preentrados de serie - Entrenamiento indirecto,
-utilizando los modelos previamente entrenados se ha evaluado directamente sobre
-el dataset sin realizar ningún entrenamiento extra - Finetuning, utilizanod los
-modelos preentrenados previamente, se ha reentrenado con el dataset de gatos
-dejando un 35\% de los datos para validación (30 imagenes) y así tener una
-muestra representativa de las clases teniendo en los casos más críticos 1
-imagen de la clase 4 y 3 de la clase 3
+Se evalúan dos \emph{backbones}: \textbf{EfficientNetB0} y \textbf{ViT Base (patch16, 224)} de Google. Para cada uno se prueban tres regímenes de entrenamiento: (i) \emph{Directo} (entrenar desde los pesos preentrenados de serie sobre el conjunto felino), (ii) \emph{Indirecto} (\emph{zero-shot} o \emph{frozen}: evaluar sin reentrenar sobre gatos usando el modelo entrenado en OAI) y (iii) \emph{Finetuning} (ajuste fino del modelo previamente preentrenado sobre OAI usando las imágenes felinas). Se reserva aproximadamente un 35\% para validación estratificada (\textasciitilde30 imágenes) con el fin de retener representación de clases poco frecuentes (p. ej., \mbox{KL4}).
 
-\section{Resultados y análisis}
-A continuación, se muestran los principales resultados obtenidos en las tareas
-más representativas:
+Todas las imágenes se redimensionan a $224\times224$ y se normalizan. Los modelos preentrenados reciben tres canales (replicación de la escala de grises) para respetar las estadísticas de entrada. Para Grad-CAM, se emplea la última capa de activación previa al clasificador: bloque final de \emph{inverted residual} en EfficientNetB0 y el \emph{token} \texttt{[CLS]} proyectado a mapas vía \emph{attention rollout} o capas \emph{patch} en ViT. Los mapas se reescalan a resolución de entrada y se superponen como \emph{heatmap} con normalización por imagen.
 
-\begin{table}[h]
+Los principales resultados cuantitativos para la tarea multiclase (0--4) se recogen en la Tabla~\ref{tab:model_comparison_results}, mientras que las matrices de confusión asociadas a cada modelo y régimen de entrenamiento se ilustran en las Figuras~\ref{fig:conf_task04_vit} y~\ref{fig:conf_task04_effb0}. Asimismo, los resultados bajo formulación de regresión se presentan en la Tabla~\ref{tab:model_comparison_results_regression}, lo que permite comparar métricas de clasificación tradicionales con errores de predicción continua (MAE).
+.
+
+\begin{table}[H]
 	\centering
 	\caption{Resultados de la Tarea 0--4 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
 	\label{tab:model_comparison_results}
@@ -1654,8 +1699,7 @@ más representativas:
 		\bottomrule
 	\end{tabular}
 \end{table}
-
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\caption{REGRESSION - Resultados de la Tarea 0--4 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
 	\label{tab:model_comparison_results}
@@ -1675,8 +1719,53 @@ más representativas:
 		\bottomrule
 	\end{tabular}
 \end{table}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_cats_t0_indirecto.png}
+		\caption{Indirecto}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_cats_t0_directo.png}
+		\caption{Directo}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_cats_t0_ft.png}
+		\caption{Finetuning}
+	\end{subfigure}
+	\caption{Matrices de confusión para ViT en la Tarea 0--4 (Indirecto, Directo y Finetuning).}
+	\label{fig:conf_task04_vit}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_effb0_cats_t0_indirecto.png}
+		\caption{Indirecto}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_effb0_cats_t0_directo.png}
+		\caption{Directo}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_effb0_cats_t0_ft.png}
+		\caption{Finetuning}
+	\end{subfigure}
+	\caption{Matrices de confusión para EfficientNetB0 en la Tarea 0--4 (Indirecto, Directo y Finetuning).}
+	\label{fig:conf_task04_vit}
+\end{figure}
 
-\begin{table}[h]
+La Tabla~\ref{tab:model_comparison_results} confirma que ViT supera consistentemente a EfficientNetB0 en clasificación multiclase, especialmente tras \emph{finetuning}. La Tabla~\ref{tab:model_comparison_results_regression} refuerza esta conclusión al mostrar un MAE inferior en ViT, lo que refleja mayor estabilidad en predicción ordinal. Por su parte, las Figuras~\ref{fig:conf_task04_vit} y~\ref{fig:conf_task04_effb0} revelan que el \emph{finetuning} concentra la masa de probabilidad en la diagonal, reduciendo confusiones en clases intermedias, mientras que en el escenario \emph{indirecto} persisten errores significativos por \emph{domain shift}.
+
+\paragraph{Síntesis de resultados (Tarea 0--4).}
+En la tarea multiclase, ViT destaca en todos los regímenes, alcanzando en \emph{finetuning} un Acc de $50\%$ y F1 de $51\%$. El enfoque \emph{indirecto}, sin embargo, se desploma (ViT $29\%$, EffB0 $17\%$), lo que pone de manifiesto la necesidad de adaptación al nuevo dominio. Las matrices de confusión (Figuras~\ref{fig:conf_task04_vit} y~\ref{fig:conf_task04_effb0}) evidencian que ViT reduce errores a desviaciones locales de $\pm 1$ grado, mientras que EfficientNetB0 mantiene un fuerte sesgo hacia las clases mayoritarias. Este sesgo se refleja en la discrepancia entre Acc y F1, siendo este último más fiable para datos desbalanceados.
+
+\begin{table}[H]
 	\centering
 	\caption{Resultados de la Tarea 01vs234 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
 	\label{tab:model_comparison_results}
@@ -1694,20 +1783,122 @@ más representativas:
 		\bottomrule
 	\end{tabular}
 \end{table}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_cats_t1_indirecto.png}
+		\caption{Indirecto}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_cats_t1_directo.png}
+		\caption{Directo}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_cats_t1_ft.png}
+		\caption{Finetuning}
+	\end{subfigure}
+	\caption{Matrices de confusión para ViT en la Tarea 0--4 (Indirecto, Directo y Finetuning).}
+	\label{fig:conf_task04_vit}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_effb0_cats_t1_indirecto.png}
+		\caption{Indirecto}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_effb0_cats_t1_directo.png}
+		\caption{Directo}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_effb0_cats_t1_ft.png}
+		\caption{Finetuning}
+	\end{subfigure}
+	\caption{Matrices de confusión para EfficientNetB0 en la Tarea 0--4 (Indirecto, Directo y Finetuning).}
+	\label{fig:conf_task04_vit}
+\end{figure}
 
-Se observa que las tareas con mayor contraste (como 0 vs 4) obtienen métricas
-superiores, mientras que las tareas intermedias presentan un rendimiento más
-limitado. Esto sugiere que el conocimiento transferido se mantiene robusto ante
-diferencias notables, pero pierde precisión en clases ambiguas.
+\paragraph{Síntesis de resultados (Tarea 01vs234).}
+Los resultados de la tarea binaria se presentan en la Tabla~\ref{tab:model_comparison_results_task01vs234}. Aquí se observa un patrón similar: el ViT con \emph{finetuning} alcanza Acc/F1 de $80/79\%$, superando al escenario \emph{indirecto} ($37/20\%$). EfficientNetB0, por su parte, obtiene valores estables tanto en directo como en \emph{finetuning} ($70/69\%$ y $73/73\%$ respectivamente). Esta diferencia muestra que la separación binaria es más sencilla que la clasificación ordinal fina, favoreciendo métricas más elevadas y generalización más sólida, especialmente en ViT.
+
+En la tarea binaria 01vs234 se observa un patrón similar pero con mejoras claras en los valores absolutos: el \textbf{finetuning} de ViT alcanza Acc/F1 de $80/79\%$, lo que supone una diferencia notable respecto al escenario indirecto ($37/20\%$). EfficientNetB0, en cambio, logra un rendimiento estable en directo ($70/69\%$) y finetuning ($73/73\%$), pero sin una ventaja clara frente a ViT. Estos resultados reflejan que la separación \emph{negativo vs.\ positivo} es más sencilla que la clasificación ordinal fina, pues las fronteras amplias (0/1 frente a 2/3/4) reducen la ambigüedad y favorecen métricas más altas. En términos prácticos, mientras que la clasificación 0--4 sigue limitada por confusiones en los grados intermedios, el cribado 01vs234 demuestra que los modelos —especialmente ViT con \emph{finetuning}— son capaces de generalizar con mayor solidez y resultan más adecuados para aplicaciones clínicas de detección temprana.
+
+\section{Interpretabilidad mediante Grad-CAM}
+
+Además del análisis cuantitativo y de las matrices de confusión, se incorporaron visualizaciones Grad-CAM para valorar la interpretabilidad de los modelos y comprobar si, tras la adaptación, las redes prestan atención a regiones anatómicamente plausibles.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{gradcam_vit_indirecto.png}
+		\caption{ViT -- Indirecto}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{gradcam_vit_directo.png}
+		\caption{ViT -- Directo}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{gradcam_vit_ft.png}
+		\caption{ViT -- Finetuning}
+	\end{subfigure}
+	\caption{Visualizaciones Grad-CAM para ViT en tres regímenes de entrenamiento.}
+	\label{fig:gradcam_vit}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{gradcam_effb0_indirecto.png}
+		\caption{EfficientNetB0 -- Indirecto}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{gradcam_effb0_directo.png}
+		\caption{EfficientNetB0 -- Directo}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{gradcam_effb0_ft.png}
+		\caption{EfficientNetB0 -- Finetuning}
+	\end{subfigure}
+	\caption{Visualizaciones Grad-CAM para EfficientNetB0 en tres regímenes de entrenamiento.}
+	\label{fig:gradcam_eff}
+\end{figure}
+
+En las Figuras~\ref{fig:gradcam_vit} y~\ref{fig:gradcam_eff} se observan diferencias moderadas entre modelos y regímenes. En el caso de \textbf{ViT}, el escenario \emph{indirecto} muestra un foco principal en la rodilla, aunque con cierta dispersión; en el \emph{directo}, las activaciones se vuelven más difusas y se concentran en zonas periféricas de la imagen; y en el \emph{finetuning}, el patrón se estabiliza de nuevo hacia el centro de la articulación, con algo de dispersión residual.
+
+En \textbf{EfficientNetB0}, el escenario \emph{indirecto} resalta de forma clara el estrechamiento del espacio articular, lo que resulta clínicamente razonable. En el \emph{directo}, sin embargo, las activaciones se desplazan hacia zonas superior e inferior de la rodilla, menos informativas. Con \emph{finetuning}, el foco vuelve al estrechamiento, de manera similar al patrón observado en el escenario indirecto.
+
+En conjunto, las visualizaciones indican que el \textbf{finetuning mejora la coherencia de los mapas de activación} en ambos modelos, aunque no elimina por completo la dispersión. ViT tiende a mostrar activaciones más distribuidas, mientras que EfficientNetB0 concentra mejor en la línea articular en ciertos casos. Las diferencias no son drásticas, pero ambos modelos convergen hacia regiones clínicamente interpretables cuando se aplica un ajuste fino al dominio felino, lo que respalda la utilidad del \emph{finetuning} más allá de las métricas cuantitativas.
 
 \section{Conclusiones}
-Los modelos preentrenados en humanos pueden ser ajustados con éxito para
-detectar artrosis en gatos, especialmente en tareas con diferencias claras
-entre clases. El uso de fine-tuning parcial y aumento de datos ha sido clave
-para mitigar el impacto del reducido tamaño del conjunto felino. Sin embargo,
-las tareas con clases cercanas siguen suponiendo un reto significativo, lo que
-motiva futuras líneas de trabajo enfocadas en preprocesamiento adaptado y
-reetiquetado colaborativo con expertos veterinarios.
+
+Los experimentos con radiografías felinas permiten extraer varias conclusiones relevantes desde el punto de vista metodológico y práctico. En primer lugar, se confirma que el \textbf{cambio de dominio inter-especie} constituye un reto importante: los modelos entrenados únicamente en rodillas humanas (\emph{indirecto}) sufren un fuerte deterioro de rendimiento (ViT $\sim$29\%, EffB0 $\sim$17\% en exactitud), con confusiones muy marcadas hacia la clase mayoritaria. Esto muestra que, aunque las representaciones genéricas (bordes, texturas) se transfieren parcialmente, la diferencia anatómica entre rodillas humanas y felinas requiere una adaptación explícita.
+
+El entrenamiento \emph{directo} en gatos ofrece una mejora respecto al escenario indirecto, pero sigue siendo limitado por el reducido tamaño del conjunto y el desbalanceo de clases. En este contexto, ViT logra resultados algo superiores a EfficientNetB0, lo que sugiere que su atención global le permite aprovechar mejor la información disponible, aunque con cierto grado de dispersión en sus predicciones.
+
+El \textbf{finetuning} aparece como la estrategia más consistente. Adaptar modelos previamente entrenados en OAI proporciona ganancias claras: ViT alcanza alrededor del 50\% en la clasificación 0--4 y un 80\% en la tarea 01vs234, con un F1 equilibrado que refleja un mejor tratamiento del desbalanceo. EfficientNetB0 también mejora tras el ajuste fino, aunque de forma más modesta, confirmando que los Transformers se benefician más del reentrenamiento en escenarios con pocos datos y morfologías diferentes.
+
+El análisis de las \textbf{matrices de confusión} revela patrones comparables a los observados en humanos: errores concentrados en las fronteras contiguas (1$\leftrightarrow$2, 2$\leftrightarrow$3) y mayor fidelidad en los extremos (0 y 4). Con \emph{finetuning}, ViT concentra más la masa en la diagonal, reduciendo las confusiones lejanas y reflejando un aprendizaje parcial de la ordinalidad. EfficientNetB0 mantiene un sesgo hacia clases frecuentes, lo que explica la brecha entre exactitud y F1.
+
+La formulación \textbf{binaria 01vs234} ofrece una lectura más positiva. Al agrupar grados intermedios y avanzados, se reducen las ambigüedades locales y los modelos alcanzan métricas más altas. ViT con \emph{finetuning} logra un 80\% de exactitud y 79\% de F1, un resultado competitivo para un escenario de cribado. EfficientNetB0 alcanza valores algo menores pero estables. Esto sugiere que, mientras la clasificación ordinal completa sigue siendo compleja, la separación entre “sano/leve” y “moderado/avanzado” es factible y clínicamente más útil.
+
+Los experimentos de \textbf{regresión} complementan este análisis: el ViT ajustado reduce el MAE y refleja una noción continua de la severidad, con errores mayoritariamente de $\pm$1 grado. Este comportamiento puede ser valioso en aplicaciones donde se busque no solo clasificar, sino también monitorizar la progresión de la artrosis.
+
+En cuanto a \textbf{interpretabilidad}, los Grad-CAM muestran que el ajuste fino ayuda a reorientar la atención de los modelos hacia regiones relevantes de la articulación. En ViT, las activaciones en \emph{finetuning} se concentran en la zona central de la rodilla, aunque con cierta dispersión. En EfficientNetB0, tanto el escenario indirecto como el ajustado resaltan de manera consistente el estrechamiento del espacio articular, una región clínica clave, aunque en el entrenamiento directo aparecen activaciones menos informativas. Las diferencias entre arquitecturas no son drásticas, pero ambas coinciden en que el \emph{finetuning} mejora la coherencia de los mapas y aumenta la plausibilidad clínica de las decisiones del modelo.
+
+En conjunto, los experimentos en gatos permiten sintetizar tres conclusiones principales: (i) la transferencia \emph{zero-shot} desde humanos no es suficiente y debe completarse con reentrenamiento específico; (ii) ViT muestra una adaptación más eficaz que EfficientNetB0 en escenarios pequeños y con morfología distinta, aunque ambos se benefician del \emph{finetuning}; y (iii) la formulación binaria 01vs234 es la más prometedora para aplicaciones clínicas, al combinar mayor precisión con utilidad práctica.
+
 
 \chapter{Conclusiones}  % ~5 páginas
 
