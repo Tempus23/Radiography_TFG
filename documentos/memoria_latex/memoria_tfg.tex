@@ -59,10 +59,22 @@
 \setcounter{tocdepth}{1} % Muestra solo capítulos y secciones en el índice
 \begin{document}
 
+
+\cleardoublepage
+\chapter*{Agradecimientos}
+\addcontentsline{toc}{chapter}{Agradecimientos}
+
+Quiero comenzar expresando mi más sincero agradecimiento a mi tutor, por haberme introducido al fascinante campo del aprendizaje automático y por su constante apoyo, dedicación y orientación a lo largo de este trabajo.
+
+Mi gratitud también al Grupo de Investigación Biomed Surgery de la Universidad CEU UCH y a la Cátedra Fundación García Cugat, por brindarme acceso a las radiografías que han hecho posible este desarrollo. En especial, agradezco a Beatriz Mena Moros, por ser mi contacto directo y facilitar el avance del proyecto con profesionalidad y compromiso. Del mismo modo, a Mónica Rubio Zaragoza y María Descalzo Navarro por su implicación en la adquisición y entrega de los datos.
+
+En el plano personal, gracias a mis padres, por su apoyo incondicional y por acompañarme en cada paso del camino.
+
+Y, por supuesto, a mi pareja, por su comprensión y cariño, especialmente durante este último año, en el que su compañía ha sido un pilar fundamental.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                             RESÚMENES                                       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\cleardoublepage
 \begin{abstract}
 
 	Este Trabajo de Fin de Grado presenta el diseño, implementación y evaluación de
@@ -71,7 +83,7 @@
 	la problemática clínica de la \textbf{variabilidad interobservador} y la
 	\textbf{subjetividad} inherentes al diagnóstico radiográfico tradicional,
 	proponiendo modelos capaces de estandarizar y objetivar la estimación de
-	severidad según la \textit{escala Kellgren–Lawrence} (KL, 0--4).
+	severidad según la \textit{escala Kellgren-Lawrence} (KL, 0--4).
 
 	Como base de datos principal se utiliza una versión curada del
 	\textit{Osteoarthritis Initiative} (OAI), con cerca de 9.800 imágenes de
@@ -85,7 +97,7 @@
 	entrenamiento unificado (optimizador Adam, \textit{early stopping},
 	planificador de tasa de aprendizaje), \textbf{aumento de datos} (rotación,
 	volteos, ajuste de brillo/contraste) y evaluación mediante \textit{accuracy},
-	\textit{F1-score} y \textit{MAE}. Para \textbf{interpretabilidad}, se emplea
+	\textit{F1-score} y \textit{MAE}. Con el fin de facilitar la \textbf{interpretabilidad} de los mismos, se emplea
 	\textit{Grad-CAM} para verificar la atención sobre regiones anatómicas
 	relevantes.
 
@@ -235,8 +247,7 @@ entrenados en humanos hacia radiografías felinas, un contexto donde los datos
 son escasos. El trabajo se centra en \textit{clasificación} sobre recortes ya
 localizados (no se aborda la detección de la articulación) y compara enfoques
 con \emph{CNN} y \emph{Transformers} bajo un protocolo unificado. A
-continuación se detallan la motivación, los objetivos y la metodología, y se
-describe la estructura de la memoria.
+continuación se detallan la motivación, los objetivos y la estructura de la memoria
 
 \section{Motivación}     % 1.1
 
@@ -301,8 +312,8 @@ objetivos concretos y medibles:
 	\item \textbf{Evaluar la transferencia interdominio humano→felino} comparando inferencia directa, entrenamiento desde cero y \textit{fine-tuning} a partir de pesos en OAI, \textit{cuantificando} diferencias de rendimiento entre los tipos de entrenamiento y los resultados utilizando el dataset OAI.
 \end{enumerate}
 
-\section*{Estructura de la memoria}
-Este Trabajo Fin de Grado estudia la clasificación automática de artrosis de rodilla mediante aprendizaje profundo y su transferencia a radiografías felinas. La memoria se organiza del siguiente modo. En \textbf{Preliminares} se introducen los conceptos esenciales de aprendizaje automático y redes neuronales, así como su evolución reciente en visión por computador con ejemplos de conjuntos públicos biomédicos. El \textbf{Capítulo~\ref{chap:corpus}} describe los datos utilizados —el \emph{dataset} OAI y el conjunto externo de radiografías felinas—, sus particiones y desbalance, y define las tareas de clasificación que se abordarán, situando el trabajo en su contexto. El \textbf{Capítulo~\ref{chap:experiments}} presenta los experimentos con \emph{redes convolucionales}, incluyendo modelos desde cero y modelos preentrenados, bajo una configuración de entrenamiento unificada y con comparación de resultados. El \textbf{Capítulo~\ref{chap:transformers}} incorpora \emph{Transformers} de visión, su adaptación a la tarea y su evaluación con el mismo protocolo. El \textbf{Capítulo~\ref{chap:gatos}} analiza la transferencia interdominio hacia radiografías felinas, comparando inferencia directa, entrenamiento específico y ajuste fino, y discutiendo su utilidad clínica. En \textbf{Conclusiones} se sintetizan los hallazgos, se verifica el grado de cumplimiento de los objetivos y se proponen líneas futuras. La \textbf{Bibliografía} recoge las referencias empleadas. Los \textbf{Apéndices} incluyen la configuración del sistema (entorno, dependencias y parámetros de reproducción), tablas y métricas ampliadas y detalles de preprocesado. Dado que el tribunal puede ser interdisciplinar, al final se incorpora un \textbf{glosario de términos} técnicos para consulta.
+\section{Estructura de la memoria}
+Este Trabajo Fin de Grado estudia la clasificación automática de artrosis de rodilla mediante aprendizaje profundo y su transferencia a radiografías felinas. La memoria se organiza del siguiente modo. En el capítulo siguiente, \textbf{Preliminares} se introducen los conceptos esenciales de aprendizaje automático y redes neuronales, así como su evolución en visión por computador con ejemplos de conjuntos públicos biomédicos. El \textbf{Capítulo~\ref{chap:corpus}} describe los datos utilizados —el \emph{dataset} OAI y el conjunto externo de radiografías felinas—, sus particiones y desbalance, y define las tareas de clasificación que se abordarán, situando el trabajo en su contexto. El \textbf{Capítulo~\ref{chap:experiments}} presenta los experimentos con \emph{redes convolucionales}, incluyendo modelos desde cero y modelos preentrenados, bajo una configuración de entrenamiento unificada y con comparación de resultados. El \textbf{Capítulo~\ref{chap:transformers}} incorpora \emph{Transformers} de visión, su adaptación a la tarea y su evaluación con el mismo protocolo. El \textbf{Capítulo~\ref{chap:gatos}} analiza la transferencia interdominio hacia radiografías felinas, comparando inferencia directa, entrenamiento específico y ajuste fino, y discutiendo su utilidad clínica. En \textbf{Conclusiones} se sintetizan los hallazgos, se verifica el grado de cumplimiento de los objetivos y se proponen líneas futuras. La \textbf{Bibliografía} recoge las referencias empleadas. Los \textbf{Apéndices} incluyen la configuración del sistema (entorno, dependencias y parámetros de reproducción), tablas y métricas ampliadas y detalles de preprocesado. Dado que el tribunal es interdisciplinar, al final se incorpora un \textbf{glosario de términos} técnicos para consulta.
 
 % Describe la organización de los capítulos y secciones
 
@@ -344,7 +355,7 @@ los modelos.
 \begin{itemize}
 	\item \textbf{Aprendizaje supervisado.} Se dispone de pares $(x,y)$ con etiqueta “verdadera”. El objetivo es aprender una función $f_\theta:x\mapsto y$. Son tareas típicas la \textit{clasificación} (p. ej., predecir un grado de severidad KL) y la \textit{regresión} (p. ej., predecir una puntuación continua de severidad). En clasificación se usa habitualmente entropía cruzada; en regresión, error cuadrático medio (MSE). En entornos clínicos es frecuente ajustar pesos por clase o emplear pérdidas robustas para combatir el \textit{desbalance} \cite{Bishop2006}.
 	\item \textbf{Aprendizaje no supervisado.} No hay etiquetas: el algoritmo descubre estructura (p. ej., \textit{clustering}, \textit{reducción de dimensionalidad}). Es útil para exploración de datos, detección de outliers o preentrenamiento de representaciones \cite{Bishop2006}.
-	\item \textbf{Aprendizaje por refuerzo.} Un \textit{agente} interactúa con un entorno y aprende una \textit{política} que maximiza la recompensa acumulada. Es más relevante en control y toma de decisiones secuenciales que en esta memoria \cite{Goodfellow2016}.
+	\item \textbf{Aprendizaje por refuerzo.} Un \textit{agente} interactúa con un entorno y aprende una \textit{política} que maximiza la recompensa acumulada. Es más relevante en control y toma de decisiones secuenciales que en este trabajo \cite{Goodfellow2016}.
 \end{itemize}
 
 \noindent \textbf{Entrenamiento y optimización.} En aprendizaje supervisado se ajustan los parámetros $\theta$ minimizando una pérdida empírica $\frac{1}{N}\sum_{i=1}^N \mathcal{L}(f_\theta(x_i),y_i)$ mediante \textit{descenso de gradiente} y variantes estocásticas/minibatch (SGD), muy eficientes para grandes volúmenes de datos \cite{Goodfellow2016}. En cada iteración se calcula el gradiente $\nabla_\theta\mathcal{L}$ y se actualiza $\theta\leftarrow \theta-\eta \nabla_\theta\mathcal{L}$, donde $\eta$ es la tasa de aprendizaje. Optimizadores basados en momentos (p. ej., Adam) aceleran la convergencia ajustando adaptativamente los pasos \cite{Goodfellow2016}. Además, se emplean \textit{regularizadores} (p. ej., L2), \textit{dropout} y \textit{early stopping} para mejorar la generalización \cite{Goodfellow2016}. La Figura~\ref{fig:gd_flow} resume el flujo de optimización.
@@ -384,10 +395,10 @@ los modelos.
 	\label{fig:sesgoBias}
 \end{figure}
 
-\noindent \textbf{Modelos clásicos y aprendizaje profundo.} Algoritmos como árboles de decisión, SVM o $k$-NN resuelven correctamente múltiples problemas con pocas muestras y \textit{features} diseñadas a mano \cite{Bishop2006}. Sin embargo, en visión por computador las \textbf{redes neuronales profundas} (DNN) —especialmente las \textit{convolucionales} (CNN) y, más recientemente, los \textit{Transformers}— aprenden jerarquías de características directamente de las imágenes, consiguiendo rendimientos superiores cuando hay datos y cómputo suficientes \cite{Goodfellow2016}. Hitos como el perceptrón \cite{Rosenblatt1958}, la \textit{retropropagación} \cite{Rumelhart1986}, \textit{AlexNet} \cite{Krizhevsky2012} y las conexiones residuales en \textit{ResNet} \cite{He2016} marcaron la evolución reciente del campo.
+\noindent \textbf{Modelos clásicos y aprendizaje profundo.} Algoritmos como árboles de decisión, SVM o $k$-NN resuelven correctamente múltiples problemas con pocas muestras y \textit{features} diseñadas a mano \cite{Bishop2006}. Sin embargo, en visión por computador las \textbf{redes neuronales profundas} (DNN) —especialmente las \textit{convolucionales} (CNN) y, más recientemente, los \textit{Transformers}— aprenden jerarquías de características directamente de las imágenes, consiguiendo rendimientos superiores cuando hay datos y cómputo suficientes \cite{Goodfellow2016}. Hitos como el perceptrón \cite{Rosenblatt1958}, la \textit{retropropagación} \cite{Rumelhart1986}, \textit{AlexNet} \cite{Krizhevsky2012} y las conexiones residuales en \textit{ResNet} \cite{He2016} marcaron la evolución del campo.
 
 \medskip
-\noindent \textbf{Buenas prácticas aplicadas en este TFG (conexión con el dominio clínico).} En esta memoria se sigue un protocolo que refleja las recomendaciones anteriores: (i) formulación explícita del problema (KL 0--4 multiclase y variantes binarias/ordinales); (ii) particionado estratificado y uso consistente de un \textit{set} de validación para \textit{early stopping} y \textit{schedulers}; (iii) pérdidas acordes a la tarea (entropía cruzada y MSE para formulaciones ordinales); (iv) \textit{data augmentation} realista (rotaciones, volteos, brillo/contraste) para robustez; (v) métricas complementarias (accuracy, F1 macro, MAE) y análisis por clase; y (vi) verificación cualitativa con \textit{Grad-CAM} para inspeccionar que las regiones activadas sean anatómicamente plausibles. Este enfoque busca maximizar la validez clínica del resultado, reduciendo riesgos de sobreajuste y sesgos.
+\noindent \textbf{Buenas prácticas aplicadas en este TFG (conexión con el dominio clínico).} En este trabajo se sigue un protocolo que refleja las recomendaciones anteriores: (i) formulación explícita del problema (KL 0--4 multiclase y variantes binarias/ordinales); (ii) particionado estratificado y uso consistente de un \textit{set} de validación para \textit{early stopping} y \textit{schedulers}; (iii) pérdidas acordes a la tarea (entropía cruzada y MSE para formulaciones ordinales); (iv) \textit{data augmentation} realista (rotaciones, volteos, brillo/contraste) para robustez; (v) métricas complementarias (accuracy, F1 macro, MAE) y análisis por clase; y (vi) verificación cualitativa con \textit{Grad-CAM} para inspeccionar que las regiones activadas sean anatómicamente plausibles. Este enfoque busca maximizar la validez clínica del resultado, reduciendo riesgos de sobreajuste y sesgos.
 
 \medskip
 \noindent \textbf{Resumen.} El aprendizaje automático proporciona el armazón metodológico para extraer conocimiento de datos y construir predictores con capacidad de generalización. La correcta elección de la formulación (clasificación vs. regresión/ordinal), pérdidas, métricas y protocolo de validación, junto con regularización y análisis de interpretabilidad, es crucial en aplicaciones clínicas. Estas ideas se aplican y amplían en las secciones posteriores con redes profundas específicas de visión y con experimentos sobre OAI y validación interdominio.
@@ -421,7 +432,7 @@ Figura~\ref{fig:neural_network} se ilustra esquemáticamente una red profunda.
 	\centering
 	\includegraphics[width=0.5\textwidth]{neural_network.jpg}
 	\caption{Ejemplo de una red neuronal profunda \cite{neural_network}}
-	\label{fig:neural_network}
+	\label{fig:neural_network.jpg}
 \end{figure}
 
 El entrenamiento efectivo de redes multicapa se basa en la
@@ -565,7 +576,7 @@ robusta \cite{liu_meta_analysis}.
 \noindent\textbf{Retos recurrentes} Entre los desafíos más citados se encuentran: (i) \textbf{desbalance de clases} (p.~ej., escasez de grados severos), lo que exige atención a la precisión por clase y a contextualizar la métrica global; (ii) \textbf{cambio de dominio} entre centros, equipos y protocolo (\emph{domain shift}); (iii) \textbf{ruido de etiqueta} e \textbf{incertidumbre} interobservador; (iv) \textbf{tamaño de los datos} limitado; (v) \textbf{calibración} deficiente; (vi) \textbf{reproducibilidad} (documentación de versiones, semillas, \emph{splits}) y \textbf{privacidad}; y (vii) \textbf{requisitos regulatorios}. La literatura recomienda predefinir protocolos de validación, fijar semillas, conservar \emph{splits} oficiales cuando existan y acompañar los resultados de \emph{intervalos de confianza} \cite{liu_meta_analysis}.
 
 \medskip
-\noindent\textbf{Síntesis} El uso de aprendizaje profundo en imagen médica ha pasado de estudios de laboratorio a validaciones multicéntricas y primeros productos comerciales. Las CNN profundas y las pérdidas adaptadas a ordinalidad han demostrado utilidad en problemas como la \emph{artrosis de rodilla} (cohortes OAI) \cite{niamsOAI,chen2019fully}, mientras que la evidencia comparativa con profesionales sugiere viabilidad siempre que existan \emph{pipelines} de validación y control de calidad robustos \cite{liu_meta_analysis}. De cara a su adopción, la \textbf{calibración}, la \textbf{generalización} y la \textbf{explicabilidad} son tan relevantes como la métrica primaria.
+\noindent\textbf{Síntesis} El uso de aprendizaje profundo en imagen médica ha pasado de estudios de laboratorio a validaciones multicéntricas y primeros productos comerciales. Las CNN profundas y las pérdidas adaptadas a ordinalidad han demostrado utilidad en problemas como la \emph{artrosis de rodilla} (cohortes OAI) \cite{niamsOAI,chen2019fully}, mientras que la evidencia comparativa con profesionales sugiere viabilidad siempre que existan \emph{pipelines} de validación y control de calidad robustos \cite{liu_meta_analysis}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 3                                     %
@@ -950,7 +961,7 @@ reportan en los artículos originales. Esta visión conjunta permite apreciar de
 un vistazo cómo la incorporación de la ordinalidad—ya sea mediante pérdidas
 específicas o mediante una formulación regresiva—tiende a mejorar la coherencia
 clínica, y cómo los \emph{backbones} preentrenados dominan con claridad cuando
-el tamaño del conjunto no permite entrenamientos \emph{from scratch} robustos.
+el tamaño del conjunto no permite entrenamientos desde cero robustos.
 
 \begin{table}[h]
 	\centering
@@ -982,9 +993,21 @@ mayor separabilidad y apenas aparecen errores de largo alcance.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{confusion_matrix_fei.png}
-	\caption{Matriz de confusión agregada en la clasificación multiclase KL 0--4 con el mejor modelo de Fei et al. (2024)\cite{fei2024diagnosing}. Predominan los aciertos en la diagonal y las confusiones entre clases vecinas, especialmente KL1-KL2.}
-	\label{fig:confusion_kl}
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_fei.png}
+		\caption{Fei et al. (2024)\cite{fei2024diagnosing}}
+		\label{fig:confusion_kl_fei}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_chen.png}
+		\caption{Chen et al. (2019)\cite{chen2019fully}}
+		\label{fig:confusion_kl_chen}
+	\end{subfigure}
+	\caption{Matrices de confusión agregadas en la clasificación multiclase KL 0--4 con los mejores modelos de Fei et al. (2024) y Chen et al. (2019). Se observa que los aciertos predominan en la diagonal y las confusiones se concentran entre clases vecinas, especialmente en las clase 1}
+	\label{fig:confusion_kl_comparativa}
 \end{figure}
 
 Este patrón refuerza el uso de formulaciones que internalizan la distancia
@@ -1252,7 +1275,7 @@ En esta sección presentamos la evaluación empírica de cinco arquitecturas de 
 
 \textbf{Datos y protocolo.} Trabajamos con las particiones oficiales \texttt{train/val/test} de OAI. Todas las radiografías se redimensionan a $224{\times}224$ px, se normalizan y se replica el canal en escala de grises a 3 canales (RGB). El entrenamiento ha sido con Adam; tasa de aprendizaje $10^{-3}$ (y $10^{-4}$ en backbones), \emph{batch} 32, hasta 50 épocas con \emph{early stopping} (paciencia 10) y \emph{ReduceLROnPlateau} (factor 0.5 tras 5 épocas sin mejora en validación). Las métricas de selección son F1 macro para clasificación y MAE para regresión; reportamos además \textit{accuracy}, matrices de confusión, fiabilidad (ECE) y análisis de umbrales para “sano vs.\ avanzado” (0/1/2 frente 3/4). El punto óptimo se fija por desempeño en validación y se evalúa una única vez en \texttt{test}.
 
-\noindent\textbf{Contexto de porcentajes y \emph{baselines}.} Es imprescindible relativizar las \% debido al desbalance de clases. En la tabla \ref{tab:baselines_por_tarea} se recogen las \emph{accuracies} obtenidos en caso de clasificar unicamente la clase mayoritaria
+\noindent\textbf{Contexto de porcentajes y \emph{baselines}.} Es imprescindible relativizar los porcentajes debido al desbalance de clases. En la tabla \ref{tab:baselines_por_tarea} se recogen las precisiones obtenidas en caso de clasificar únicamente según la clase de mayor probabilidad a priori
 
 \begin{table}[H]
 	\centering
@@ -1518,7 +1541,7 @@ En síntesis, la transferencia de aprendizaje es el factor más determinante par
 \section{Introducción}
 Este capítulo estudia el uso de \emph{Transformers} para la clasificación automática del grado de artrosis de rodilla en radiografías, manteniendo el mismo marco experimental del capítulo de CNN. El interés principal radica en su capacidad para modelar dependencias \emph{globales} mediante mecanismos de atención, a la vez que preserva señales locales gracias al particionado en parches. A diferencia de las CNN, que se basan en convoluciones jerárquicas, los Transformers procesan la imagen como una secuencia de \emph{tokens}, permitiendo que cada región “vea” al resto de la imagen desde las primeras capas.
 
-En el contexto de la escala de Kellgren-Lawrence (KL), los errores suelen concentrarse en fronteras adyacentes (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3). Aquí la atención global puede resultar ventajosa al integrar información contextual sobre la articulación completa, más allá de detalles locales. De igual modo, en escenarios de cribado simplificado (sano vs.\ avanzado, i.e. 0/1/2 frente a 3/4), se espera que la sensibilidad aumente gracias a la capacidad de los Transformers de capturar patrones estructurales a gran escala (p.\,ej., el estrechamiento articular o la morfología del fémur y la tibia en conjunto). 
+En el contexto de la escala de Kellgren-Lawrence (KL), los errores suelen concentrarse en fronteras adyacentes (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3). Aquí la atención global puede resultar ventajosa al integrar información contextual sobre la articulación completa, más allá de detalles locales. De igual modo, en escenarios de cribado simplificado (sano vs.\ avanzado, i.e. 0/1/2 frente a 3/4), se espera que la sensibilidad aumente gracias a la capacidad de los Transformers de capturar patrones estructurales a gran escala (p.\,ej., el estrechamiento articular o la morfología del fémur y la tibia en conjunto).
 
 El objetivo es valorar, con un protocolo homogéneo, hasta dónde llega un Transformer “puro” sin componentes convolucionales cuando se optimiza sobre OAI, y qué diferencias emergen entre variantes de distinta escala (base vs.\ large).
 
@@ -1527,7 +1550,7 @@ Se exploran dos arquitecturas de Vision Transformer con diferente capacidad y hu
 
 \medskip
 \noindent\textbf{ViT-Base/16 (\texttt{google/vit-base-patch16-224}).}
-La imagen de entrada ($224{\times}224$ píxeles) se divide en parches de $16{\times}16$ (196 parches). Cada parche se proyecta linealmente a un espacio latente de dimensión 768 y se forma una secuencia de tokens a la que se añade un \emph{class token} y embeddings posicionales. La secuencia pasa por 12 bloques Transformer con auto-atención multi-cabeza (12 cabezas) y capas MLP residuales. La cabeza de salida es intercambiable: \emph{softmax} para clasificación multiclase (KL 0--4) o regresión escalar $\hat{y}\in[0,4]$.  
+La imagen de entrada ($224{\times}224$ píxeles) se divide en parches de $16{\times}16$ (196 parches). Cada parche se proyecta linealmente a un espacio latente de dimensión 768 y se forma una secuencia de tokens a la que se añade un \emph{class token} y embeddings posicionales. La secuencia pasa por 12 bloques Transformer con auto-atención multi-cabeza (12 cabezas) y capas MLP residuales. La cabeza de salida es intercambiable: \emph{softmax} para clasificación multiclase (KL 0--4) o regresión escalar $\hat{y}\in[0,4]$.
 Para compatibilidad con pesos preentrenados en ImageNet, la entrada en escala de grises se replica a RGB y se normaliza con las estadísticas estándar.
 
 \medskip
@@ -1583,17 +1606,7 @@ Se siguen las mismas particiones oficiales \texttt{train/val/test} de OAI y el m
 
 \emph{Lectura rápida.} ViT-B/16 supera claramente a las CNN entrenadas desde cero y se acerca al rendimiento de los \emph{backbones} con transferencia: fuerte en 0--4 (65.45\%) y 0-3-4 (92.37\%), muy sólido en 0 vs.\ 3/4, MAE competitivo en regresión, y la mayor dificultad en 0 vs.\ 1 (F1 48.31\%), coherente con la frontera más difusa.
 
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[t]{0.48\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{confusion_matrix_vit_t0.png}
-		\caption{ViT-B/16 (google/vit-base-patch16-224)}
-		\label{fig:cm_t0_vit}
-	\end{subfigure}
-	\caption{Matriz de confusión normalizada (\%) en \texttt{test} para la tarea T0 (KL 0--4) con ViT-B/16 (\texttt{google/vit-base-patch16-224}).}
-	\label{fig:cm_t0_vit}
-\end{figure}
+
 
 \begin{table}[H]
 	\centering
@@ -1618,7 +1631,24 @@ Se siguen las mismas particiones oficiales \texttt{train/val/test} de OAI y el m
 	\end{tabular}
 \end{table}
 
-
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_t0.png}
+		\caption{ViT-B/16 (\texttt{google/vit-base-patch16-224})}
+		\label{fig:cm_t0_vit_base}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{confusion_matrix_vit_large_t0.png}
+		\caption{ViT-L/16 (\texttt{google/vit-large-patch16-224})}
+		\label{fig:cm_t0_vit_large}
+	\end{subfigure}
+	\caption{Matrices de confusión normalizadas (\%) en \texttt{test} para la tarea T0 (KL 0--4) con Vision Transformer: (a) ViT-B/16 y (b) ViT-L/16.}
+	\label{fig:cm_t0_vit_comparativa}
+\end{figure}
 
 
 \begin{table}[H]
@@ -1641,10 +1671,10 @@ Se siguen las mismas particiones oficiales \texttt{train/val/test} de OAI y el m
 	\end{flushleft}
 \end{table}
 
-\section{Conclusiones}.
-Los Transformers “puros” resultan una alternativa competitiva para OAI. Tanto \textbf{ViT-B/16} como \textbf{ViT-L/16} ofrecen resultados comparables e incluso superiores a CNN profundas, especialmente en regresión. El \textbf{punto débil común} sigue siendo la distinción entre KL0 y KL1, donde las fronteras clínicas son difusas y el ruido de etiquetado impacta con fuerza. Aun así, los ViT destacan en pares de mayor severidad (0 vs.\ 3/4) y en regresión, donde logran un MAE cercano a 0.46, mejorando las CNN.  
+\section{Conclusiones}
+Los Transformers “puros” resultan una alternativa competitiva para OAI. Tanto \textbf{ViT-B/16} como \textbf{ViT-L/16} ofrecen resultados comparables e incluso superiores a CNN profundas, especialmente en regresión. El \textbf{punto débil común} sigue siendo la distinción entre KL0 y KL1, donde las fronteras clínicas son difusas y el ruido de etiquetado impacta con fuerza. Aun así, los ViT destacan en pares de mayor severidad (0 vs.\ 3/4) y en regresión, donde logran un MAE cercano a 0.46, mejorando las CNN.
 
-En términos prácticos, ViT-L/16 parece ser la mejor opción en precisión global, pero a un coste computacional elevado; ViT-B/16 ofrece un mejor balance entre coste y rendimiento.  
+En términos prácticos, ViT-L/16 parece ser la mejor opción en precisión global, pero a un coste computacional elevado; ViT-B/16 ofrece un mejor balance entre coste y rendimiento.
 
 En conjunto, los Transformers aportan una visión complementaria a la inductiva de las CNN. Su integración o hibridación abre una vía prometedora para mejorar la fiabilidad de sistemas de ayuda al diagnóstico en artrosis de rodilla.
 
@@ -1676,7 +1706,7 @@ Con el fin de garantizar una lectura clínica y metodológica alineada, las matr
 
 Se evalúan dos \emph{backbones}: \textbf{EfficientNetB0} y \textbf{ViT Base (patch16, 224)} de Google. Para cada uno se prueban tres regímenes de entrenamiento: (i) \emph{Directo} (entrenar desde los pesos preentrenados de serie sobre el conjunto felino), (ii) \emph{Indirecto} (\emph{zero-shot} o \emph{frozen}: evaluar sin reentrenar sobre gatos usando el modelo entrenado en OAI) y (iii) \emph{Finetuning} (ajuste fino del modelo previamente preentrenado sobre OAI usando las imágenes felinas). Se reserva aproximadamente un 35\% para validación estratificada (\textasciitilde30 imágenes) con el fin de retener representación de clases poco frecuentes (p. ej., \mbox{KL4}).
 
-Todas las imágenes se redimensionan a $224\times224$ y se normalizan. Los modelos preentrenados reciben tres canales (replicación de la escala de grises) para respetar las estadísticas de entrada. Para Grad-CAM, se emplea la última capa de activación previa al clasificador: bloque final de \emph{inverted residual} en EfficientNetB0 y el \emph{token} \texttt{[CLS]} proyectado a mapas vía \emph{attention rollout} o capas \emph{patch} en ViT. Los mapas se reescalan a resolución de entrada y se superponen como \emph{heatmap} con normalización por imagen.
+Todas las imágenes se redimensionan a $224\times224$ y se normalizan. Los modelos preentrenados reciben tres canales (replicación de la escala de grises) para respetar el formato de entrada. Para Grad-CAM, se emplea la última capa de activación previa al clasificador: bloque final de \emph{inverted residual} en EfficientNetB0 y el \emph{token} \texttt{[CLS]} proyectado a mapas vía \emph{attention rollout} o capas \emph{patch} en ViT. Los mapas se reescalan a resolución de entrada y se superponen como \emph{heatmap} con normalización por imagen.
 
 Los principales resultados cuantitativos para la tarea multiclase (0--4) se recogen en la Tabla~\ref{tab:model_comparison_results}, mientras que las matrices de confusión asociadas a cada modelo y régimen de entrenamiento se ilustran en las Figuras~\ref{fig:conf_task04_vit} y~\ref{fig:conf_task04_effb0}. Asimismo, los resultados bajo formulación de regresión se presentan en la Tabla~\ref{tab:model_comparison_results_regression}, lo que permite comparar métricas de clasificación tradicionales con errores de predicción continua (MAE).
 .
@@ -1881,6 +1911,9 @@ En \textbf{EfficientNetB0}, el escenario \emph{indirecto} resalta de forma clara
 
 En conjunto, las visualizaciones indican que el \textbf{finetuning mejora la coherencia de los mapas de activación} en ambos modelos, aunque no elimina por completo la dispersión. ViT tiende a mostrar activaciones más distribuidas, mientras que EfficientNetB0 concentra mejor en la línea articular en ciertos casos. Las diferencias no son drásticas, pero ambos modelos convergen hacia regiones clínicamente interpretables cuando se aplica un ajuste fino al dominio felino, lo que respalda la utilidad del \emph{finetuning} más allá de las métricas cuantitativas.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              CONCLUSIONES                                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusiones}
 
 Los experimentos con radiografías felinas permiten extraer varias conclusiones relevantes desde el punto de vista metodológico y práctico. En primer lugar, se confirma que el \textbf{cambio de dominio inter-especie} constituye un reto importante: los modelos entrenados únicamente en rodillas humanas (\emph{indirecto}) sufren un fuerte deterioro de rendimiento (ViT $\sim$29\%, EffB0 $\sim$17\% en exactitud), con confusiones muy marcadas hacia la clase mayoritaria. Esto muestra que, aunque las representaciones genéricas (bordes, texturas) se transfieren parcialmente, la diferencia anatómica entre rodillas humanas y felinas requiere una adaptación explícita.
@@ -1900,15 +1933,67 @@ En cuanto a \textbf{interpretabilidad}, los Grad-CAM muestran que el ajuste fino
 En conjunto, los experimentos en gatos permiten sintetizar tres conclusiones principales: (i) la transferencia \emph{zero-shot} desde humanos no es suficiente y debe completarse con reentrenamiento específico; (ii) ViT muestra una adaptación más eficaz que EfficientNetB0 en escenarios pequeños y con morfología distinta, aunque ambos se benefician del \emph{finetuning}; y (iii) la formulación binaria 01vs234 es la más prometedora para aplicaciones clínicas, al combinar mayor precisión con utilidad práctica.
 
 
-\chapter{Conclusiones}  % ~5 páginas
+\section{Resumen del trabajo realizado}
+Este trabajo ha abordado la estimación automática del grado \emph{Kellgren--Lawrence} (KL) a partir de radiografías de rodilla mediante aprendizaje profundo, con un énfasis explícito en reproducibilidad, lectura clínica e interpretabilidad. Para ello se ha construido un marco experimental homogéneo que integra: (i) dos dominios de imagen—humano (OAI) y felino—para estudiar generalización y transferencia; (ii) distintas formulaciones del problema—multiclase 0--4, reagrupación 0-3-4, pares binarios y regresión continua en $[0,4]$—alineadas con usos clínicos diferenciados; y (iii) un conjunto de arquitecturas representativas —CNN entrenadas desde cero, \emph{backbones} preentrenados y \emph{Transformers}— evaluadas bajo idénticos protocolos, métricas y procedimientos de selección de modelo.
 
-\section{Resumen del trabajo realizado} % 6.1
-% Repasa y sintetiza las secciones principales
+En primer lugar, se ha documentado con detalle el \textit{dataset} OAI en su versión curada (particiones oficiales, resoluciones estandarizadas y distribución de clases), subrayando dos factores que condicionan la evaluación: el \textbf{desbalance} hacia grados leves y la \textbf{subjetividad} de las etiquetas en fronteras contiguas (especialmente KL1–KL2). En paralelo, se ha descrito un conjunto \emph{privado} de radiografías felinas, más reducido y desbalanceado, empleado como \textbf{validación externa} y banco de pruebas para \emph{domain shift} (humano $\rightarrow$ felino) y \emph{fine-tuning}. La combinación de ambos recursos permite medir rendimiento en el dominio de referencia y, además, poner a prueba la transferibilidad anatómica de los modelos.
 
-\section{Objetivos alcanzados}         % 6.2
-% Verifica si se cumplieron los objetivos planteados
+En segundo lugar, se han implementado cinco familias de modelos: tres CNN \emph{from scratch} (simple, intermedia y profunda) que sirven como línea base escalonada; dos \emph{backbones} preentrenados (EfficientNetB0 y ResNet-152) ajustados con estrategias de \emph{congelado parcial} y \emph{ajuste fino} diferencial; y dos variantes \emph{Vision Transformer} (ViT-B/16 y ViT-L/16) optimizadas sobre parches $16{\times}16$. Todos los experimentos comparten \emph{pipeline} de preprocesado (recortes centrados, $224{\times}224$, replicación a 3 canales), \emph{early stopping}, reducción adaptativa de la tasa de aprendizaje y selección por F1 macro (clasificación) o MAE (regresión). La lectura se ha complementado con matrices de confusión normalizadas (para visualizar errores entre grados contiguos), análisis de calibración y mapas \emph{Grad-CAM}/\emph{attention rollout} como control de plausibilidad anatómica.
 
-\section{Trabajo futuro}               % 6.3
+Los resultados en OAI muestran una pauta nítida. (i) La \textbf{transferencia de aprendizaje} es el factor más determinante: EfficientNetB0 y ResNet-152 superan de forma consistente a las CNN entrenadas desde cero en todas las tareas. EfficientNetB0 ofrece el mejor \emph{compromiso} rendimiento–coste y lidera la multiclase 0--4 y el MAE en regresión; ResNet-152 marca el techo en 0-3-4 y en el extremo 0 vs.\ 4. (ii) La \textbf{dificultad no es uniforme}: 0 vs.\ 1 es sistemáticamente el caso más complejo (frontera semántica difusa), mientras que 0 vs.\ 4 está prácticamente saturado. (iii) Los \textbf{errores se concentran entre clases adyacentes} (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3), lo que refuerza el uso de pérdidas ordinales o la formulación \emph{continua}—que, además, facilita lecturas de progresión longitudinal—y aconseja evaluar más allá de la \emph{accuracy} agregada (F1 macro por clase, MAE). (iv) En \textbf{Transformers}, ViT-B/16 y ViT-L/16 son competitivos con los \emph{backbones} CNN, destacando en regresión y en pares con mayor distancia semántica; su mayor coste computacional (especialmente en la variante \emph{Large}) se ve compensado cuando se prioriza precisión global y lectura ordinal estable.
+
+Sobre validación externa (felinos), el \emph{zero-shot} desde humanos \textbf{no es suficiente}: el rendimiento cae de forma marcada y aparece un sesgo hacia clases mayoritarias. El \textbf{\emph{fine-tuning}} específico recupera desempeño y estabiliza los patrones de error, con \emph{ViT} mostrando una adaptación particularmente eficaz en el escenario de datos pequeños. En la tarea \textbf{01vs234} (cribado práctico), los modelos alcanzan métricas más altas y robustas que en la 0--4, lo que sugiere una vía de aplicación clínica realista cuando se prioriza sensibilidad para KL~3/4. Finalmente, los mapas de explicación indican atención preferente en regiones plausibles (interlínea articular, osteofitos marginales), más consistente tras ajuste fino, y la calibración de probabilidades emerge como paso necesario antes de fijar umbrales operativos con costes de error asimétricos.
+
+En síntesis, el marco comparativo construido permite extraer tres mensajes robustos, visibles en la Fig.\ref{fig:general_accuracy}: (i) la \textbf{transferencia de aprendizaje} (EfficientNetB0, ResNet-152) domina a las CNN entrenadas desde cero en la clasificación multiclase KL0--4; (ii) los \textbf{Transformers} (ViT-B/16) son competitivos, especialmente cuando la lectura se apoya en formulación continua y análisis ordinal; y (iii) ante el \textbf{cambio de dominio} (gatos), el \emph{fine-tuning} recupera gran parte del rendimiento perdido en \emph{zero-shot}, estabilizando las confusiones en fronteras adyacentes. Esta evidencia, junto con el uso sistemático de F1 macro, MAE, matrices de confusión y mapas de atención, sienta una base reproducible para trasladar estos modelos a escenarios de cribado y seguimiento donde la calibración y los umbrales de decisión sean clínicamente significativos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\linewidth]{general_accuracy.jpg}
+	\caption{\textbf{Exactitud en la tarea KL 0--4 por modelo y régimen de entrenamiento}. Barras agrupadas por arquitectura y dominio (color para distinguir OAI y Gatos). Se aprecia la ventaja sistemática de la transferencia (EfficientNetB0, ResNet-152), la competitividad de ViT-B/16 y el efecto del \emph{fine-tuning} en validación externa (gatos) frente al \emph{zero-shot}.}
+	\label{fig:general_accuracy}
+\end{figure}
+
+\section{Objetivos alcanzados}
+Este trabajo ha cumplido los objetivos propuestos en torno a la construcción de un marco experimental reproducible, la comparación honesta de arquitecturas, la incorporación explícita de la ordinalidad de \emph{Kellgren--Lawrence} (KL) y la validación externa bajo \emph{domain shift}. A continuación se sintetizan los principales logros, apoyados en las evidencias presentadas a lo largo del capítulo de experimentos.
+
+\noindent\textbf{(i) Marco de datos y reproducibilidad.}
+Se consolidó un \emph{pipeline} estandarizado sobre el OAI con las particiones oficiales \texttt{train/val/test} y proporción \mbox{70/10/20}, documentando los conteos exactos: \emph{train} $n{=}5{,}778$ (59.0\,\%), \emph{val} $n{=}826$ (8.4\,\%), \emph{test} $n{=}1{,}656$ (16.9\,\%) y \texttt{auto\_test} $n{=}1{,}526$ (15.6\,\%). Se fijaron resoluciones de entrada ($224{\times}224$) y un preprocesado homogéneo; además, se explicitó el desbalance por clase en \emph{train} (KL0: 40\,\%; KL4: 3\,\%; cf.\ Tabla~\ref{tab:class_distribution}), garantizando comparabilidad entre modelos y lecturas consistentes (accuracy, F1 macro, MAE), complementadas con matrices de confusión y mapas \emph{Grad-CAM}.
+
+\noindent\textbf{(ii) Escalado de líneas base \emph{from scratch}.}
+Se establecieron tres CNN de complejidad creciente. El paso de la línea base a la CNN profunda elevó la \emph{accuracy} en KL~0--4 de 42.0\,\% a 58.47\,\% y el F1 macro de 30\,\% a 52.03\,\%; en pares binarios exigentes (0 vs.\ 2/3) se alcanzaron 74.26\,\% y 86.64\,\%, respectivamente. En formulación continua, el MAE descendió de 0.897 a 0.651, confirmando que el aumento de capacidad aporta beneficios reales, si bien las confusiones se siguen concentrando entre grados contiguos (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3; cf.\ Fig.\ref{fig:confusion_kl_comparativa}).
+
+\noindent\textbf{(iii) Transferencia de aprendizaje como palanca principal.}
+En la \textbf{validación externa felina} (Fig.~\ref{fig:accuracy_general}), la evaluación \emph{zero-shot} desde OAI evidencia una caída notable de desempeño (ViT-B/16: 29\,\% en 0--4; EfficientNetB0: 17\,\%). Al aplicar \emph{fine-tuning} específico sobre el conjunto de gatos se \emph{recupera} una parte sustancial del rendimiento (ViT-B/16: 50\,\% en 0--4 y 80\,\% en 01vs234; EfficientNetB0: 30\,\% y 73\,\%). Como punto intermedio, el entrenamiento \emph{directo} desde pesos genéricos de ImageNet arroja resultados moderados (ViT-B/16: 47\,\% en 0--4 y 67\,\% en 01vs234; EfficientNetB0: 40\,\% y 70\,\%). En conjunto, estos datos confirman que la \textbf{transferencia adaptada al nuevo dominio} (\emph{fine-tuning}) es determinante bajo \emph{domain shift} humano$\rightarrow$felino, por encima del simple preentrenamiento genérico o de la inferencia \emph{zero-shot}.
+
+\noindent\textbf{(iv) Incorporación explícita de la ordinalidad.}
+Se operacionalizó la estructura ordinal de KL mediante dos vías complementarias: (a) formulación continua con evaluación por MAE (p.\,ej., 0.463 con \emph{EfficientNetB0}) y discretización posterior comparable a la clasificación directa; (b) análisis sistemático de matrices de confusión normalizadas, donde los errores se concentran en $\pm 1$ grado. Esta lectura permite interpretar el desempeño más allá de la \emph{accuracy} agregada y respalda su uso para seguimiento longitudinal y ajuste de umbrales.
+
+\noindent\textbf{(v) Interpretabilidad y fiabilidad orientadas a uso clínico.}
+Los mapas \emph{Grad-CAM} mostraron atención en regiones anatómicamente plausibles (interlínea articular, osteofitos), más nítida al aumentar capacidad y con transferencia. Se incorporó lectura de calibración y se recomendaron técnicas como \emph{temperature scaling} antes de fijar puntos de operación con coste asimétrico de error (priorizando sensibilidad para KL~3/4), facilitando la traslación de métricas a decisiones clínicas.
+
+\noindent\textbf{(vi) Validación externa con cambio de dominio (gatos).}
+Se empleó un conjunto privado de 82 radiografías (39 pacientes) con anotación KL adaptada al ámbito veterinario y sesgo hacia KL~0--1. La evaluación \emph{zero-shot} desde OAI evidenció caída marcada (p.\,ej., \emph{ViT} $\sim$29\,\% en 0--4), confirmando la necesidad de adaptación. Con \emph{fine-tuning}, \emph{ViT-B/16} alcanzó $\sim$50/51\,\% (Acc/F1) en 0--4 y \textbf{80/79\,\%} en 01vs234, con MAE 0.669 en regresión; \emph{EfficientNetB0} también mejoró, aunque de forma más modesta. Se demuestra así que el ajuste fino recupera rendimiento y estabiliza el patrón de confusiones bajo \emph{domain shift}.
+
+\noindent\textbf{(vii) Recomendaciones operativas por caso de uso.}
+A partir de la evidencia acumulada: (1) para \emph{cribado “sano vs.\ avanzado”} (0/1/2 frente a 3/4), un \emph{backbone} eficiente como \emph{EfficientNetB0} con calibración previa ofrece un equilibrio óptimo entre coste y sensibilidad; (2) para \emph{estratificación fina} 0--4, conviene priorizar \emph{ResNet-152} o \emph{ViT} y considerar formulación continua para estabilizar la lectura ordinal; (3) ante cambios de dominio (centro, protocolo, especie), aplicar siempre \emph{fine-tuning} ligero sobre el nuevo contexto.
+
+\medskip
+\noindent En suma, se ha alcanzado el objetivo general de dotar al estudio de una base empírica sólida y replicable, comparar de forma justa arquitecturas representativas (CNN, transferencia y \emph{Transformers}), integrar la ordinalidad de KL en la evaluación y demostrar, con validación externa, la viabilidad del \emph{fine-tuning} para recuperar rendimiento bajo cambios anatómicos. El conjunto de resultados y pautas extraídas proporciona un itinerario práctico para el despliegue responsable de estos modelos en escenarios de cribado y estratificación de artrosis de rodilla.
+
+
+
+
+\section{Trabajo futuro}
+A partir de la evidencia empírica obtenida—donde el \emph{fine-tuning} de \emph{ViT} destaca en cribado 01vs234 y las confusiones persisten en las fronteras bajas (KL~0/1)—las prioridades de continuación se orientan a (i) reducir la incertidumbre en clases tempranas, (ii) fortalecer la validez externa bajo \emph{domain shift} y (iii) acercar el sistema a un uso clínico responsable y auditable.
+
+En \textbf{datos}, ampliaremos el conjunto felino con especial énfasis en casos post~\emph{mortem} que permitan una \emph{verdad de referencia} más robusta y disminuyan la variabilidad interobservador en KL0/1. Estableceremos un protocolo de anotación dual con resolución por consenso (dos lectores + adjudicación), cuantificando concordancia y registrando razones de desacuerdo para realimentar el entrenamiento. Se explorará además la integración de metadatos clínicos básicos (edad, lateralidad, proyección) y la liberación de \emph{dataset cards} con trazabilidad y sesgos conocidos.
+
+En \textbf{evaluación y validación}, reforzaremos la lectura más allá de la \emph{accuracy}. Se diseñará validación externa multicentro (distintos equipos/protocolos) y análisis de \emph{shift} (centro, especie) con pruebas de robustez frente a ruido y oclusiones parciales. Optimizaremos umbrales específicos por contexto (p.,ej., sensibilidad priorizada para KL3/4) y reportaremos métricas estratificadas por distribución de clases. Un módulo de \emph{OOD detection} permitirá identificar radiografías fuera del soporte del entrenamiento.
+
+En \textbf{traslación y MLOps}, desarrollaremos un prototipo integrable en flujo clínico (API \emph{FastAPI}/contenedor Docker, compatibilidad DICOM/PACS) con inferencia reproducible y latencias medibles. El despliegue incorporará \emph{temperature scaling}/isotónica para calibración en sitio, registros para auditoría (versionado de modelos/datos, semillas, \emph{model cards}) y monitorización de deriva (\emph{data drift}/\emph{performance drift}). Se establecerán bucles de \emph{active learning} que prioricen para reanotación los casos de alta incertidumbre o desacuerdo modelo-experto. Finalmente, se realizará una evaluación prospectiva con lector humano en el circuito, midiendo tiempo de lectura, tasas de corrección y utilidad clínica percibida, junto con un análisis ético-legal (consentimiento, privacidad, gobernanza del modelo).
+
+Con este plan, esperamos disminuir la indeterminación en KL~0/1, mejorar la generalización interdominio y entregar un sistema calibrado y explicable que funcione como segunda opinión en entornos veterinarios, con rutas claras para su certificación y mantenimiento a largo plazo.
+             % 6.3
 % Explica las posibles extensiones o mejoras
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
