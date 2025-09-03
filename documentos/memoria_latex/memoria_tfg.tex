@@ -235,62 +235,87 @@ Y, por supuesto, a mi pareja, por su comprensión y cariño, especialmente duran
 %                                    INTRO                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introducción}
-La artrosis de rodilla es un problema de gran impacto clínico por su
-prevalencia y por la carga de discapacidad asociada. Su evaluación en
-radiografías sigue dependiendo, en gran medida, de la experiencia del
-profesional, lo que introduce variabilidad y dificulta la estandarización. En
-paralelo, el aprendizaje profundo ha demostrado capacidad para extraer patrones
-visuales sutiles y apoyar decisiones diagnósticas de forma consistente. Este
-TFG aborda la \textbf{clasificación automática del grado Kellgren–Lawrence
-	(KL)} en radiografías de rodilla y estudia la \textbf{transferencia} de modelos
-entrenados en humanos hacia radiografías felinas, un contexto donde los datos
-son escasos. El trabajo se centra en \textit{clasificación} sobre recortes ya
-localizados (no se aborda la detección de la articulación) y compara enfoques
-con \emph{CNN} y \emph{Transformers} bajo un protocolo unificado. A
-continuación se detallan la motivación, los objetivos y la estructura de la memoria
+La artrosis de rodilla constituye un problema de gran impacto clínico, tanto por
+su elevada prevalencia como por la carga de discapacidad que conlleva en la
+población afectada. A pesar de los avances médicos, su evaluación a través de
+radiografías continúa dependiendo en gran medida de la experiencia del
+profesional, lo que introduce una notable variabilidad y dificulta la
+estandarización de los diagnósticos. En paralelo, los recientes progresos en
+aprendizaje profundo han demostrado una gran capacidad para extraer patrones
+visuales sutiles, en ocasiones imperceptibles para el ojo humano, y apoyar así
+la toma de decisiones diagnósticas de una manera más sistemática y consistente.
+En este contexto, el presente trabajo se orienta hacia la
+\textbf{clasificación automática del grado Kellgre-Lawrence (KL)} en
+radiografías de rodilla y, de forma complementaria, estudia la
+\textbf{transferencia} de modelos entrenados en humanos hacia radiografías
+felinas, un escenario en el que la disponibilidad de datos es especialmente
+reducida. El enfoque del trabajo se centra exclusivamente en la tarea de
+\textit{clasificación} sobre recortes ya localizados (es decir, no se aborda la
+detección previa de la articulación) y compara de manera sistemática distintas
+familias de modelos, desde \emph{CNN} hasta \emph{Transformers}, siguiendo un
+protocolo unificado que permita valorar sus diferencias de manera justa. A
+continuación, se detallan la motivación personal y científica, los objetivos
+concretos y la estructura de la memoria.
 
 \section{Motivación}     % 1.1
 
-Desde el inicio de mi formación académica he mostrado un especial interés por
-la aplicación de herramientas informáticas en el ámbito de la salud. Este
-interés se ha visto reforzado por mi entorno familiar, que me ha permitido
-estar en contacto con problemáticas relacionadas con el diagnóstico y
-tratamiento de enfermedades en animales. Además, la idea de este trabajo surgió
-a raíz de una compañera de trabajo de mi padre, quien tenía previsto realizar
-su tesis doctoral sobre la aplicación de IA en el diagnóstico veterinario. Este
-hecho me inspiró a explorar cómo las técnicas modernas de aprendizaje profundo,
-ampliamente utilizadas en medicina humana, podrían adaptarse también al ámbito
-veterinario.
+Desde el inicio de mi formación académica he sentido un especial interés por la
+aplicación de la informática en el ámbito de la salud, entendida no solo como
+un campo de investigación estimulante sino también como un espacio con un alto
+potencial de impacto social. Este interés se ha visto reforzado por mi propio
+entorno familiar, que me ha permitido entrar en contacto desde joven con
+problemáticas relacionadas con el diagnóstico y tratamiento de enfermedades en
+animales. Esta cercanía al mundo veterinario me ha llevado a percibir, de
+primera mano, la importancia de contar con herramientas que apoyen y optimicen
+el trabajo de los profesionales. 
 
-Desde un principio tenía claro que el tema de mi Trabajo de Fin de Grado
-estaría relacionado con el aprendizaje automático. La oportunidad de vincularlo
-con el diagnóstico veterinario, pese a los retos añadidos por la limitación de
-datos disponibles, me llevó a elegir esta temática como base de mi
-investigación.
+La idea de este proyecto surgió, de hecho, a raíz de una conversación sobre la
+tesis doctoral de una compañera de trabajo de mi padre, centrada en la
+aplicación de técnicas de IA en diagnóstico veterinario. Ese hecho despertó mi
+curiosidad y me motivó a plantear cómo las metodologías modernas de aprendizaje
+profundo, ya consolidadas en medicina humana, podrían extrapolarse también al
+ámbito veterinario, donde los recursos suelen ser más limitados y donde un
+sistema automático de apoyo podría marcar aún más la diferencia.
 
-La artrosis (u osteoartritis) es una de las enfermedades musculoesqueléticas
-más comunes a nivel mundial y una de las principales causas de discapacidad en
-adultos mayores. Su diagnóstico y seguimiento dependen habitualmente de la
-evaluación clínica y de la interpretación de imágenes médicas (radiografías,
-resonancias magnéticas o tomografías), un proceso sujeto a la experiencia del
-profesional y que puede presentar variabilidad entre observadores. En los
-últimos años, los avances en IA, y en particular en el aprendizaje profundo
-(\textit{deep learning}), han demostrado un gran potencial para mejorar la
-precisión y la eficiencia en el análisis de imágenes médicas. Las redes
-neuronales convolucionales (CNN) y, más recientemente, los modelos basados en
-\textit{Transformers}, han mostrado resultados prometedores en este ámbito,
-como evidencian recientes trabajos que emplean conjuntos de datos biomédicos
-como MedMNIST.
+Desde un principio tuve claro que mi Trabajo de Fin de Grado estaría vinculado
+al aprendizaje automático, tanto por interés personal como por el valor que
+estas competencias tienen en mi futuro profesional. La oportunidad de enlazar
+este campo con el diagnóstico veterinario, a pesar de los retos añadidos por la
+escasez de datos y la complejidad de la transferencia entre especies, me llevó
+a decantarme por esta temática como base de mi investigación.
 
-Este TFG se motiva por la necesidad de desarrollar métodos automáticos y
-robustos para el análisis de la artrosis mediante técnicas de aprendizaje
-profundo, evaluando tanto arquitecturas convolucionales como modelos
-\textit{Transformer}. Un aspecto innovador de este trabajo es la exploración
-del \textit{transfer learning} entre dominios anatómicos distintos, utilizando
-modelos entrenados en radiografías de rodillas humanas para aplicarlos también
-al diagnóstico en gatos. Esta línea de investigación podría beneficiar la
-práctica veterinaria, donde la disponibilidad de datos suele ser más limitada.
+La artrosis es una de las enfermedades musculoesqueléticas
+más comunes a nivel global y una de las principales causas de discapacidad en
+personas de edad avanzada. Su diagnóstico y seguimiento se apoyan
+habitualmente en la evaluación clínica y en la interpretación de imágenes
+médicas, como radiografías, resonancias magnéticas o tomografías, procesos que
+son en gran medida subjetivos y que dependen de la formación y experiencia de
+cada profesional. Ello puede dar lugar a discrepancias entre observadores y a
+dificultades en la estandarización de protocolos clínicos. 
 
+En los últimos años, los avances en inteligencia artificial, y en particular en
+aprendizaje profundo (\textit{deep learning}), han abierto nuevas vías para
+mejorar la precisión, la reproducibilidad y la eficiencia en el análisis de
+imágenes médicas. Las redes neuronales convolucionales (CNN) han sido el
+estándar de facto en visión por computador durante más de una década, y más
+recientemente los modelos basados en \textit{Transformers} han irrumpido con
+fuerza, mostrando resultados competitivos en diversas tareas de clasificación y
+segmentación. Estos progresos se ven reflejados en trabajos recientes con
+conjuntos biomédicos públicos, como los incluidos en \emph{MedMNIST}, que
+demuestran la aplicabilidad real de estas arquitecturas en contextos clínicos.
+
+Este TFG se fundamenta en la necesidad de diseñar y evaluar métodos
+automáticos y robustos para la clasificación de artrosis mediante técnicas de
+aprendizaje profundo. El proyecto examina tanto arquitecturas clásicas
+convolucionales como aproximaciones más recientes basadas en
+\textit{Transformers}, aplicándolas bajo un protocolo experimental homogéneo.
+Un aspecto especialmente innovador es la exploración del
+\textit{transfer learning} entre dominios anatómicos distintos: a partir de
+modelos entrenados en radiografías humanas se busca analizar su aplicabilidad
+al diagnóstico en gatos. Esta línea de investigación podría suponer una
+contribución de interés en la práctica veterinaria, donde los conjuntos de
+datos son más reducidos y heterogéneos, y donde las técnicas de transferencia
+pueden resultar decisivas para lograr sistemas útiles.
 La relevancia de este estudio radica en su potencial impacto en la práctica
 clínica y veterinaria, al reducir la carga de trabajo de los especialistas,
 mejorar la objetividad del diagnóstico y ofrecer herramientas de soporte a la
@@ -300,20 +325,59 @@ conjuntos de datos biomédicos, entrenamiento de redes neuronales profundas y
 análisis de resultados, competencias clave para mi futuro profesional en el
 ámbito de la IA aplicada a la salud.
 
+La relevancia de este estudio radica en su doble potencial de impacto: por un
+lado, en la práctica clínica humana, al ofrecer sistemas que reduzcan la carga
+de trabajo y mejoren la objetividad de los especialistas; y, por otro, en la
+práctica veterinaria, al abrir una línea de aplicación de modelos
+preentrenados en un ámbito con escasa disponibilidad de datos. En el plano
+formativo, este proyecto representa además una oportunidad de adquirir
+experiencia en técnicas avanzadas de visión por computador, gestión de datos
+biomédicos, entrenamiento de redes neuronales y análisis crítico de resultados,
+competencias todas ellas de gran valor en mi futuro profesional dentro del
+área de IA aplicada a la salud.
+
 \section{Objetivos del TFG}
 El propósito de este TFG es diseñar, implementar y validar un sistema de
 clasificación automática de artrosis de rodilla en radiografías, maximizando su
 utilidad clínica y su capacidad de generalización, incluso en contextos
-veterinarios con datos limitados. Para ello, se plantean los siguientes
-objetivos concretos y medibles:
+veterinarios con datos limitados. Para alcanzar este propósito general, se
+plantean los siguientes objetivos concretos y medibles:
 
 \begin{enumerate}
-	\item \textbf{Desarrollar y comparar modelos de aprendizaje profundo} (CNN desde cero, modelos preentrenados y Transformers de visión) para la clasificación KL 0--4 y tareas binarias en OAI, \textit{evaluando} su rendimiento bajo un protocolo unificado con \textit{accuracy}, macro-\textit{F1} y MAE, y \textit{reportando}.
-	\item \textbf{Evaluar la transferencia interdominio humano→felino} comparando inferencia directa, entrenamiento desde cero y \textit{fine-tuning} a partir de pesos en OAI, \textit{cuantificando} diferencias de rendimiento entre los tipos de entrenamiento y los resultados utilizando el dataset OAI.
+	\item \textbf{Desarrollar y comparar modelos de aprendizaje profundo}, que incluyen tanto arquitecturas CNN entrenadas desde cero como modelos preentrenados y \textit{Transformers} de visión, para la clasificación KL 0--4 y tareas binarias en el conjunto OAI, \textit{evaluando} de forma sistemática su rendimiento bajo un protocolo unificado, empleando métricas de \textit{accuracy}, macro-\textit{F1} y MAE, y \textit{reportando} de manera clara sus resultados.
+	\item \textbf{Evaluar la transferencia interdominio humano→felino}, comparando distintos escenarios: la inferencia directa sobre radiografías felinas, el entrenamiento desde cero con este dominio y el \textit{fine-tuning} a partir de pesos obtenidos en OAI, \textit{cuantificando} las diferencias de rendimiento entre las aproximaciones y analizando su aplicabilidad práctica en un entorno veterinario.
 \end{enumerate}
 
+
 \section{Estructura de la memoria}
-Este Trabajo Fin de Grado estudia la clasificación automática de artrosis de rodilla mediante aprendizaje profundo y su transferencia a radiografías felinas. La memoria se organiza del siguiente modo. En el capítulo siguiente, \textbf{Preliminares} se introducen los conceptos esenciales de aprendizaje automático y redes neuronales, así como su evolución en visión por computador con ejemplos de conjuntos públicos biomédicos. El \textbf{Capítulo~\ref{chap:corpus}} describe los datos utilizados —el \emph{dataset} OAI y el conjunto externo de radiografías felinas—, sus particiones y desbalance, y define las tareas de clasificación que se abordarán, situando el trabajo en su contexto. El \textbf{Capítulo~\ref{chap:experiments}} presenta los experimentos con \emph{redes convolucionales}, incluyendo modelos desde cero y modelos preentrenados, bajo una configuración de entrenamiento unificada y con comparación de resultados. El \textbf{Capítulo~\ref{chap:transformers}} incorpora \emph{Transformers} de visión, su adaptación a la tarea y su evaluación con el mismo protocolo. El \textbf{Capítulo~\ref{chap:gatos}} analiza la transferencia interdominio hacia radiografías felinas, comparando inferencia directa, entrenamiento específico y ajuste fino, y discutiendo su utilidad clínica. En \textbf{Conclusiones} se sintetizan los hallazgos, se verifica el grado de cumplimiento de los objetivos y se proponen líneas futuras. La \textbf{Bibliografía} recoge las referencias empleadas. Los \textbf{Apéndices} incluyen la configuración del sistema (entorno, dependencias y parámetros de reproducción), tablas y métricas ampliadas y detalles de preprocesado. Dado que el tribunal es interdisciplinar, al final se incorpora un \textbf{glosario de términos} técnicos para consulta.
+Este Trabajo Fin de Grado estudia la clasificación automática de artrosis de
+rodilla mediante aprendizaje profundo y su transferencia a radiografías
+felinas. La memoria se organiza del siguiente modo: en el capítulo siguiente,
+\textbf{Preliminares}, se introducen los conceptos esenciales de aprendizaje
+automático y redes neuronales, así como la evolución histórica de estas
+técnicas en visión por computador, con ejemplos basados en conjuntos de datos
+biomédicos de referencia. El \textbf{Capítulo~\ref{chap:corpus}} describe en
+detalle los datos utilizados —el \emph{dataset} OAI y el conjunto externo de
+radiografías felinas—, sus características principales, las particiones
+empleadas, el grado de desbalance de clases y las tareas de clasificación
+planteadas, situando así el trabajo en su contexto. El
+\textbf{Capítulo~\ref{chap:experiments}} presenta los experimentos con
+\emph{redes convolucionales}, incluyendo tanto modelos diseñados desde cero
+como arquitecturas preentrenadas, bajo una configuración de entrenamiento
+unificada y con un análisis comparativo de resultados. El
+\textbf{Capítulo~\ref{chap:transformers}} incorpora el estudio de
+\emph{Transformers} de visión, su adaptación a la tarea específica y su
+evaluación mediante el mismo protocolo. Posteriormente, el
+\textbf{Capítulo~\ref{chap:gatos}} analiza la transferencia interdominio hacia
+radiografías felinas, comparando escenarios de inferencia directa, entrenamiento
+específico y ajuste fino, y discutiendo su utilidad en un marco clínico
+veterinario. En \textbf{Conclusiones} se sintetizan los hallazgos obtenidos, se
+verifica el grado de cumplimiento de los objetivos planteados y se formulan
+propuestas para líneas futuras de investigación. Finalmente, la
+\textbf{Bibliografía} recoge las referencias utilizadas, mientras que los
+\textbf{Apéndices} incluyen información complementaria: configuración del
+sistema, dependencias y parámetros de reproducción, así como tablas y métricas
+adicionales y detalles de preprocesado empleados durante la investigación.
 
 % Describe la organización de los capítulos y secciones
 
@@ -793,9 +857,7 @@ abordados en el diseño y la evaluación de los modelos de clasificación.
 \label{sec:3_3_dataset_gatos}
 
 El \emph{dataset} de gatos constituye un conjunto de radiografías recopiladas
-en el marco del proyecto de tesis doctoral de Bea en el \textbf{[Nombre del
-			Laboratorio/Institución]} (TODO: completar referencia en formato APA). A
-diferencia del \emph{Osteoarthritis Initiative (OAI)}, que es un recurso
+en el marco del proyecto de tesis doctoral de Beatriz Mena Moros en el \textbf{Grupo de Investigación BiomedSurgery de la Universidad CEU UCH y Cátedra Fundación García Cugat} \cite{datos_gatos}. A diferencia del \emph{Osteoarthritis Initiative (OAI)}, que es un recurso
 público de gran escala, este conjunto es de carácter privado y se encuentra
 restringido a fines de investigación bajo autorización expresa de su autora.
 
@@ -952,7 +1014,7 @@ extensivos. Por último, \textbf{Fei et al. (2024)} \cite{fei2024diagnosing}
 formulan explícitamente la tarea como \textbf{regresión continua}, evaluando
 VGG16, ResNet34, DenseNet169 y EfficientNetV2 (versión pequeña) sobre 8\,260
 imágenes de OAI; EfficientNetV2 destaca con un 71\,\% de \emph{accuracy}, AUC
-0{.}83 y MAE 0{.}42, evidenciando que una escala numérica capta con mayor
+0{.}83 y MAE 0{.}42, evidenciando que una escala  numérica capta con mayor
 finura la progresión y favorece aplicaciones de seguimiento longitudinal.
 
 La Tabla~\ref{tab:comparative_oai} resume cuantitativamente estos trabajos,
@@ -1086,12 +1148,12 @@ diagnóstico metodológico. Esta aproximación busca ir más allá de la
 distancia ordinal y a la calibración de las probabilidades, aspectos clave en
 aplicaciones clínicas.
 
-Para facilitar la navegación, el capítulo sigue un recorrido incremental:
+Para facilitar su lectura, el capítulo sigue un recorrido incremental:
 comienza con una motivación y encaje metodológico
 (Sección~\ref{sec:intro_cnn}), continúa con la descripción de las arquitecturas
-evaluadas y los criterios de entrenamiento, y culmina con una batería de
+evaluadas y los criterios de entrenamiento (Sección~\ref{sec:modelos_cnn}), y seguidamente aporta una batería de
 experimentos que cubren tanto la formulación multiclase 0--4 como variantes
-binarias y continuas. A lo largo del texto se proponen piezas visuales que
+binarias y continuas (Sección~\ref{sec:exp_cnn}). A lo largo del texto se proponen piezas visuales que
 ayudan a sintetizar información heterogénea: desde mapas de confusión
 enriquecidos con distancia ordinal, hasta curvas de aprendizaje y paneles de
 interpretabilidad.
@@ -1145,6 +1207,7 @@ empírica entre arquitecturas y tareas, cuidando que cada cifra vaya acompañada
 de la visualización adecuada para su interpretación.
 
 \section{Modelos}
+\label{sec:modelos_cnn}
 
 El conjunto de modelos evaluados se ha seleccionado para cubrir un gradiente
 claro de complejidad y sesgo inductivo: desde arquitecturas mínimas construidas
@@ -1156,7 +1219,7 @@ estandarizado geométricamente (recortes centrados en la articulación y
 \mbox{224$\times$224} píxeles). Los modelos entrenados desde cero consumen una
 sola canalidad y aprenden filtros específicos del dominio, mientras que los
 preentrenados reciben tres canales obtenidos por replicación de la imagen para
-respetar las estadísticas de entrada de ImageNet y aprovechar sus pesos
+respetar el formato de entrada de ImageNet y aprovechar sus pesos
 iniciales.
 
 A continuación se describen, por separado, las tres CNN diseñadas
@@ -1199,55 +1262,8 @@ La \emph{CNN profunda} añade bloques con normalización por lotes y
 más lenta. El objetivo es aumentar la expresividad sin sacrificar
 generalización, algo especialmente relevante cuando los grados de severidad se
 diferencian por señales sutiles como el estrechamiento del espacio articular u
-osteofitos marginales.
-
-% Asegúrate de tener: \usetikzlibrary{positioning,arrows.meta}
-\begin{figure}[H]
-	\centering
-	\resizebox{0.5\linewidth}{!}{
-		\begin{tikzpicture}[
-				font=\small,
-				node distance=4mm,
-				box/.style={draw, rounded corners=2pt, minimum width=60mm, minimum height=6mm, align=center},
-				note/.style={font=\scriptsize, align=left}
-			]
-			% --------- Entrada ---------
-			\node (in)   [box, fill=gray!10] {Input\\$224\times 224\times 3$};
-
-			% --------- Bloque 1 ---------
-			\node (c11)  [box, fill=blue!10,   below=of in]   {Conv 32 \\ $3{\times}3$, ReLU};
-			\node (c12)  [box, fill=blue!10,   below=of c11]  {Conv 32 \\ $3{\times}3$, ReLU};
-			\node (p1)   [box, fill=teal!10,   below=of c12]  {MaxPool $2{\times}2$ \\ $\rightarrow\ 112\times 112\times 32$};
-			\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(c11)(p1), label=west:{\scriptsize \textbf{Bloque 1}}] (fit1) {};
-
-			% --------- Bloque 2 ---------
-			\node (c21)  [box, fill=blue!10,   below=of p1]   {Conv 64 \\ $3{\times}3$, ReLU};
-			\node (c22)  [box, fill=blue!10,   below=of c21]  {Conv 64 \\ $3{\times}3$, ReLU};
-			\node (p2)   [box, fill=teal!10,   below=of c22]  {MaxPool $2{\times}2$ \\ $\rightarrow\ 56\times 56\times 64$};
-			\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(c21)(p2), label=west:{\scriptsize \textbf{Bloque 2}}] (fit2) {};
-
-			% --------- Bloque 3 ---------
-			\node (c31)  [box, fill=blue!10,   below=of p2]   {Conv 128 \\ $3{\times}3$, ReLU};
-			\node (c32)  [box, fill=blue!10,   below=of c31]  {Conv 128 \\ $3{\times}3$, ReLU};
-			\node (p3)   [box, fill=teal!10,   below=of c32]  {MaxPool $2{\times}2$ \\ $\rightarrow\ 28\times 28\times 128$};
-			\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(c31)(p3), label=west:{\scriptsize \textbf{Bloque 3}}] (fit3) {};
-
-			% --------- Clasificador ---------
-			\node (flat) [box, fill=gray!10,   below=of p3]   {Flatten \\ $28\cdot 28\cdot 128 = 100{,}352$};
-			\node (fc)   [box, fill=orange!15, below=of flat] {Dense 256 (ReLU)};
-			\node (out)  [box, fill=green!15,  below=of fc]   {Dense $N$ clases \\ Softmax (clas.) / Linear (reg.)};
-			\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(flat)(out), label=west:{\scriptsize \textbf{Cabeza FC}}] (fit4) {};
-
-			% --------- Conexiones ---------
-			\draw[-{Latex}, thick] (in) -- (c11) -- (c12) -- (p1)
-			-- (c21) -- (c22) -- (p2)
-			-- (c31) -- (c32) -- (p3)
-			-- (flat) -- (fc) -- (out);
-		\end{tikzpicture}
-	}
-	\caption{Arquitectura \texttt{CNN\_Profunda} implementada en Keras: tres bloques Conv-BN-Conv-BN-Pool-Dropout y cabeza densa con BN y Dropout.}
-	\label{fig:cnn_profunda_vertical_detallada}
-\end{figure}
+osteofitos marginales. En la Tabla~\ref{comparacion_arquitecturas_cnn}
+se muestra la comparación de la CNN profunda frente a EfficientNetB0.
 
 El segundo grupo incorpora aprendizaje por transferencia con
 \textbf{EfficientNetB0} y \textbf{ResNet152}. Ambos \emph{backbones}
@@ -1265,8 +1281,124 @@ capas, que permite reesculpir las representaciones intermedias hacia las
 señales radiográficas específicas de KL. Esta doble vía no solo incrementa la
 probabilidad de alcanzar el máximo rendimiento, sino que también facilita
 entender el papel real del preentrenamiento frente a la adaptación específica.
-La Fig.~\ref{fig:pretrained_backbones} recoge los diagramas de adaptación
-estructural de ambos modelos.
+La Fig.~\ref{fig:resnet152} recoge el diagrama de la arquitectura ResNet-152.
+En la Tabla~\ref{comparacion_arquitecturas_cnn} se compara la CNN profunda frente a EfficientNetB0
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width = 0.7\textwidth]{resnet152architecture.png}
+	\caption{Esquema de ResNet152 \cite{resnet152architecture}}
+	\label{fig:resnet152}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.40\linewidth} % Ocupa casi la mitad del ancho del texto
+		\centering
+		\resizebox{\linewidth}{!}{ % Ajusta el tamaño al ancho del minipage
+			\begin{tikzpicture}[
+					font=\small,
+					node distance=4mm,
+					box/.style={draw, rounded corners=2pt, minimum width=60mm, minimum height=6mm, align=center},
+					note/.style={font=\scriptsize, align=left}
+				]
+				% --------- Entrada ---------
+				\node (in)   [box, fill=gray!10] {Input\\$224\times 224\times 3$};
+
+				% --------- Bloque 1 ---------
+				\node (c11)  [box, fill=blue!10,  below=of in]   {Conv 32 \\ $3{\times}3$, ReLU};
+				\node (c12)  [box, fill=blue!10,  below=of c11]  {Conv 32 \\ $3{\times}3$, ReLU};
+				\node (p1)   [box, fill=teal!10,  below=of c12]  {MaxPool $2{\times}2$ \\ $\rightarrow\ 112\times 112\times 32$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(c11)(p1), label=west:{\scriptsize \textbf{Bloque 1}}] (fit1) {};
+
+				% --------- Bloque 2 ---------
+				\node (c21)  [box, fill=blue!10,  below=of p1]   {Conv 64 \\ $3{\times}3$, ReLU};
+				\node (c22)  [box, fill=blue!10,  below=of c21]  {Conv 64 \\ $3{\times}3$, ReLU};
+				\node (p2)   [box, fill=teal!10,  below=of c22]  {MaxPool $2{\times}2$ \\ $\rightarrow\ 56\times 56\times 64$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(c21)(p2), label=west:{\scriptsize \textbf{Bloque 2}}] (fit2) {};
+
+				% --------- Bloque 3 ---------
+				\node (c31)  [box, fill=blue!10,  below=of p2]   {Conv 128 \\ $3{\times}3$, ReLU};
+				\node (c32)  [box, fill=blue!10,  below=of c31]  {Conv 128 \\ $3{\times}3$, ReLU};
+				\node (p3)   [box, fill=teal!10,  below=of c32]  {MaxPool $2{\times}2$ \\ $\rightarrow\ 28\times 28\times 128$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(c31)(p3), label=west:{\scriptsize \textbf{Bloque 3}}] (fit3) {};
+
+				% --------- Clasificador ---------
+				\node (flat) [box, fill=gray!10,  below=of p3]   {Flatten \\ $28\cdot 28\cdot 128 = 100{,}352$};
+				\node (fc)   [box, fill=orange!15, below=of flat] {Dense 256 (ReLU)};
+				\node (out)  [box, fill=green!15,  below=of fc]  {Dense $N$ clases \\ Softmax (clas.) / Linear (reg.)};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(flat)(out), label=west:{\scriptsize \textbf{Cabeza FC}}] (fit4) {};
+
+				% --------- Conexiones ---------
+				\draw[-{Latex}, thick] (in) -- (c11) -- (c12) -- (p1)
+				-- (c21) -- (c22) -- (p2)
+				-- (c31) -- (c32) -- (p3)
+				-- (flat) -- (fc) -- (out);
+			\end{tikzpicture}
+		}
+		\subcaption{Arquitectura \texttt{CNN\_Profunda}} % Subtítulo para la primera figura
+		\label{fig:cnn_profunda_vertical_detallada}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}[t]{0.40\linewidth} % Ocupa casi la mitad del ancho del texto
+		\centering
+		\resizebox{\linewidth}{!}{ % Ajusta el tamaño al ancho del minipage
+			\begin{tikzpicture}[
+					font=\small,
+					node distance=4mm,
+					box/.style={draw, rounded corners=2pt, minimum width=60mm, minimum height=6mm, align=center},
+					note/.style={font=\scriptsize, align=left}
+				]
+				% --------- Entrada ---------
+				\node (in) [box, fill=gray!10] {Input\\$224\times 224\times 3$};
+
+				% --------- Bloque 1 (Stem) ---------
+				\node (stem) [box, fill=blue!10, below=of in] {Conv $3\times3$ \\ Stride 2, 32 filtros};
+				\node (mbconv_1) [box, fill=purple!10, below=of stem] {MBConv $1$ (x1) \\ $\rightarrow 112\times 112 \times 16$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(stem)(mbconv_1), label=west:{\scriptsize \textbf{Bloque 1}}] (fit1) {};
+
+				% --------- Bloque 2 (MBConv1) ---------
+				\node (mbconv_2) [box, fill=purple!10, below=of mbconv_1] {MBConv $6$ (x2) \\ $\rightarrow 56\times 56 \times 24$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(mbconv_2), label=west:{\scriptsize \textbf{Bloque 2}}] (fit2) {};
+
+				% --------- Bloque 3 (MBConv2) ---------
+				\node (mbconv_3) [box, fill=purple!10, below=of mbconv_2] {MBConv $6$ (x2) \\ $\rightarrow 28\times 28 \times 40$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(mbconv_3), label=west:{\scriptsize \textbf{Bloque 3}}] (fit3) {};
+
+				% --------- Bloque 4 (MBConv3) ---------
+				\node (mbconv_4) [box, fill=purple!10, below=of mbconv_3] {MBConv $6$ (x3) \\ $\rightarrow 14\times 14 \times 80$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(mbconv_4), label=west:{\scriptsize \textbf{Bloque 4}}] (fit4) {};
+
+				% --------- Bloque 5 (MBConv4) ---------
+				\node (mbconv_5) [box, fill=purple!10, below=of mbconv_4] {MBConv $6$ (x3) \\ $\rightarrow 7\times 7 \times 112$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(mbconv_5), label=west:{\scriptsize \textbf{Bloque 5}}] (fit5) {};
+
+				% --------- Bloque 6 (MBConv5) ---------
+				\node (mbconv_6) [box, fill=purple!10, below=of mbconv_5] {MBConv $6$ (x4) \\ $\rightarrow 7\times 7 \times 192$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(mbconv_6), label=west:{\scriptsize \textbf{Bloque 6}}] (fit6) {};
+
+				% --------- Bloque 7 (MBConv6) ---------
+				\node (mbconv_7) [box, fill=purple!10, below=of mbconv_6] {MBConv $6$ (x1) \\ $\rightarrow 7\times 7 \times 320$};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(mbconv_7), label=west:{\scriptsize \textbf{Bloque 7}}] (fit7) {};
+
+				% --------- Head ---------
+				\node (head_conv) [box, fill=blue!10, below=of mbconv_7] {Conv $1\times1$ \\ 1280 filtros};
+				\node (pool) [box, fill=teal!10, below=of head_conv] {Global Avg. Pool \\ $\rightarrow 1\times 1 \times 1280$};
+				\node (fc) [box, fill=green!15, below=of pool] {Dense $N$ clases \\ Softmax};
+				\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(head_conv)(fc), label=west:{\scriptsize \textbf{Cabeza}}] (fit_head) {};
+
+				% --------- Conexiones ---------
+				\draw[-{Latex}, thick] (in) -- (stem) -- (mbconv_1) -- (mbconv_2) -- (mbconv_3) -- (mbconv_4) -- (mbconv_5) -- (mbconv_6) -- (mbconv_7) -- (head_conv) -- (pool) -- (fc);
+			\end{tikzpicture}
+		}
+		\subcaption{Arquitectura EfficientNet-B0 \cite{efficientNetB0arquitecture}} % Subtítulo para la segunda figura
+		\label{fig:efficientnet_b0}
+	\end{minipage}
+	\caption{Comparación de arquitecturas de redes neuronales convolucionales. (a) Arquitectura de una CNN profunda tradicional. (b) Arquitectura de EfficientNet-B0.}
+	\label{fig:comparacion_arquitecturas_cnn}
+\end{figure}
+
 
 \section{Experimentos}
 \label{sec:exp_cnn}
@@ -1467,7 +1599,7 @@ En esta sección presentamos la evaluación empírica de cinco arquitecturas de 
 \end{table}
 
 \paragraph{Análisis cualitativo vía matrices de confusión (T0: KL 0--4).}
-Como complemento a los indicadores globales (Accuracy y F1 macro), en la Fig.~\ref{fig:cm_t0} mostramos las matrices de confusión normalizadas por filas (\%) en \texttt{test} para cada arquitectura. Estas visualizaciones permiten identificar patrones de error sistemáticos más allá de la métrica agregada: en todos los modelos se concentra la confusión entre grados contiguos (KL1$\leftrightarrow$KL2 y KL2$\leftrightarrow$KL3), mientras que los extremos (KL0 y KL4) presentan mayor fidelidad. A medida que aumenta la capacidad y/o se incorpora transferencia de aprendizaje, la masa de probabilidades se desplaza hacia la diagonal (menos dispersión fuera de ella), con diagonales más nítidas en EfficientNetB0 y ResNet-152. Este comportamiento es coherente con la mejora de F1 macro observada en las Tablas de resultados y con los porcentajes concretos de la Tabla~\ref{tab:cm_kl04_effb0_plain} para EfficientNetB0 (p.\,ej., 82\% de aciertos en KL0 y 91\% en KL4, con errores residuales hacia clases vecinas). En términos prácticos, estos patrones justifican el análisis posterior de umbrales para cribado “sano vs.\ avanzado” (0/1/2 frente a 3/4), dado que la mayor parte de las equivocaciones se produce en fronteras semánticamente próximas.
+Como complemento a los indicadores globales (Accuracy y F1 macro), en la Fig.~\ref{fig:cm_t0} mostramos las matrices de confusión en \texttt{test} para cada arquitectura. Estas visualizaciones permiten identificar patrones de error sistemáticos más allá de la métrica agregada: en todos los modelos se concentra la confusión entre grados contiguos (KL1$\leftrightarrow$KL2 y KL2$\leftrightarrow$KL3), mientras que los extremos (KL0 y KL4) presentan mayor fidelidad. A medida que aumenta la capacidad y/o se incorpora transferencia de aprendizaje, la masa de probabilidades se desplaza hacia la diagonal (menos dispersión fuera de ella), con diagonales más nítidas en EfficientNetB0 y ResNet-152. En términos prácticos, estos patrones justifican el análisis posterior de umbrales para cribado “sano vs.\ avanzado” (0/1/2 frente a 3/4), dado que la mayor parte de los errores se produce en las clases 0, 1 y 2.
 
 \begin{figure}[H]
 	\centering
@@ -1525,8 +1657,6 @@ Desde el punto de vista práctico, los resultados recomiendan \textbf{separar ob
 En cuanto a \textbf{calibración y toma de decisiones}, los modelos muestran fiabilidad mejorable. Antes de fijar umbrales clínicos debería incorporarse una etapa de calibración (p.,ej., \emph{temperature scaling} o isotónica) y validarse la estabilidad de los puntos de operación (sensibilidad/especificidad) para evitar sobreajuste a la partición de validación. Este paso es especialmente relevante si el despliegue pretende apoyar decisiones con coste asimétrico de error (falsos negativos en KL~3/4).
 
 Las \textbf{limitaciones} de este estudio condicionan la interpretación de los resultados: (i) todo el desarrollo y la evaluación se realizan sobre OAI; es necesaria validación externa para estimar la generalización a otros centros y protocolos de adquisición; (ii) se emplea una única resolución de entrada y un preprocesado uniforme, sin explotar recortes anatómicos ni información multivista; (iii) el etiquetado KL presenta variabilidad interobservador, lo que afecta especialmente a las fronteras entre clases adyacentes —el caso más problemático es 0 vs.\ 1—, donde, pese a no ser de las clases más minoritarias, el modelo muestra escasa discriminación; y (iv) no se exploraron de forma sistemática estrategias de balanceo por clase (p.\,ej., reponderación) ni \emph{schedulers} y técnicas de \emph{data augmentation} más avanzadas.
-
-Como \textbf{líneas futuras}, proponemos: (a) pérdidas ordinales y \emph{cost-sensitive} (p.,ej., CORAL/ordinal regression, focal reweighting) para alinear la función objetivo con la estructura KL; (b) preentrenamiento auto-supervisado específico en radiografías para mejorar la transferencia (\emph{contrastive/self-distillation}); (c) integración de señales clínicas y segmentación/atención sobre regiones relevantes (espacio articular, osteofitos); (d) estimación explícita de incertidumbre (ensembles, MC-Dropout) combinada con derivación a experto en casos dudosos; y (e) validación externa y evaluación prospectiva con \emph{calibration-in-the-large} y métricas de utilidad clínica (PPV/NPV a distintos \emph{prevalences}).
 
 En síntesis, la transferencia de aprendizaje es el factor más determinante para mejorar el rendimiento en OAI; la dificultad se concentra en las fronteras ordinales y exige métricas y pérdidas acordes; y la correcta calibración y selección de umbrales es clave para transformar el buen rendimiento agregado en decisiones clínicas útiles y seguras. EfficientNetB0 surge como \emph{modelo por defecto} por su robustez y eficiencia, mientras que ResNet-152 ofrece el máximo cuando el objetivo es exprimir el rendimiento en escenarios con mayor presupuesto computacional.
 
@@ -1662,8 +1792,8 @@ Se siguen las mismas particiones oficiales \texttt{train/val/test} de OAI y el m
 		CNN profunda      & 58.47\%           & 89.35\%            & 0.651               \\
 		EfficientNetB0    & 68.64\%           & 94.07\%            & 0.463               \\
 		ResNet-152        & 67.07\%           & \textbf{95.16\%}   & 0.515               \\
-		\textbf{ViT-B/16} & 65.45\%           & 92.37\%            & \textit{0.4617}     \\
-		\textit{ViT-L/16} & \textit{70\%*}    & \textit{93.10\%}   & \textit{0.4609}     \\
+		\textbf{ViT-B/16} & 65.45\%           & 92.37\%            & 0.4617              \\
+		\textbf{ViT-L/16} & \textbf{70\%*}    & 93.10\%            & \textbf{0.4609}     \\
 		\bottomrule
 	\end{tabular}
 	\begin{flushleft}
@@ -1682,7 +1812,7 @@ En conjunto, los Transformers aportan una visión complementaria a la inductiva 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CAPÍTULO 6                                     %
 %                     TERCERA CONTRIBUCIÓN (OBJETIVO 3)                       %
-%                            TODO: REVISAR                                    %
+%                                                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Fine-tuning para radiografías de gatos}
 \label{chap:gatos}
@@ -1787,7 +1917,7 @@ Los principales resultados cuantitativos para la tarea multiclase (0--4) se reco
 		\caption{Finetuning}
 	\end{subfigure}
 	\caption{Matrices de confusión para EfficientNetB0 en la Tarea 0--4 (Indirecto, Directo y Finetuning).}
-	\label{fig:conf_task04_vit}
+	\label{fig:conf_task04_effb0}
 \end{figure}
 
 La Tabla~\ref{tab:model_comparison_results} confirma que ViT supera consistentemente a EfficientNetB0 en clasificación multiclase, especialmente tras \emph{finetuning}. La Tabla~\ref{tab:model_comparison_results_regression} refuerza esta conclusión al mostrar un MAE inferior en ViT, lo que refleja mayor estabilidad en predicción ordinal. Por su parte, las Figuras~\ref{fig:conf_task04_vit} y~\ref{fig:conf_task04_effb0} revelan que el \emph{finetuning} concentra la masa de probabilidad en la diagonal, reduciendo confusiones en clases intermedias, mientras que en el escenario \emph{indirecto} persisten errores significativos por \emph{domain shift}.
@@ -1798,7 +1928,7 @@ En la tarea multiclase, ViT destaca en todos los regímenes, alcanzando en \emph
 \begin{table}[H]
 	\centering
 	\caption{Resultados de la Tarea 01vs234 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
-	\label{tab:model_comparison_results}
+	\label{tab:model_comparison_results_task01vs234}
 	\begin{tabular}{@{} l l c c c @{}}
 		\toprule
 		\textbf{Modelo} & \textbf{Métrica} & \textbf{Directo} & \textbf{Indirecto} & \textbf{Finetuning} \\
@@ -1831,7 +1961,7 @@ En la tarea multiclase, ViT destaca en todos los regímenes, alcanzando en \emph
 		\caption{Finetuning}
 	\end{subfigure}
 	\caption{Matrices de confusión para ViT en la Tarea 0--4 (Indirecto, Directo y Finetuning).}
-	\label{fig:conf_task04_vit}
+	\label{fig:conf_task1_vit}
 \end{figure}
 \begin{figure}[H]
 	\centering
@@ -1851,7 +1981,7 @@ En la tarea multiclase, ViT destaca en todos los regímenes, alcanzando en \emph
 		\caption{Finetuning}
 	\end{subfigure}
 	\caption{Matrices de confusión para EfficientNetB0 en la Tarea 0--4 (Indirecto, Directo y Finetuning).}
-	\label{fig:conf_task04_vit}
+	\label{fig:conf_task1_effb0}
 \end{figure}
 
 \paragraph{Síntesis de resultados (Tarea 01vs234).}
@@ -1914,7 +2044,7 @@ En conjunto, las visualizaciones indican que el \textbf{finetuning mejora la coh
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CONCLUSIONES                                   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusiones}
+\chapter{Conclusiones}
 
 Los experimentos con radiografías felinas permiten extraer varias conclusiones relevantes desde el punto de vista metodológico y práctico. En primer lugar, se confirma que el \textbf{cambio de dominio inter-especie} constituye un reto importante: los modelos entrenados únicamente en rodillas humanas (\emph{indirecto}) sufren un fuerte deterioro de rendimiento (ViT $\sim$29\%, EffB0 $\sim$17\% en exactitud), con confusiones muy marcadas hacia la clase mayoritaria. Esto muestra que, aunque las representaciones genéricas (bordes, texturas) se transfieren parcialmente, la diferencia anatómica entre rodillas humanas y felinas requiere una adaptación explícita.
 
@@ -1993,7 +2123,7 @@ En \textbf{evaluación y validación}, reforzaremos la lectura más allá de la 
 En \textbf{traslación y MLOps}, desarrollaremos un prototipo integrable en flujo clínico (API \emph{FastAPI}/contenedor Docker, compatibilidad DICOM/PACS) con inferencia reproducible y latencias medibles. El despliegue incorporará \emph{temperature scaling}/isotónica para calibración en sitio, registros para auditoría (versionado de modelos/datos, semillas, \emph{model cards}) y monitorización de deriva (\emph{data drift}/\emph{performance drift}). Se establecerán bucles de \emph{active learning} que prioricen para reanotación los casos de alta incertidumbre o desacuerdo modelo-experto. Finalmente, se realizará una evaluación prospectiva con lector humano en el circuito, midiendo tiempo de lectura, tasas de corrección y utilidad clínica percibida, junto con un análisis ético-legal (consentimiento, privacidad, gobernanza del modelo).
 
 Con este plan, esperamos disminuir la indeterminación en KL~0/1, mejorar la generalización interdominio y entregar un sistema calibrado y explicable que funcione como segunda opinión en entornos veterinarios, con rutas claras para su certificación y mantenimiento a largo plazo.
-             % 6.3
+% 6.3
 % Explica las posibles extensiones o mejoras
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2006,13 +2136,5 @@ Con este plan, esperamos disminuir la indeterminación en KL~0/1, mejorar la gen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                           APÉNDICES (OPCIONALES)                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\APPENDIX
-
-\chapter{Configuración del sistema}
-% ...
-
-\chapter{Otro apéndice}
-% ...
 
 \end{document}
