@@ -863,15 +863,24 @@ restringido a fines de investigación bajo autorización expresa de su autora.
 
 Las imágenes fueron adquiridas mediante procedimientos radiográficos
 controlados de ejemplares felinos, garantizando un mínimo de dos adquisiciones
-frontales, una por rodilla rodilla. El conjunto incluye proyecciones frontales
+frontales, una por rodilla. El conjunto incluye proyecciones frontales
 y laterales; sin embargo, para mantener la coherencia metodológica con el
 dataset OAI y favorecer la comparabilidad de resultados, en este trabajo se
 emplean únicamente las proyecciones \textbf{frontales}, recortadas manualmente
 a la región de interés (ROI).
 
+En la Figura~\ref{fig:cat_knees} se muestra una secuencia representativa de imágenes extraídas del conjunto, una por cada categoría de la escala de Kellgren--Lawrence (KL), de izquierda a derecha: KL 0 (sano) hasta KL 4 (artrosis avanzada). Este ejemplo visual permite apreciar de forma clara y progresiva los cambios estructurales característicos de la artrosis en felinos, que incluyen desde una alineación y densidad ósea normal (KL 0), hasta signos evidentes de osteofitosis, estrechamiento del espacio articular y esclerosis subcondral en los estadios más avanzados (KL 3--4). Estas diferencias visuales, aunque sutiles en algunos casos, resultan esenciales para el entrenamiento supervisado de modelos de clasificación automática.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{cat_knees.png}
+	\caption{Ejemplos representativos de radiografías de rodillas felinas\cite{datos_gatos} anotadas según la escala de Kellgren--Lawrence (KL), de izquierda a derecha: KL 0 a KL 4. Se observa una progresiva degradación articular con aumento de la severidad.}
+	\label{fig:cat_knees}
+\end{figure}
+
 En total, se dispone de \textbf{82 radiografías correspondientes a 39 gatos
-	únicos}. Cada imagen fue anotada según la \textbf{escala de Kellgren--Lawrence
-	(KL)} en cinco categorías ordinales (0--4), adaptadas a la evaluación
+únicos}. Cada imagen fue anotada según la \textbf{escala de Kellgren--Lawrence
+(KL)} en cinco categorías ordinales (0--4), adaptadas a la evaluación
 veterinaria. La Tabla~\ref{tab:cat_class_distribution} presenta la distribución
 de radiografías por clase, mientras que la
 Tabla~\ref{tab:cat_patient_distribution} recoge la distribución a nivel de
@@ -1669,11 +1678,13 @@ En síntesis, la transferencia de aprendizaje es el factor más determinante par
 \label{chap:transformers}
 
 \section{Introducción}
-Este capítulo estudia el uso de \emph{Transformers} para la clasificación automática del grado de artrosis de rodilla en radiografías, manteniendo el mismo marco experimental del capítulo de CNN. El interés principal radica en su capacidad para modelar dependencias \emph{globales} mediante mecanismos de atención, a la vez que preserva señales locales gracias al particionado en parches. A diferencia de las CNN, que se basan en convoluciones jerárquicas, los Transformers procesan la imagen como una secuencia de \emph{tokens}, permitiendo que cada región “vea” al resto de la imagen desde las primeras capas.
+Este capítulo estudia el uso de \emph{Transformers} para la clasificación automática del grado de artrosis de rodilla en radiografías, manteniendo el mismo marco experimental empleado en el capítulo de redes convolucionales profundas (CNN). El interés principal de esta arquitectura radica en su capacidad para modelar relaciones \emph{globales} dentro de los datos mediante mecanismos de atención, lo cual representa un cambio de paradigma frente a las CNN, que se basan en operaciones locales y jerárquicas. En concreto, los Transformers tratan la imagen como una secuencia de \emph{tokens}, sin asunciones inductivas espaciales explícitas, lo que permite capturar interdependencias a gran escala desde las primeras capas.
 
-En el contexto de la escala de Kellgren-Lawrence (KL), los errores suelen concentrarse en fronteras adyacentes (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3). Aquí la atención global puede resultar ventajosa al integrar información contextual sobre la articulación completa, más allá de detalles locales. De igual modo, en escenarios de cribado simplificado (sano vs.\ avanzado, i.e. 0/1/2 frente a 3/4), se espera que la sensibilidad aumente gracias a la capacidad de los Transformers de capturar patrones estructurales a gran escala (p.\,ej., el estrechamiento articular o la morfología del fémur y la tibia en conjunto).
+En imágenes médicas, y en particular en radiografías de rodilla, esta propiedad resulta especialmente prometedora. La escala de Kellgren-Lawrence (KL), usada habitualmente para etiquetar el grado de artrosis, presenta fronteras borrosas entre categorías contiguas (e.g., KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3), lo que complica el aprendizaje de clasificadores robustos. En este escenario, la atención global tiene el potencial de mejorar la discriminación contextual entre clases, al permitir al modelo integrar señales de múltiples regiones articulares de manera simultánea, algo difícil de lograr con arquitecturas puramente convolucionales.
 
-El objetivo es valorar, con un protocolo homogéneo, hasta dónde llega un Transformer “puro” sin componentes convolucionales cuando se optimiza sobre OAI, y qué diferencias emergen entre variantes de distinta escala (base vs.\ large).
+Además, en tareas de cribado binario simplificado (p.ej., detección de artrosis avanzada frente a estadio precoz o sano), se espera que los Transformers puedan explotar patrones morfológicos estructurales amplios —como el estrechamiento del espacio articular o las deformaciones óseas a nivel femorotibial— para mejorar la sensibilidad diagnóstica. Esta capacidad es particularmente relevante en contextos clínicos reales, donde se prioriza minimizar los falsos negativos en estadios avanzados.
+
+Pese a estas ventajas teóricas, el rendimiento real de los Transformers en conjuntos médicos moderados como OAI (Osteoarthritis Initiative) aún no está completamente caracterizado. Este capítulo se centra por tanto en valorar, bajo un protocolo homogéneo, hasta dónde puede llegar un Vision Transformer “puro”, sin componentes convolucionales, cuando se optimiza sobre OAI. Se comparan dos variantes con diferente capacidad —ViT-Base y ViT-Large— para analizar cómo influye la escala del modelo en el ajuste a este dominio particular.
 
 \section{Modelos}
 Se exploran dos arquitecturas de Vision Transformer con diferente capacidad y huella computacional:
@@ -1802,11 +1813,13 @@ Se siguen las mismas particiones oficiales \texttt{train/val/test} de OAI y el m
 \end{table}
 
 \section{Conclusiones}
-Los Transformers “puros” resultan una alternativa competitiva para OAI. Tanto \textbf{ViT-B/16} como \textbf{ViT-L/16} ofrecen resultados comparables e incluso superiores a CNN profundas, especialmente en regresión. El \textbf{punto débil común} sigue siendo la distinción entre KL0 y KL1, donde las fronteras clínicas son difusas y el ruido de etiquetado impacta con fuerza. Aun así, los ViT destacan en pares de mayor severidad (0 vs.\ 3/4) y en regresión, donde logran un MAE cercano a 0.46, mejorando las CNN.
+El presente capítulo ha demostrado que los modelos Vision Transformer (ViT) representan una alternativa sólida y prometedora frente a las arquitecturas convolucionales clásicas en tareas de clasificación y regresión del grado de artrosis de rodilla. La capacidad de estas redes para capturar relaciones espaciales globales mediante mecanismos de atención ha permitido obtener un rendimiento competitivo en el conjunto de datos OAI, especialmente en formulaciones ordinales y de regresión escalar.
 
-En términos prácticos, ViT-L/16 parece ser la mejor opción en precisión global, pero a un coste computacional elevado; ViT-B/16 ofrece un mejor balance entre coste y rendimiento.
+Entre los modelos evaluados, \textbf{ViT-B/16} ha mostrado un excelente compromiso entre precisión y coste computacional. Su desempeño es especialmente destacable en pares de clases con mayor diferencia estructural (KL0 vs KL3/4), donde el mecanismo de atención parece facilitar la detección de patrones globales relevantes. Sin embargo, al igual que en modelos CNN, persisten las dificultades en la discriminación entre estadios adyacentes, particularmente KL0 vs KL1, lo cual puede atribuirse a la ambigüedad inherente de la escala KL y a posibles inconsistencias en el etiquetado.
 
-En conjunto, los Transformers aportan una visión complementaria a la inductiva de las CNN. Su integración o hibridación abre una vía prometedora para mejorar la fiabilidad de sistemas de ayuda al diagnóstico en artrosis de rodilla.
+Por su parte, \textbf{ViT-L/16} ha logrado los mejores resultados globales, especialmente en formulaciones de regresión, donde alcanza un MAE por debajo de 0.47. Su mayor capacidad de representación, derivada de una arquitectura más profunda y con más cabezas de atención, le permite capturar señales sutiles presentes en las radiografías. No obstante, esta mejora viene acompañada de un aumento sustancial en la demanda de recursos computacionales (VRAM, tiempo de entrenamiento), lo cual puede limitar su aplicabilidad en entornos clínicos reales con recursos limitados.
+
+En conjunto, los Vision Transformers se consolidan como herramientas versátiles en imagen médica, capaces de ofrecer mejoras significativas en sensibilidad diagnóstica y en precisión. Su incorporación a sistemas de apoyo a la decisión clínica en artrosis debe considerarse con seriedad, siempre acompañada de una evaluación rigurosa de coste-beneficio y viabilidad operativa.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2041,6 +2054,17 @@ En \textbf{EfficientNetB0}, el escenario \emph{indirecto} resalta de forma clara
 
 En conjunto, las visualizaciones indican que el \textbf{finetuning mejora la coherencia de los mapas de activación} en ambos modelos, aunque no elimina por completo la dispersión. ViT tiende a mostrar activaciones más distribuidas, mientras que EfficientNetB0 concentra mejor en la línea articular en ciertos casos. Las diferencias no son drásticas, pero ambos modelos convergen hacia regiones clínicamente interpretables cuando se aplica un ajuste fino al dominio felino, lo que respalda la utilidad del \emph{finetuning} más allá de las métricas cuantitativas.
 
+\section{Conclusiones}
+
+Este capítulo ha explorado los retos y oportunidades que plantea la transferencia de modelos de visión profunda entrenados en radiografías humanas al dominio veterinario, concretamente en el contexto de artrosis felina. A través de un análisis sistemático que incluye clasificación multiclase, formulación binaria, regresión ordinal e interpretabilidad visual mediante Grad-CAM, se ha evaluado de forma exhaustiva el impacto de distintas estrategias de adaptación: uso directo de pesos preentrenados, evaluación \emph{zero-shot} tras entrenamiento en OAI, y \emph{finetuning} supervisado con un subconjunto de imágenes felinas.
+
+Los resultados obtenidos evidencian de forma clara la importancia de la adaptación específica al nuevo dominio. En ambas arquitecturas evaluadas, \textbf{ViT Base} y \textbf{EfficientNetB0}, el enfoque \emph{finetuning} ha permitido una mejora sustancial en todas las métricas, superando tanto al uso directo de pesos ImageNet como al escenario \emph{indirecto} sin reentrenamiento. Esta tendencia es especialmente marcada en Vision Transformer, que alcanza un F1 de 51\% en la tarea multiclase y 79\% en la binaria, lo que lo posiciona como el modelo más robusto para esta tarea, pese a la complejidad que supone el cambio anatómico entre especies.
+
+Asimismo, el análisis regresivo muestra que ViT logra un \emph{MAE} notablemente inferior al de EfficientNetB0, lo que sugiere que su arquitectura es más capaz de capturar transiciones graduales de severidad, incluso en un dominio con menor cantidad de datos. Este rendimiento se ve reforzado por las visualizaciones Grad-CAM, donde ambos modelos, tras el \emph{finetuning}, tienden a concentrar su atención en regiones anatómicamente relevantes, como el espacio articular o la cortical ósea, reforzando la confianza en su aplicabilidad clínica.
+
+Cabe destacar, sin embargo, que la tarea multiclase 0--4 sigue presentando desafíos importantes debido al desbalanceo de clases y a la ambigüedad diagnóstica entre grados intermedios. La formulación binaria 01vs234 emerge, en este contexto, como una alternativa más pragmática y clínica, permitiendo una generalización más estable con menor sensibilidad al ruido y a la variabilidad anatómica. De hecho, los resultados sugieren que esta tarea puede ser especialmente útil como herramienta de cribado inicial en entornos veterinarios, donde la disponibilidad de datos anotados es limitada.
+
+En conjunto, los resultados obtenidos reafirman que la transferencia al dominio veterinario es viable, pero requiere una estrategia de adaptación activa y guiada por el conocimiento clínico. La combinación de Transformers con técnicas de \emph{finetuning} cuidadosamente calibradas representa una vía prometedora para desarrollar herramientas asistidas por IA en medicina veterinaria, con potencial para mejorar el diagnóstico y seguimiento de enfermedades articulares en animales de compañía.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              CONCLUSIONES                                   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
