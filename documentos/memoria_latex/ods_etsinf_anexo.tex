@@ -1,0 +1,52 @@
+
+\phantom{x}
+
+\vspace{1ex}
+
+\section*{ANEXO}
+
+\vspace{2ex}
+
+OBJETIVOS DE DESARROLLO SOSTENIBLE
+
+\vspace{4ex}
+
+Grado de relaci\'on del trabajo con los Objetivos de Desarrollo Sostenible (ODS).
+
+\vspace{2ex}
+\begin{tabular}{|l|c|c|c|c|}\hline
+	\textbf{Objetivos de Desarrollo Sostenible}                  & \textbf{Alto} & \textbf{Medio} & \textbf{Bajo} & \textbf{No}      \\
+	                                                             &               &                &               & \textbf{procede} \\ \hline
+	ODS 1.  \textbf{Fin de la pobreza.}                          &               &                &               & X                \\ \hline
+	ODS 2.  \textbf{Hambre cero.}                                &               &                &               & X                \\ \hline
+	ODS 3.  \textbf{Salud y bienestar.}                          &               & X              &               &                  \\ \hline
+	ODS 4.  \textbf{Educaci\'on de calidad.}                     &               & X              &               &                  \\ \hline
+	ODS 5.  \textbf{Igualdad de g\'enero.}                       &               &                &               & X                \\ \hline
+	ODS 6.  \textbf{Agua limpia y saneamiento.}                  &               &                &               & X                \\ \hline
+	ODS 7.  \textbf{Energ\'{\i}a asequible y no contaminante.}   &               &                &               & X                \\ \hline
+	ODS 8.  \textbf{Trabajo decente y crecimiento econ\'omico.}  &               &                &               & X                \\ \hline
+	ODS 9.  \textbf{Industria, innovaci\'on e infraestructuras.} &               & X              &               &                  \\ \hline
+	ODS 10. \textbf{Reducci\'on de las desigualdades.}           &               &                &               & X                \\ \hline
+	ODS 11. \textbf{Ciudades y comunidades sostenibles.}         &               &                &               & X                \\ \hline
+	ODS 12. \textbf{Producci\'on y consumo responsables.}        &               &                &               & X                \\ \hline
+	ODS 13. \textbf{Acci\'on por el clima.}                      &               &                &               & X                \\ \hline
+	ODS 14. \textbf{Vida submarina.}                             &               &                &               & X                \\ \hline
+	ODS 15. \textbf{Vida de ecosistemas terrestres.}             &               &                &               & X                \\ \hline
+	ODS 16. \textbf{Paz, justicia e instituciones s\'olidas.}    &               &                &               & X                \\ \hline
+	ODS 17. \textbf{Alianzas para lograr objetivos.}             &               &                & X             &                  \\ \hline
+\end{tabular}
+\newpage
+\section*{Reflexión sobre la relación del TFG con los ODS}
+
+Este Trabajo Fin de Grado se relaciona principalmente con tres Objetivos de Desarrollo Sostenible: el \textbf{ODS 3} (Salud y bienestar), el \textbf{ODS 9} (Industria, innovación e infraestructuras) y el \textbf{ODS 4} (Educación de calidad).
+
+La conexión más directa es con el \textbf{ODS 3}, al proponer y evaluar un sistema de apoyo al diagnóstico para la clasificación del grado \emph{Kellgren–Lawrence} en radiografías de rodilla. Aunque no sustituye el criterio clínico, el marco desarrollado contribuye a la \emph{detección temprana} y a la \emph{estratificación de riesgo} mediante formulaciones que priorizan utilidad práctica (como el cribado 01vs234). La incorporación de técnicas de \emph{fine-tuning} específicas para el dominio felino y el análisis de \emph{Grad-CAM} mejoran la \emph{plausibilidad clínica} de las decisiones y sientan bases para un uso responsable en entornos reales. Además, la atención explícita a la \emph{calibración de probabilidades} y a la estimación de \emph{incertidumbre} favorece circuitos asistenciales más seguros, donde los casos dudosos se deriven al especialista. En conjunto, el trabajo apoya la mejora de la calidad de los servicios de salud —humana y veterinaria— al ofrecer herramientas reproducibles que pueden integrarse como segunda opinión, especialmente en contextos con recursos limitados o elevada variabilidad interobservador.
+
+En segundo lugar, el \textbf{ODS 9} se refleja en la combinación de \emph{innovación algorítmica} (Transformers de visión, transferencia de aprendizaje, formulación ordinal/regresión) con el diseño de \emph{infraestructura digital} reproducible. El estudio articula un \emph{pipeline} homogéneo de datos y entrenamiento, criterios comparables (exactitud, F1 macro, MAE), y prácticas de ingeniería (\emph{early stopping}, ajuste de LR, selección por métrica) que facilitan la \emph{traslación} a sistemas reales. Las propuestas de integración futura —API \emph{FastAPI}, contenedores Docker, compatibilidad DICOM/PACS, \emph{model cards}, monitorización de deriva— apuntan a infraestructuras más \emph{resilientes, auditables y escalables}. Asimismo, la validación externa bajo \emph{domain shift} (humano→felino) y el uso de \emph{fine-tuning} específico son decisiones de diseño orientadas a robustez, un rasgo clave de las infraestructuras tecnológicas alineadas con este ODS.
+
+Por último, el \textbf{ODS 4} se materializa en el énfasis formativo del trabajo. La documentación detallada de \emph{datasets}, protocolos de preprocesado, particiones, métricas y análisis de errores (matrices de confusión, lectura ordinal) convierte el TFG en un \emph{recurso didáctico} para estudiantes y profesionales que se introducen en IA aplicada a imagen médica. La comparación honesta de arquitecturas (CNN, \emph{backbones} preentrenados, ViT) bajo un protocolo común, junto con el foco en interpretabilidad y calibración, promueve una \emph{alfabetización técnica} rigurosa y replicable. Este enfoque favorece la formación continua de perfiles clínicos y de ingeniería que deben colaborar en evaluaciones con coste de error asimétrico y requisitos ético-legales estrictos.
+
+De forma colateral, existe una aportación \emph{limitada} al \textbf{ODS 17} (Alianzas para lograr los objetivos), al apoyarse en colaboración con grupos de investigación para el acceso a datos felinos. Si bien el alcance actual es local, el propio plan de trabajo futuro —validación multicentro, liberación de \emph{dataset cards}, protocolos de consenso— abre la puerta a alianzas más amplias que incrementen diversidad de datos y validez externa.
+
+En conjunto, el TFG aporta valor académico y práctico: avanza la frontera de la \emph{IA fiable} en artrosis de rodilla y su transferencia a veterinaria; propone infraestructura y prácticas de ingeniería que facilitan su despliegue responsable; y ofrece materiales formativos que elevan la calidad de la enseñanza y del aprendizaje en este cruce entre salud e innovación tecnológica.
+

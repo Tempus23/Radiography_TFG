@@ -7,7 +7,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                          CODIFICACIÓN DEL FICHERO                           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \usepackage[utf8]{inputenc} 
 \usepackage{babel}
 \usepackage{hyperref}
@@ -22,6 +21,8 @@
 \usepackage{tikz}
 \usepackage{makecell}
 \usepackage{float}
+
+
 \usetikzlibrary{positioning,arrows.meta,calc, fit}
 
 \addbibresource{bib.bib}  % Enlazar el archivo .bib
@@ -496,7 +497,7 @@ Figura~\ref{fig:neural_network} se ilustra esquemáticamente una red profunda.
 	\centering
 	\includegraphics[width=0.5\textwidth]{neural_network.jpg}
 	\caption{Ejemplo de una red neuronal profunda \cite{neural_network}}
-	\label{fig:neural_network.jpg}
+	\label{fig:neural_network}
 \end{figure}
 
 El entrenamiento efectivo de redes multicapa se basa en la
@@ -617,7 +618,7 @@ robusta \cite{liu_meta_analysis}.
 \noindent\textbf{Particularidades del preprocesado en radiografías} En radiografía simple, el contraste depende de factores como kilovoltaje, filtrado y grosor del paciente. Es habitual normalizar intensidades, ajustar el rango dinámico y, para modelos centrados en una articulación concreta, \textbf{recortar la ROI} con detectores o heurísticas anatómicas. Estas operaciones reducen la variación intercentro y ayudan a que el modelo se enfoque en \emph{pistas radiográficas} relevantes (osteofitos, esclerosis subcondral, pinzamiento del espacio articular, etc.).
 
 \medskip
-\noindent\textbf{Métricas y análisis estadístico} En \emph{clasificación} multiclase se reportan \emph{accuracy}, \emph{F1 macro} y \emph{matrices de confusión} por clase; en \emph{binaria} es común AUC-ROC/PR junto a sensibilidad/especificidad para umbrales clínicos. En formulaciones \textbf{ordinales/regresivas} se incluye el MAE y estadísticos de calibración (\emph{reliability diagrams}). La \textbf{validación externa} en centros distintos y la evaluación por subgrupos (edad, sexo, dispositivo) son claves para estimar \emph{generalización} y \emph{equidad} \cite{liu_meta_analysis}. También resulta recomendable contrastar el acuerdo con expertos mediante coeficientes tipo \emph{Cohen}/\emph{Fleiss} \emph{kappa} cuando proceda.
+\noindent\textbf{Métricas y análisis estadístico} En \emph{clasificación} multiclase se reportan precisión, \emph{F1 macro} y \emph{matrices de confusión} por clase; en \emph{binaria} es común AUC-ROC/PR junto a sensibilidad/especificidad para umbrales clínicos. En formulaciones \textbf{ordinales/regresivas} se incluye el MAE y estadísticos de calibración (\emph{reliability diagrams}). La \textbf{validación externa} en centros distintos y la evaluación por subgrupos (edad, sexo, dispositivo) son claves para estimar \emph{generalización} y \emph{equidad} \cite{liu_meta_analysis}. También resulta recomendable contrastar el acuerdo con expertos mediante coeficientes tipo \emph{Cohen}/\emph{Fleiss} \emph{kappa} cuando proceda.
 
 \medskip
 \noindent\textbf{Interpretabilidad y verificación clínica.} La \emph{explicabilidad} busca comprobar que el modelo basa sus decisiones en regiones anatómicas coherentes. Mapas de activación como \emph{Grad-CAM} permiten superponer \emph{heatmaps} sobre la imagen original, ayudando a detectar atajos espurios (p.~ej., artefactos o marcas de la placa) y a construir confianza clínica \cite{selvaraju2017grad}. Aunque la explicabilidad no sustituye a una validación externa, sí que es útil como validación adicional.
@@ -1008,7 +1009,7 @@ La bibliografía reciente ilustra bien estas decisiones de diseño. \textbf{Chen
 con CNN preentrenadas (VGG, ResNet, InceptionV3, DenseNet). Su contribución
 central es una \emph{adjustable ordinal loss} que incrementa la penalización
 con la distancia entre etiquetas, superando a la entropía cruzada y alcanzando
-un 70{.}4\,\% de \emph{accuracy} con VGG-19 como mejor configuración.
+un 70{.}4\,\% de precisión con VGG-19 como mejor configuración.
 \textbf{Rafique et al. (2024)} \cite{rafique2024knee} comparan VGG-16/19,
 ResNet-50/101 y EfficientNetB7 tanto en multiclase como en binaria por pares,
 mostrando la dificultad sistemática en KL1 y reportando, en el escenario
@@ -1018,11 +1019,11 @@ anatómicas de interés clínico. \textbf{Nabil et al. (2024)}
 \cite{nabil2024automatic} optan por reetiquetar KL~0/1/2 como ``sano'' para
 estabilizar la frontera de decisión y plantean una clasificación en tres
 niveles (sano, moderado, severo) donde EfficientNetB7 se impone con un
-93{.}90\,\% de \emph{accuracy}, apoyado en un preprocesado cuidadoso y aumentos
+93{.}90\,\% de precisión, apoyado en un preprocesado cuidadoso y aumentos
 extensivos. Por último, \textbf{Fei et al. (2024)} \cite{fei2024diagnosing}
 formulan explícitamente la tarea como \textbf{regresión continua}, evaluando
 VGG16, ResNet34, DenseNet169 y EfficientNetV2 (versión pequeña) sobre 8\,260
-imágenes de OAI; EfficientNetV2 destaca con un 71\,\% de \emph{accuracy}, AUC
+imágenes de OAI; EfficientNetV2 destaca con un 71\,\% de precisión, AUC
 0{.}83 y MAE 0{.}42, evidenciando que una escala  numérica capta con mayor
 finura la progresión y favorece aplicaciones de seguimiento longitudinal.
 
@@ -1056,8 +1057,8 @@ el tamaño del conjunto no permite entrenamientos desde cero robustos.
 \end{flushleft}
 
 En continuidad con la Tabla~\ref{tab:comparative_oai}, la
-Fig.~\ref{fig:confusion_kl} resume el desempeño del mejor modelo en la
-clasificación KL 0--4. Con una \emph{accuracy} global en torno al 71\,\%, los
+Fig.~\ref{fig:confusion_kl_fei} resume el desempeño del mejor modelo en la
+clasificación KL 0--4. Con una precisión global en torno al 71\,\%, los
 errores se producen casi siempre entre clases contiguas; destaca la frontera
 KL1-KL2 como la más conflictiva, mientras que los extremos (KL0 y KL4) muestran
 mayor separabilidad y apenas aparecen errores de largo alcance.
@@ -1153,7 +1154,7 @@ rendimiento: se registran métricas globales y por clase, se analizan los
 patrones de error en las fronteras más conflictivas (especialmente KL1-KL2) y
 se acompaña la discusión de representaciones visuales que facilitan el
 diagnóstico metodológico. Esta aproximación busca ir más allá de la
-\emph{accuracy} y complementar la interpretación con medidas sensibles a la
+precisión y complementar la interpretación con medidas sensibles a la
 distancia ordinal y a la calibración de las probabilidades, aspectos clave en
 aplicaciones clínicas.
 
@@ -1271,7 +1272,7 @@ La \emph{CNN profunda} añade bloques con normalización por lotes y
 más lenta. El objetivo es aumentar la expresividad sin sacrificar
 generalización, algo especialmente relevante cuando los grados de severidad se
 diferencian por señales sutiles como el estrechamiento del espacio articular u
-osteofitos marginales. En la Tabla~\ref{comparacion_arquitecturas_cnn}
+osteofitos marginales. En la Tabla~\ref{fig:comparacion_arquitecturas_cnn}
 se muestra la comparación de la CNN profunda frente a EfficientNetB0.
 
 El segundo grupo incorpora aprendizaje por transferencia con
@@ -1291,7 +1292,7 @@ señales radiográficas específicas de KL. Esta doble vía no solo incrementa l
 probabilidad de alcanzar el máximo rendimiento, sino que también facilita
 entender el papel real del preentrenamiento frente a la adaptación específica.
 La Fig.~\ref{fig:resnet152} recoge el diagrama de la arquitectura ResNet-152.
-En la Tabla~\ref{comparacion_arquitecturas_cnn} se compara la CNN profunda frente a EfficientNetB0
+En la Tabla~\ref{fig:comparacion_arquitecturas_cnn} se compara la CNN profunda frente a EfficientNetB0
 
 
 \begin{figure}[H]
@@ -1833,7 +1834,7 @@ En conjunto, los Vision Transformers se consolidan como herramientas versátiles
 \section{Introducción}
 La aplicación directa de modelos entrenados sobre radiografías humanas al dominio veterinario plantea un caso de transferencia con \emph{shift} anatómico, estadístico y de adquisición. En este capítulo se evalúa la viabilidad de adaptar modelos optimizados previamente en OAI (rodilla humana) a radiografías de rodilla de gatos, analizando su rendimiento y su capacidad de generalización ante un cambio de morfología ósea, texturas de tejidos y distribución de severidades. Nuestro objetivo no es únicamente reportar métricas agregadas, sino entender \emph{cómo} y \emph{por qué} fallan (o aciertan) los modelos cuando cruzan de especie.
 
-Para ello, ampliamos el análisis clásico de \emph{accuracy}/\emph{F1} con tres piezas clave: (i) \textbf{matrices de confusión} normalizadas por clase, que muestran dónde se concentran los errores (especialmente en fronteras adyacentes 1$\leftrightarrow$2$\leftrightarrow$3) y el efecto del desbalanceo; (ii) \textbf{formulación de regresión} sobre la escala $[0,4]$ con dispersogramas predicción,vs,verdadero y \emph{MAE}, que permiten evaluar si el modelo aprende una noción continua de severidad más allá del acierto exacto; y (iii) \textbf{mapas Grad-CAM}, que aportan interpretabilidad visual al revelar si, tras la transferencia o el \emph{finetuning}, el foco del modelo recae en estructuras anatómicas plausibles (espacio articular tibiofemoral, osteofitos marginales, esclerosis subcondral) o en artefactos espurios.
+Para ello, ampliamos el análisis clásico de precisión/\emph{F1} con tres piezas clave: (i) \textbf{matrices de confusión} normalizadas por clase, que muestran dónde se concentran los errores (especialmente en fronteras adyacentes 1$\leftrightarrow$2$\leftrightarrow$3) y el efecto del desbalanceo; (ii) \textbf{formulación de regresión} sobre la escala $[0,4]$ con dispersogramas predicción,vs,verdadero y \emph{MAE}, que permiten evaluar si el modelo aprende una noción continua de severidad más allá del acierto exacto; y (iii) \textbf{mapas Grad-CAM}, que aportan interpretabilidad visual al revelar si, tras la transferencia o el \emph{finetuning}, el foco del modelo recae en estructuras anatómicas plausibles (espacio articular tibiofemoral, osteofitos marginales, esclerosis subcondral) o en artefactos espurios.
 
 Comparamos tres regímenes de evaluación: \emph{directo} (uso de pesos ImageNet sin adaptación específica), \emph{indirecto} (modelos ajustados en OAI aplicados en modo \emph{zero-shot} a gatos) y \emph{finetuning} (reentrenamiento de los mejores modelos conseguidos en secciones anteriores). Esta triangulación permite medir qué conocimiento visual se transfiere de forma robusta y qué parte requiere reanclaje al nuevo dominio. Dado el tamaño limitado del conjunto felino, todos los resultados se contextualizan frente a la línea base de clase mayoritaria y se reportan métricas por clase para mitigar interpretaciones optimistas debidas al desbalanceo.
 
@@ -1875,7 +1876,7 @@ Los principales resultados cuantitativos para la tarea multiclase (0--4) se reco
 \begin{table}[H]
 	\centering
 	\caption{REGRESSION - Resultados de la Tarea 0--4 para ViT y EfficientNetB0 con distintos tipos de entrenamiento}
-	\label{tab:model_comparison_results}
+	\label{tab:model_comparison_results_regression}
 	\begin{tabular}{@{} l l c c c @{}}
 		\toprule
 		\textbf{Modelo} & \textbf{Métrica} & \textbf{Directo} & \textbf{Indirecto} & \textbf{Finetuning} \\
@@ -2092,9 +2093,9 @@ Este trabajo ha abordado la estimación automática del grado \emph{Kellgren--La
 
 En primer lugar, se ha documentado con detalle el \textit{dataset} OAI en su versión curada (particiones oficiales, resoluciones estandarizadas y distribución de clases), subrayando dos factores que condicionan la evaluación: el \textbf{desbalance} hacia grados leves y la \textbf{subjetividad} de las etiquetas en fronteras contiguas (especialmente KL1–KL2). En paralelo, se ha descrito un conjunto \emph{privado} de radiografías felinas, más reducido y desbalanceado, empleado como \textbf{validación externa} y banco de pruebas para \emph{domain shift} (humano $\rightarrow$ felino) y \emph{fine-tuning}. La combinación de ambos recursos permite medir rendimiento en el dominio de referencia y, además, poner a prueba la transferibilidad anatómica de los modelos.
 
-En segundo lugar, se han implementado cinco familias de modelos: tres CNN \emph{from scratch} (simple, intermedia y profunda) que sirven como línea base escalonada; dos \emph{backbones} preentrenados (EfficientNetB0 y ResNet-152) ajustados con estrategias de \emph{congelado parcial} y \emph{ajuste fino} diferencial; y dos variantes \emph{Vision Transformer} (ViT-B/16 y ViT-L/16) optimizadas sobre parches $16{\times}16$. Todos los experimentos comparten \emph{pipeline} de preprocesado (recortes centrados, $224{\times}224$, replicación a 3 canales), \emph{early stopping}, reducción adaptativa de la tasa de aprendizaje y selección por F1 macro (clasificación) o MAE (regresión). La lectura se ha complementado con matrices de confusión normalizadas (para visualizar errores entre grados contiguos), análisis de calibración y mapas \emph{Grad-CAM}/\emph{attention rollout} como control de plausibilidad anatómica.
+En segundo lugar, se han implementado cinco familias de modelos: tres CNN sin entrenar (simple, intermedia y profunda) que sirven como línea base escalonada; dos \emph{backbones} preentrenados (EfficientNetB0 y ResNet-152) ajustados con estrategias de \emph{congelado parcial} y \emph{ajuste fino} diferencial; y dos variantes \emph{Vision Transformer} (ViT-B/16 y ViT-L/16) optimizadas sobre parches $16{\times}16$. Todos los experimentos comparten \emph{pipeline} de preprocesado (recortes centrados, $224{\times}224$, replicación a 3 canales), \emph{early stopping}, reducción adaptativa de la tasa de aprendizaje y selección por F1 macro (clasificación) o MAE (regresión). La lectura se ha complementado con matrices de confusión normalizadas (para visualizar errores entre grados contiguos), análisis de calibración y mapas \emph{Grad-CAM}/\emph{attention rollout} como control de plausibilidad anatómica.
 
-Los resultados en OAI muestran una pauta nítida. (i) La \textbf{transferencia de aprendizaje} es el factor más determinante: EfficientNetB0 y ResNet-152 superan de forma consistente a las CNN entrenadas desde cero en todas las tareas. EfficientNetB0 ofrece el mejor \emph{compromiso} rendimiento–coste y lidera la multiclase 0--4 y el MAE en regresión; ResNet-152 marca el techo en 0-3-4 y en el extremo 0 vs.\ 4. (ii) La \textbf{dificultad no es uniforme}: 0 vs.\ 1 es sistemáticamente el caso más complejo (frontera semántica difusa), mientras que 0 vs.\ 4 está prácticamente saturado. (iii) Los \textbf{errores se concentran entre clases adyacentes} (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3), lo que refuerza el uso de pérdidas ordinales o la formulación \emph{continua}—que, además, facilita lecturas de progresión longitudinal—y aconseja evaluar más allá de la \emph{accuracy} agregada (F1 macro por clase, MAE). (iv) En \textbf{Transformers}, ViT-B/16 y ViT-L/16 son competitivos con los \emph{backbones} CNN, destacando en regresión y en pares con mayor distancia semántica; su mayor coste computacional (especialmente en la variante \emph{Large}) se ve compensado cuando se prioriza precisión global y lectura ordinal estable.
+Los resultados en OAI muestran una pauta nítida. (i) La \textbf{transferencia de aprendizaje} es el factor más determinante: EfficientNetB0 y ResNet-152 superan de forma consistente a las CNN entrenadas desde cero en todas las tareas. EfficientNetB0 ofrece el mejor \emph{compromiso} rendimiento–coste y lidera la multiclase 0--4 y el MAE en regresión; ResNet-152 marca el techo en 0-3-4 y en el extremo 0 vs.\ 4. (ii) La \textbf{dificultad no es uniforme}: 0 vs.\ 1 es sistemáticamente el caso más complejo (frontera semántica difusa), mientras que 0 vs.\ 4 está prácticamente saturado. (iii) Los \textbf{errores se concentran entre clases adyacentes} (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3), lo que refuerza el uso de pérdidas ordinales o la formulación \emph{continua}—que, además, facilita lecturas de progresión longitudinal—y aconseja evaluar más allá de la precisión agregada (F1 macro por clase, MAE). (iv) En \textbf{Transformers}, ViT-B/16 y ViT-L/16 son competitivos con los \emph{backbones} CNN, destacando en regresión y en pares con mayor distancia semántica; su mayor coste computacional (especialmente en la variante \emph{Large}) se ve compensado cuando se prioriza precisión global y lectura ordinal estable.
 
 Sobre validación externa (felinos), el \emph{zero-shot} desde humanos \textbf{no es suficiente}: el rendimiento cae de forma marcada y aparece un sesgo hacia clases mayoritarias. El \textbf{\emph{fine-tuning}} específico recupera desempeño y estabiliza los patrones de error, con \emph{ViT} mostrando una adaptación particularmente eficaz en el escenario de datos pequeños. En la tarea \textbf{01vs234} (cribado práctico), los modelos alcanzan métricas más altas y robustas que en la 0--4, lo que sugiere una vía de aplicación clínica realista cuando se prioriza sensibilidad para KL~3/4. Finalmente, los mapas de explicación indican atención preferente en regiones plausibles (interlínea articular, osteofitos marginales), más consistente tras ajuste fino, y la calibración de probabilidades emerge como paso necesario antes de fijar umbrales operativos con costes de error asimétricos.
 
@@ -2111,16 +2112,16 @@ En síntesis, el marco comparativo construido permite extraer tres mensajes robu
 Este trabajo ha cumplido los objetivos propuestos en torno a la construcción de un marco experimental reproducible, la comparación honesta de arquitecturas, la incorporación explícita de la ordinalidad de \emph{Kellgren--Lawrence} (KL) y la validación externa bajo \emph{domain shift}. A continuación se sintetizan los principales logros, apoyados en las evidencias presentadas a lo largo del capítulo de experimentos.
 
 \noindent\textbf{(i) Marco de datos y reproducibilidad.}
-Se consolidó un \emph{pipeline} estandarizado sobre el OAI con las particiones oficiales \texttt{train/val/test} y proporción \mbox{70/10/20}, documentando los conteos exactos: \emph{train} $n{=}5{,}778$ (59.0\,\%), \emph{val} $n{=}826$ (8.4\,\%), \emph{test} $n{=}1{,}656$ (16.9\,\%) y \texttt{auto\_test} $n{=}1{,}526$ (15.6\,\%). Se fijaron resoluciones de entrada ($224{\times}224$) y un preprocesado homogéneo; además, se explicitó el desbalance por clase en \emph{train} (KL0: 40\,\%; KL4: 3\,\%; cf.\ Tabla~\ref{tab:class_distribution}), garantizando comparabilidad entre modelos y lecturas consistentes (accuracy, F1 macro, MAE), complementadas con matrices de confusión y mapas \emph{Grad-CAM}.
+Se consolidó un \emph{pipeline} estandarizado sobre el OAI con las particiones oficiales \texttt{train/val/test} y proporción \mbox{70/10/20}, documentando los conteos exactos: \emph{train} $n{=}5{,}778$ (59.0\,\%), \emph{val} $n{=}826$ (8.4\,\%), \emph{test} $n{=}1{,}656$ (16.9\,\%) y \texttt{auto\_test} $n{=}1{,}526$ (15.6\,\%). Se fijaron resoluciones de entrada ($224{\times}224$) y un preprocesado homogéneo; además, se explicitó el desbalance por clase en \emph{train} (KL0: 40\,\%; KL4: 3\,\%; cf.\ Tabla~\ref{tab:class_distribution}), garantizando comparabilidad entre modelos y lecturas consistentes (precisión, F1 macro, MAE), complementadas con matrices de confusión y mapas \emph{Grad-CAM}.
 
-\noindent\textbf{(ii) Escalado de líneas base \emph{from scratch}.}
-Se establecieron tres CNN de complejidad creciente. El paso de la línea base a la CNN profunda elevó la \emph{accuracy} en KL~0--4 de 42.0\,\% a 58.47\,\% y el F1 macro de 30\,\% a 52.03\,\%; en pares binarios exigentes (0 vs.\ 2/3) se alcanzaron 74.26\,\% y 86.64\,\%, respectivamente. En formulación continua, el MAE descendió de 0.897 a 0.651, confirmando que el aumento de capacidad aporta beneficios reales, si bien las confusiones se siguen concentrando entre grados contiguos (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3; cf.\ Fig.\ref{fig:confusion_kl_comparativa}).
+\noindent\textbf{(ii) Escalado de líneas base sin entrenar.}
+Se establecieron tres CNN de complejidad creciente. El paso de la línea base a la CNN profunda elevó la precisión en KL~0--4 de 42.0\,\% a 58.47\,\% y el F1 macro de 30\,\% a 52.03\,\%; en pares binarios exigentes (0 vs.\ 2/3) se alcanzaron 74.26\,\% y 86.64\,\%, respectivamente. En formulación continua, el MAE descendió de 0.897 a 0.651, confirmando que el aumento de capacidad aporta beneficios reales, si bien las confusiones se siguen concentrando entre grados contiguos (KL1$\leftrightarrow$KL2, KL2$\leftrightarrow$KL3; cf.\ Fig.\ref{fig:confusion_kl_comparativa}).
 
 \noindent\textbf{(iii) Transferencia de aprendizaje como palanca principal.}
-En la \textbf{validación externa felina} (Fig.~\ref{fig:accuracy_general}), la evaluación \emph{zero-shot} desde OAI evidencia una caída notable de desempeño (ViT-B/16: 29\,\% en 0--4; EfficientNetB0: 17\,\%). Al aplicar \emph{fine-tuning} específico sobre el conjunto de gatos se \emph{recupera} una parte sustancial del rendimiento (ViT-B/16: 50\,\% en 0--4 y 80\,\% en 01vs234; EfficientNetB0: 30\,\% y 73\,\%). Como punto intermedio, el entrenamiento \emph{directo} desde pesos genéricos de ImageNet arroja resultados moderados (ViT-B/16: 47\,\% en 0--4 y 67\,\% en 01vs234; EfficientNetB0: 40\,\% y 70\,\%). En conjunto, estos datos confirman que la \textbf{transferencia adaptada al nuevo dominio} (\emph{fine-tuning}) es determinante bajo \emph{domain shift} humano$\rightarrow$felino, por encima del simple preentrenamiento genérico o de la inferencia \emph{zero-shot}.
+En la \textbf{validación externa felina} (Fig.~\ref{fig:general_accuracy}), la evaluación \emph{zero-shot} desde OAI evidencia una caída notable de desempeño (ViT-B/16: 29\,\% en 0--4; EfficientNetB0: 17\,\%). Al aplicar \emph{fine-tuning} específico sobre el conjunto de gatos se \emph{recupera} una parte sustancial del rendimiento (ViT-B/16: 50\,\% en 0--4 y 80\,\% en 01vs234; EfficientNetB0: 30\,\% y 73\,\%). Como punto intermedio, el entrenamiento \emph{directo} desde pesos genéricos de ImageNet arroja resultados moderados (ViT-B/16: 47\,\% en 0--4 y 67\,\% en 01vs234; EfficientNetB0: 40\,\% y 70\,\%). En conjunto, estos datos confirman que la \textbf{transferencia adaptada al nuevo dominio} (\emph{fine-tuning}) es determinante bajo \emph{domain shift} humano$\rightarrow$felino, por encima del simple preentrenamiento genérico o de la inferencia \emph{zero-shot}.
 
 \noindent\textbf{(iv) Incorporación explícita de la ordinalidad.}
-Se operacionalizó la estructura ordinal de KL mediante dos vías complementarias: (a) formulación continua con evaluación por MAE (p.\,ej., 0.463 con \emph{EfficientNetB0}) y discretización posterior comparable a la clasificación directa; (b) análisis sistemático de matrices de confusión normalizadas, donde los errores se concentran en $\pm 1$ grado. Esta lectura permite interpretar el desempeño más allá de la \emph{accuracy} agregada y respalda su uso para seguimiento longitudinal y ajuste de umbrales.
+Se operacionalizó la estructura ordinal de KL mediante dos vías complementarias: (a) formulación continua con evaluación por MAE (p.\,ej., 0.463 con \emph{EfficientNetB0}) y discretización posterior comparable a la clasificación directa; (b) análisis sistemático de matrices de confusión normalizadas, donde los errores se concentran en $\pm 1$ grado. Esta lectura permite interpretar el desempeño más allá de la \emph{precisión} agregada y respalda su uso para seguimiento longitudinal y ajuste de umbrales.
 
 \noindent\textbf{(v) Interpretabilidad y fiabilidad orientadas a uso clínico.}
 Los mapas \emph{Grad-CAM} mostraron atención en regiones anatómicamente plausibles (interlínea articular, osteofitos), más nítida al aumentar capacidad y con transferencia. Se incorporó lectura de calibración y se recomendaron técnicas como \emph{temperature scaling} antes de fijar puntos de operación con coste asimétrico de error (priorizando sensibilidad para KL~3/4), facilitando la traslación de métricas a decisiones clínicas.
@@ -2140,11 +2141,11 @@ A partir de la evidencia acumulada: (1) para \emph{cribado “sano vs.\ avanzado
 \section{Trabajo futuro}
 A partir de la evidencia empírica obtenida—donde el \emph{fine-tuning} de \emph{ViT} destaca en cribado 01vs234 y las confusiones persisten en las fronteras bajas (KL~0/1)—las prioridades de continuación se orientan a (i) reducir la incertidumbre en clases tempranas, (ii) fortalecer la validez externa bajo \emph{domain shift} y (iii) acercar el sistema a un uso clínico responsable y auditable.
 
-En \textbf{datos}, ampliaremos el conjunto felino con especial énfasis en casos post~\emph{mortem} que permitan una \emph{verdad de referencia} más robusta y disminuyan la variabilidad interobservador en KL0/1. Estableceremos un protocolo de anotación dual con resolución por consenso (dos lectores + adjudicación), cuantificando concordancia y registrando razones de desacuerdo para realimentar el entrenamiento. Se explorará además la integración de metadatos clínicos básicos (edad, lateralidad, proyección) y la liberación de \emph{dataset cards} con trazabilidad y sesgos conocidos.
+En \textbf{datos}, ampliaremos el conjunto felino con especial énfasis en casos post~\emph{mortem} que permitan una \emph{verdad de referencia} más robusta y disminuyan la variabilidad interobservador en KL0/1. Estableceremos un protocolo de anotación dual con resolución por consenso (dos lectores + adjudicación), cuantificando concordancia y registrando razones de desacuerdo para realimentar el entrenamiento.
 
-En \textbf{evaluación y validación}, reforzaremos la lectura más allá de la \emph{accuracy}. Se diseñará validación externa multicentro (distintos equipos/protocolos) y análisis de \emph{shift} (centro, especie) con pruebas de robustez frente a ruido y oclusiones parciales. Optimizaremos umbrales específicos por contexto (p.,ej., sensibilidad priorizada para KL3/4) y reportaremos métricas estratificadas por distribución de clases. Un módulo de \emph{OOD detection} permitirá identificar radiografías fuera del soporte del entrenamiento.
+En \textbf{evaluación y validación}, reforzaremos la lectura más allá de la precisión. Se diseñará validación externa multicentro (distintos equipos/protocolos) y análisis de \emph{shift} (centro, especie) con pruebas de robustez frente a ruido y oclusiones parciales. Optimizaremos umbrales específicos por contexto (p.,ej., sensibilidad priorizada para KL3/4) y reportaremos métricas estratificadas por distribución de clases. Un módulo de \emph{OOD detection} permitirá identificar radiografías fuera del soporte del entrenamiento.
 
-En \textbf{traslación y MLOps}, desarrollaremos un prototipo integrable en flujo clínico (API \emph{FastAPI}/contenedor Docker, compatibilidad DICOM/PACS) con inferencia reproducible y latencias medibles. El despliegue incorporará \emph{temperature scaling}/isotónica para calibración en sitio, registros para auditoría (versionado de modelos/datos, semillas, \emph{model cards}) y monitorización de deriva (\emph{data drift}/\emph{performance drift}). Se establecerán bucles de \emph{active learning} que prioricen para reanotación los casos de alta incertidumbre o desacuerdo modelo-experto. Finalmente, se realizará una evaluación prospectiva con lector humano en el circuito, midiendo tiempo de lectura, tasas de corrección y utilidad clínica percibida, junto con un análisis ético-legal (consentimiento, privacidad, gobernanza del modelo).
+En \textbf{traslación y MLOps}, desarrollaremos un prototipo integrable en flujo clínico (API \emph{FastAPI}/contenedor Docker, compatibilidad DICOM/PACS) con inferencia reproducible y latencias medibles. El despliegue incorporará registros para auditoría (versionado de modelos/datos, semillas) y monitorización de deriva (\emph{data drift}/\emph{performance drift}). Se establecerán bucles de \emph{active learning} que prioricen para reanotación los casos de alta incertidumbre o desacuerdo modelo-experto. Finalmente, se realizará una evaluación prospectiva con lector humano en el circuito, midiendo tiempo de lectura, tasas de corrección y utilidad clínica percibida, junto con un análisis ético-legal (consentimiento, privacidad, gobernanza del modelo).
 
 Con este plan, esperamos disminuir la indeterminación en KL~0/1, mejorar la generalización interdominio y entregar un sistema calibrado y explicable que funcione como segunda opinión en entornos veterinarios, con rutas claras para su certificación y mantenimiento a largo plazo.
 % 6.3
@@ -2160,5 +2161,7 @@ Con este plan, esperamos disminuir la indeterminación en KL~0/1, mejorar la gen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                           APÉNDICES (OPCIONALES)                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\input{ods_etsinf_anexo.tex}
 
 \end{document}
