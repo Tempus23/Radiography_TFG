@@ -375,10 +375,7 @@ específico y ajuste fino, y discutiendo su utilidad en un marco clínico
 veterinario. En \textbf{Conclusiones} se sintetizan los hallazgos obtenidos, se
 verifica el grado de cumplimiento de los objetivos planteados y se formulan
 propuestas para líneas futuras de investigación. Finalmente, la
-\textbf{Bibliografía} recoge las referencias utilizadas, mientras que los
-\textbf{Apéndices} incluyen información complementaria: configuración del
-sistema, dependencias y parámetros de reproducción, así como tablas y métricas
-adicionales y detalles de preprocesado empleados durante la investigación.
+\textbf{Bibliografía} recoge las referencias utilizadas tanto en el contenido como en las imágenes de este trabajo.
 
 % Describe la organización de los capítulos y secciones
 
@@ -1611,7 +1608,7 @@ En esta sección presentamos la evaluación empírica de cinco arquitecturas de 
 \paragraph{Análisis cualitativo vía matrices de confusión (T0: KL 0--4).}
 Como complemento a los indicadores globales (Accuracy y F1 macro), en la Fig.~\ref{fig:cm_t0} mostramos las matrices de confusión en \texttt{test} para cada arquitectura. Estas visualizaciones permiten identificar patrones de error sistemáticos más allá de la métrica agregada: en todos los modelos se concentra la confusión entre grados contiguos (KL1$\leftrightarrow$KL2 y KL2$\leftrightarrow$KL3), mientras que los extremos (KL0 y KL4) presentan mayor fidelidad. A medida que aumenta la capacidad y/o se incorpora transferencia de aprendizaje, la masa de probabilidades se desplaza hacia la diagonal (menos dispersión fuera de ella), con diagonales más nítidas en EfficientNetB0 y ResNet-152. En términos prácticos, estos patrones justifican el análisis posterior de umbrales para cribado “sano vs.\ avanzado” (0/1/2 frente a 3/4), dado que la mayor parte de los errores se produce en las clases 0, 1 y 2.
 
-\begin{figure}[H]
+\begin{figure}[ht]
 	\centering
 	\captionsetup{font=small}
 	% ====== FILA 1 ======
