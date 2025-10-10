@@ -257,6 +257,7 @@ Los notebooks incluyen:
 
 - 🎓 Estudiante de Ingeniería Informática
 - 🏛️ Universidad Politécnica de Valencia (UPV)
+- 🔗 GitHub: [@Tempus23](https://github.com/Tempus23)
 - 📧 Contacto: A través de GitHub
 
 ### Colaboración
@@ -283,6 +284,18 @@ Copyright (c) 2025 Carlos Hernández Martínez
 Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia
 de este software para usar, copiar, modificar, fusionar, publicar y distribuir
 el software, sujeto a las condiciones de la licencia MIT.
+```
+
+---
+
+## 📖 Cómo Citar
+
+Si utilizas este proyecto en tu investigación o trabajo, por favor cita:
+
+```
+Hernández Martínez, C. (2025). Clasificación de Artrosis de Rodilla mediante 
+Redes Convolucionales Profundas. Trabajo de Fin de Grado, Universidad Politécnica 
+de Valencia. https://github.com/Tempus23/Radiography_TFG
 ```
 
 ---

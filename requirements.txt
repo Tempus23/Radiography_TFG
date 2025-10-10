@@ -1,11 +1,27 @@
+# Deep Learning Frameworks
 torch==1.13.1
 torchvision==0.14.1
 tensorflow==2.10.0
-matplotlib==3.6.2
-numpy==1.23.5
-opencv-python==4.6.0.66
-tqdm==4.64.1
-wandb==0.13.5
 pytorch-lightning==1.8.6
-torchmetrics==0.11.0
+
+# Data Processing
+numpy==1.23.5
+pandas>=1.5.0
+opencv-python==4.6.0.66
 pydicom>=2.3.0
+
+# Visualization
+matplotlib==3.6.2
+seaborn>=0.12.0
+
+# ML Utilities
+scikit-learn>=1.1.0
+torchmetrics==0.11.0
+tqdm==4.64.1
+
+# Experiment Tracking
+wandb==0.13.5
+
+# Jupyter
+jupyter>=1.0.0
+ipykernel>=6.16.0
