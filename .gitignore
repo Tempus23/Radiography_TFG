@@ -1,33 +1,66 @@
-/dataset
-/code/__pycache__/*
-/code/*/__pycache__
-/code/wandb
-/src/__pycache__/*
-/src/models/__pycache__/*
-/src/trainers/__pycache__/*
-# Trainers not used
-/code/trainers/not_used.py
-/_previous/*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
 
 # Datasets
-/dataset/*
+dataset/
+data/
+*.csv
+*.h5
+*.hdf5
 
-# Models
-/models/*
+# Models and checkpoints
+models/
+*.pth
+*.pt
+*.keras
+*.ckpt
+*.pb
 
 # Wandb
-/wandb/*
+wandb/
 
-# LaTex
-/documentos/memoria_latex/*.aux
-/documentos/memoria_latex/*.bbl
-/documentos/memoria_latex/*.bcf
-/documentos/memoria_latex/*.lof
-/documentos/memoria_latex/*.log
-/documentos/memoria_latex/*.lot
-/documentos/memoria_latex/memoria_tfg*.pdf
-/documentos/memoria_latex/*.toc
-/documentos/memoria_latex/*.out
-/documentos/memoria_latex/*.xml
-/documentos/memoria_latex/*.blg
-/documentos/memoria_latex/*.gz
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# LaTeX
+*.aux
+*.bbl
+*.bcf
+*.lof
+*.lot
+*.toc
+*.out
+*.xml
+*.blg
+*.gz
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+documentos/memoria_latex/memoria_tfg*.pdf
+
+# Temporary files
+tmp/
+temp/
+*.tmp
